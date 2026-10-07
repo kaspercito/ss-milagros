@@ -1,0 +1,37 @@
+{
+  "code": "4RGPPW5L",
+  "timestamp": "2026-10-07 01:55:49",
+  "verdict": "yellow",
+  "duration": 3,
+  "pc": {
+    "hostname": "DESKTOP-2H4NTC4",
+    "user": "Miguel",
+    "os": "Windows-11-10.0.26200-SP0"
+  },
+  "findings": [
+    {
+      "level": "info",
+      "module": "Prefetch",
+      "title": "No se pudo leer Prefetch",
+      "detail": "Ejecuta como administrador o Prefetch esta desactivado (puede ser una senal por si solo)."
+    },
+    {
+      "level": "info",
+      "module": "Procesos",
+      "title": "Minecraft (javaw.exe) no esta abierto",
+      "detail": "Pidele que abra Minecraft para poder escanear la memoria."
+    },
+    {
+      "level": "yellow",
+      "module": "Evasion",
+      "title": "Servicio detenido: PcaSvc",
+      "detail": "Estos servicios guardan rastros usados en SS. Preguntar por que esta apagado."
+    }
+  ],
+  "extra": [
+    {
+      "title": "Archivos revisados",
+      "body": "3262 archivos recorridos, 107 hasheados (ultimos 30 dias)"
+    }
+  ]
+}
