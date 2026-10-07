@@ -1,0 +1,1303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SS Dashboard v3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:      #06070b;
+  --panel:   rgba(18,21,32,0.82);
+  --panel2:  #141720;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text:    #eef0f5;
+  --muted:   #828aa0;
+  --muted2:  #525870;
+  --red:     #ff4d5a;
+  --yellow:  #ffbe38;
+  --green:   #35d48c;
+  --blue:    #6c8fff;
+  --purple:  #a46bff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Sora', system-ui, sans-serif;
+  background: radial-gradient(900px 500px at 10% -10%, rgba(108,143,255,0.13), transparent 55%),
+              radial-gradient(600px 400px at 95% 0, rgba(164,107,255,0.10), transparent 50%),
+              var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── LOGIN SCREEN ── */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.login-box {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 48px 36px;
+  max-width: 380px;
+  width: 100%;
+}
+.login-box h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.login-box .subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted2);
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Sora';
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+.login-btn:hover { transform: translateY(-2px); }
+.login-error {
+  background: rgba(255,77,90,0.15);
+  border: 1px solid rgba(255,77,90,0.3);
+  color: var(--red);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: none;
+}
+.login-error.show { display: block; }
+
+/* ── DASHBOARD MAIN ── */
+.dashboard { display: none; }
+.dashboard.show { display: block; }
+
+.wrap { max-width: 1400px; margin: auto; padding: 32px 22px 60px; }
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand .logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  box-shadow: 0 0 28px rgba(108,143,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}
+.brand h1 { font-size: 20px; font-weight: 700; }
+.brand .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 11px;
+  font-size: 12px;
+}
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.search {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0 14px;
+}
+.search input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+  font-family: 'Sora';
+  font-size: 14px;
+  padding: 12px 0;
+}
+.btn {
+  padding: 11px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'Sora';
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn:hover { border-color: var(--border2); transform: translateY(-1px); }
+.code-chip {
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1px dashed var(--blue);
+  background: rgba(108,143,255,0.08);
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.code-chip:hover { background: rgba(108,143,255,0.16); }
+.code-chip.copied { border-color: var(--green); color: var(--green); }
+.btn-accent {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  border: none;
+  color: white;
+  box-shadow: 0 4px 18px rgba(108,143,255,0.28);
+}
+.btn-accent:hover { box-shadow: 0 6px 24px rgba(108,143,255,0.42); }
+.btn-danger {
+  background: rgba(255,77,90,0.1);
+  border: 1px solid rgba(255,77,90,0.3);
+  color: var(--red);
+}
+.btn-danger:hover {
+  background: rgba(255,77,90,0.2);
+  border-color: var(--red);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media(max-width:860px) { .grid { grid-template-columns: 1fr; } }
+
+.panel {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ── LISTA DE ESCANEOS ── */
+.list { max-height: 76vh; overflow-y: auto; }
+.list-hd {
+  padding: 13px 17px;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.65px;
+  color: var(--muted2);
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+}
+.item {
+  padding: 14px 17px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.13s;
+  position: relative;
+}
+.item:hover { background: rgba(255,255,255,0.03); }
+.item.active { background: rgba(108,143,255,0.07); }
+.item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(var(--blue), var(--purple));
+}
+.item .code {
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'JetBrains Mono';
+  letter-spacing: 0.5px;
+}
+.item .meta {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.item .nick {
+  font-size: 10px;
+  color: var(--blue);
+  margin-top: 3px;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+.b-red {
+  background: rgba(255,77,90,0.15);
+  color: var(--red);
+  border: 1px solid rgba(255,77,90,0.3);
+}
+.b-red::before { background: var(--red); box-shadow: 0 0 8px var(--red); }
+.b-yellow {
+  background: rgba(255,190,56,0.15);
+  color: var(--yellow);
+  border: 1px solid rgba(255,190,56,0.3);
+}
+.b-yellow::before { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+.b-green {
+  background: rgba(53,212,140,0.15);
+  color: var(--green);
+  border: 1px solid rgba(53,212,140,0.3);
+}
+.b-green::before { background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+/* ── DETALLE DEL ESCANEO ── */
+.detail {
+  padding: 24px;
+  min-height: 440px;
+}
+.verdict-banner {
+  border-radius: 15px;
+  padding: 26px;
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.verdict-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% -10%, currentColor 0%, transparent 65%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.vb-red {
+  background: linear-gradient(150deg, #280d12, #180709);
+  border: 1px solid rgba(255,77,90,0.35);
+  color: var(--red);
+}
+.vb-yellow {
+  background: linear-gradient(150deg, #28200d, #181408);
+  border: 1px solid rgba(255,190,56,0.35);
+  color: var(--yellow);
+}
+.vb-green {
+  background: linear-gradient(150deg, #0c2619, #07180f);
+  border: 1px solid rgba(53,212,140,0.35);
+  color: var(--green);
+}
+.verdict-banner h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  position: relative;
+}
+.verdict-banner .vc {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+  font-family: 'JetBrains Mono';
+  position: relative;
+}
+
+.action-hint {
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.action-hint b { color: var(--text); }
+
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media(max-width:720px) { .info-grid { grid-template-columns: 1fr; } }
+
+.info-card {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+.info-card .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.info-card .value {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono';
+  word-break: break-all;
+}
+.info-card .value.small {
+  font-size: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.tab {
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+.findings {
+  max-height: 440px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.f-card {
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-bottom: 9px;
+  font-size: 13px;
+  transition: transform 0.12s;
+  cursor: default;
+}
+.f-card:hover { transform: translateX(2px); }
+.f-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+.f-tag {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.07);
+  color: var(--muted);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.f-card b {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+.f-card pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 5px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono';
+  line-height: 1.4;
+}
+.f-red {
+  background: rgba(255,77,90,0.12);
+  border: 1px solid rgba(255,77,90,0.22);
+}
+.f-yellow {
+  background: rgba(255,190,56,0.12);
+  border: 1px solid rgba(255,190,56,0.22);
+}
+.f-info {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+}
+.f-fp {
+  background: rgba(100,120,180,0.08);
+  border: 1px solid rgba(100,120,180,0.15);
+  opacity: 0.8;
+}
+.fp-warning {
+  background: rgba(255,190,56,0.1);
+  border: 1px solid rgba(255,190,56,0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--yellow);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.empty {
+  color: var(--muted);
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.empty .big {
+  font-size: 40px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+/* ── MODAL GUÍA ── */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: #111421;
+  border: 1px solid var(--border2);
+  border-radius: 18px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 28px;
+}
+.modal h2 { font-size: 18px; margin-bottom: 3px; }
+.modal .sub { color: var(--muted); font-size: 12px; margin-bottom: 20px; }
+.modal-close {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+}
+.g-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+.g-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.g-name { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+.g-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+.g-sep { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+/* ── DELETE CONFIRM ── */
+.confirm-delete {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 60;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.confirm-delete.show { display: flex; }
+.confirm-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 24px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+}
+.confirm-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.confirm-box .msg { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+.confirm-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.confirm-buttons button {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.confirm-buttons .cancel {
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.confirm-buttons .cancel:hover { border-color: var(--border2); }
+.confirm-buttons .delete {
+  background: rgba(255,77,90,0.2);
+  color: var(--red);
+  border: 1px solid rgba(255,77,90,0.3);
+}
+.confirm-buttons .delete:hover {
+  background: rgba(255,77,90,0.35);
+  border-color: var(--red);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted2);
+  font-size: 11px;
+  margin-top: 40px;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ── -->
+<div class="login-container" id="loginScreen">
+  <div class="login-box">
+    <h1>🛡️ SS Dashboard</h1>
+    <div class="subtitle">Sistema de Screenshare Minecraft</div>
+
+    <div class="login-error" id="loginError"></div>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" id="username" placeholder="moderador" required autofocus>
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="login-btn">Ingresar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ── -->
+<div class="dashboard" id="dashboard">
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div>
+        <h1>SS Dashboard</h1>
+        <div class="sub">Panel de moderación — screenshare Minecraft</div>
+      </div>
+    </div>
+    <div class="user-info">
+      <span id="userDisplay"></span>
+      <button class="logout-btn" onclick="handleLogout()">Salir</button>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="codeInput" placeholder="Buscar por código o nick..."
+             onkeydown="if(event.key==='Enter')filterScans()">
+    </div>
+    <button class="btn" onclick="filterScans()">🔍 Buscar</button>
+    <button class="btn" onclick="loadAll()">↻ Recargar</button>
+    <button class="btn" onclick="openGuide()">❓ Guía</button>
+    <button class="btn btn-accent" onclick="generateCode()">🎲 Generar código</button>
+    <button class="code-chip" id="codeChip" onclick="copyCode()" title="Click para copiar" style="display:none"></button>
+  </div>
+
+  <div class="grid">
+    <div class="panel list" id="listPanel">
+      <div class="list-hd" id="listHd">Escaneos</div>
+      <div id="list"></div>
+    </div>
+    <div class="panel detail" id="detail">
+      <div class="empty"><div class="big">🔍</div>Selecciona un escaneo<br>para ver el detalle</div>
+    </div>
+  </div>
+
+  <footer>SS Dashboard v3.0 · datos en GitHub · generado por SS Helper v3</footer>
+</div>
+</div>
+
+<!-- ── MODAL GUÍA ── -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeGuide()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeGuide()">✕</button>
+    <h2>Guía completa del moderador</h2>
+    <div class="sub">Cómo interpretar el reporte y qué hacer en cada caso</div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></div>
+      <div>
+        <div class="g-name" style="color:var(--red)">🔴 CHEATING — Evidencia fuerte</div>
+        <div class="g-desc">
+          <b>Qué significa:</b> Coincidencia directa de hash, cliente cargado en memoria, o logs borrados recientemente.<br><br>
+          <b>Qué hacer:</b>
+          <ul style="margin-left:16px;margin-top:8px;color:var(--muted);font-size:12px">
+            <li>Revisa el detalle completo: ruta del archivo, fecha, hash SHA256</li>
+            <li>Busca el archivo en el PATH indicado</li>
+            <li>Combina con evidencia visual (lo que viste en el juego)</li>
+            <li>Sanciona solo si tienes confianza (recomendado con múltiples hallazgos)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--yellow);box-shadow:0 0 8px var(--yellow)"></div>
+      <div>
+        <div class="g-name" style="color:var(--yellow)">🟡 SOSPECHOSO — Revisar</div>
+        <div class="g-desc">
+          <b>Qué significa:</b> Software gaming, DLLs no estándar, USB desconectado antes del SS, argumentos Java raros.<br><br>
+          <b>Qué hacer:</b>
+          <ul style="margin-left:16px;margin-top:8px;color:var(--muted);font-size:12px">
+            <li>Pregúntale directamente por el hallazgo</li>
+            <li>Por ejemplo: "¿Por qué tienes Razer Synapse instalado?"</li>
+            <li>Muchas tienen explicación legítima</li>
+            <li>Sanciona solo si combina con otros hallazgos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+      <div>
+        <div class="g-name" style="color:var(--green)">🟢 LIMPIO — Sin hallazgos</div>
+        <div class="g-desc">No se encontraron coincidencias con las firmas actuales. NO es garantía absoluta (clientes nuevos u ofuscados pueden no detectarse), pero no hay evidencia en este escaneo.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:#a0a8b8"></div>
+      <div>
+        <div class="g-name" style="color:#a0a8b8">⚠️ FALSO POSITIVO — Descartado</div>
+        <div class="g-desc">El escáner detectó una palabra clave, pero el <b>contexto</b> indica que NO es un cliente de hacks. Ejemplo: "ravenb" dentro de <code style="font-size:11px">cosmetics/wings/ravenblackwings.webp</code> es un resource pack, no un hack. <b>No sanciones por estos.</b></div>
+      </div>
+    </div>
+
+    <hr class="g-sep">
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">📁 Archivos / Prefetch</div>
+        <div class="g-desc">Carpetas o archivos JAR con nombres de hacks encontrados en el disco. El Prefetch de Windows registra automáticamente todos los programas ejecutados, aunque ya no estén instalados.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">🧠 Memoria / DLLs</div>
+        <div class="g-desc">Cadenas encontradas en la RAM activa o DLLs cargadas dentro de Minecraft. Es la señal más directa de un cliente inyectado. <b>Verifica el contexto antes de concluir.</b></div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">🖱️ USB — Dispositivos y macros</div>
+        <div class="g-desc">Historial completo de qué se conectó, cuándo se desconectó. <b>Presta atención a desconexiones en la ÚLTIMA HORA</b> — puede indicar que retiraron un dispositivo con hacks antes del SS.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">🕵️ Evasión — Logs borrados</div>
+        <div class="g-desc">Señales de que intentaron ocultar algo: logs de Windows borrados, servicios desactivados, archivos enviados a papelera recientemente. Es muy relevante combinado con otros hallazgos.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">💻 Windows Custom</div>
+        <div class="g-desc">PC con versión modificada de Windows (Atlas, Minios, etc). Muchas características de seguridad pueden estar deshabilitadas por defecto. No es evidencia de hack, pero es contexto importante.</div>
+      </div>
+    </div>
+
+    <hr class="g-sep">
+
+    <h3 style="font-size:14px;margin-bottom:12px">⚡ Tips prácticos</h3>
+    <div class="g-desc">
+      <ul style="margin-left:16px;margin-top:8px">
+        <li><b>Combina evidencias:</b> Un solo hallazgo nunca es suficiente (excepto hashes rojos)</li>
+        <li><b>Pregunta al jugador:</b> Antes de sancionar, pregunta por los hallazgos amarillos</li>
+        <li><b>Contexto es clave:</b> Un archivo en papelera es sospechoso; en downloads es mucho más</li>
+        <li><b>USB desconectado:</b> Si fue hace 5 minutos del escaneo, pregunta qué era</li>
+        <li><b>Falsos positivos:</b> "Ravenb" aparece en cosmetics, texturas, skins — no panic</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONFIRM DELETE ── -->
+<div class="confirm-delete" id="confirmDelete">
+  <div class="confirm-box">
+    <h3>¿Eliminar este escaneo?</h3>
+    <div class="msg">Esta acción no se puede deshacer.</div>
+    <div class="confirm-buttons">
+      <button class="cancel" onclick="cancelDelete()">Cancelar</button>
+      <button class="delete" onclick="confirmDelete()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ──────────────────────────────────────────────────────────────────────
+const OWNER = "kaspercito";
+const REPO = "ss-milagros";
+const BRANCH = "main";
+
+// Credenciales (CAMBIAR ESTO EN PRODUCCIÓN)
+const VALID_CREDENTIALS = {
+  "moderador": "ss2024",
+  "admin": "adminsuperior",
+};
+
+let ALL_REPORTS = [];
+let currentUser = null;
+let deleteTarget = null;
+
+// ──────────────────────────────────────────────────────────────────────
+// LOGIN
+// ──────────────────────────────────────────────────────────────────────
+function handleLogin(e) {
+  e.preventDefault();
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  if (VALID_CREDENTIALS[user] === pass) {
+    currentUser = user;
+    localStorage.setItem("ssUser", user);
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").classList.add("show");
+    document.getElementById("userDisplay").textContent = `👤 ${user}`;
+    loadAll();
+  } else {
+    document.getElementById("loginError").textContent = "Usuario o contraseña incorrectos";
+    document.getElementById("loginError").classList.add("show");
+  }
+}
+
+function handleLogout() {
+  if (confirm("¿Cerrar sesión?")) {
+    localStorage.removeItem("ssUser");
+    currentUser = null;
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("dashboard").classList.remove("show");
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+}
+
+// Verificar sesión almacenada
+window.addEventListener("load", () => {
+  const saved = localStorage.getItem("ssUser");
+  if (saved && VALID_CREDENTIALS[saved]) {
+    currentUser = saved;
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").classList.add("show");
+    document.getElementById("userDisplay").textContent = `👤 ${saved}`;
+    loadAll();
+  }
+});
+
+// ──────────────────────────────────────────────────────────────────────
+// CARGA DE DATOS
+// ──────────────────────────────────────────────────────────────────────
+
+// ──────────────────────────────────────────────────────────────────────
+// GENERADOR DE CÓDIGOS DE SESIÓN
+// ──────────────────────────────────────────────────────────────────────
+function generateCode() {
+  // sin caracteres confusos (0/O, 1/I)
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const used = new Set((ALL_REPORTS || []).map(r => (r.code || "").toUpperCase()));
+  let code;
+  do {
+    const bytes = new Uint8Array(5);
+    crypto.getRandomValues(bytes);
+    code = "SS-" + Array.from(bytes, b => alphabet[b % alphabet.length]).join("");
+  } while (used.has(code));
+  const chip = document.getElementById("codeChip");
+  chip.textContent = code + "  ·  copiar";
+  chip.dataset.code = code;
+  chip.classList.remove("copied");
+  chip.style.display = "inline-block";
+  copyCode();
+}
+
+async function copyCode() {
+  const chip = document.getElementById("codeChip");
+  const code = chip.dataset.code;
+  if (!code) return;
+  try {
+    await navigator.clipboard.writeText(code);
+    chip.textContent = code + "  ·  ✓ copiado";
+    chip.classList.add("copied");
+  } catch (e) {
+    chip.textContent = code + "  ·  copia manual";
+  }
+}
+
+// Tiempo que Minecraft lleva abierto (segundos → "2 h 15 min")
+function fmtUptime(mc) {
+  const sec = mc && mc.uptime_seconds;
+  if (sec === undefined || sec === null) return "No estaba abierto";
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  const txt = h ? `${h} h ${m} min` : (m ? `${m} min ${s} s` : `${s} s`);
+  return esc(txt) + (mc.started_at ? `<br><span style="color:var(--muted);font-size:11px">desde ${esc(mc.started_at)}</span>` : "");
+}
+
+async function loadAll() {
+  document.getElementById("listHd").textContent = "Cargando...";
+  document.getElementById("list").innerHTML = '<div class="empty">Conectando con GitHub...</div>';
+  try {
+    const files = await fetchJSON(
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/data?ref=${BRANCH}`);
+    const jsons = files.filter(f => f.name.endsWith(".json"))
+                       .sort((a, b) => b.name.localeCompare(a.name));
+    const reports = await Promise.all(
+      jsons.map(f => fetchJSON(f.download_url).catch(() => null)));
+    ALL_REPORTS = reports.filter(Boolean);
+    document.getElementById("listHd").textContent = `${ALL_REPORTS.length} escaneo(s)`;
+    renderList(ALL_REPORTS);
+  } catch(e) {
+    document.getElementById("listHd").textContent = "Error";
+    document.getElementById("list").innerHTML = `<div class="empty"><div class="big">⚠️</div>No se pudo conectar<br>${e.message}</div>`;
+  }
+}
+
+async function fetchJSON(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// LISTA Y BÚSQUEDA
+// ──────────────────────────────────────────────────────────────────────
+function filterScans() {
+  const q = document.getElementById("codeInput").value.trim().toLowerCase();
+  const filtered = q
+    ? ALL_REPORTS.filter(r => {
+        const code = (r.code || "").toLowerCase();
+        const nicks = (r.minecraft?.nicks || []).map(n => n.toLowerCase());
+        return code.includes(q) || nicks.some(n => n.includes(q));
+      })
+    : ALL_REPORTS;
+  renderList(filtered);
+}
+
+function verdictLabel(v) {
+  return v === "red" ? "CHEATING" : v === "yellow" ? "SOSPECHOSO" : "LIMPIO";
+}
+
+function renderList(reports) {
+  const list = document.getElementById("list");
+  if (!reports.length) {
+    list.innerHTML = `<div class="empty"><div class="big">📭</div>Sin resultados</div>`;
+    return;
+  }
+  list.innerHTML = reports.map((r, i) => `
+    <div class="item" id="item-${i}" onclick="showDetail(${i})">
+      <div class="code">${esc(r.code || "SIN-CODIGO")}</div>
+      <div class="meta">${esc(r.timestamp || "")} · 🌍 ${esc(r.pc?.country || "?")}</div>
+      ${r.minecraft?.nicks ? `<div class="nick">🎮 ${esc(r.minecraft.nicks.join(", "))}</div>` : ""}
+      <span class="badge b-${r.verdict}">${verdictLabel(r.verdict)}</span>
+    </div>`).join("");
+  window._curList = reports;
+  showDetail(0);
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// DETALLE DEL ESCANEO
+// ──────────────────────────────────────────────────────────────────────
+function showDetail(i) {
+  document.querySelectorAll(".item").forEach(e => e.classList.remove("active"));
+  const el = document.getElementById("item-" + i);
+  if (el) el.classList.add("active");
+  const r = window._curList[i];
+  if (!r) return;
+
+  const counts = {red: 0, yellow: 0, info: 0, fp: 0};
+  (r.findings || []).forEach(f => {
+    if (f.probable_fp) counts.fp++;
+    else counts[f.level] = (counts[f.level] || 0) + 1;
+  });
+
+  const actionText = r.verdict === "red"
+    ? "<b>✋ Hay evidencia fuerte.</b> Revisa cada hallazgo rojo: PATH completo, fecha, contexto. Usa como evidencia."
+    : r.verdict === "yellow"
+    ? "<b>❓ Hay señales a revisar.</b> Pregúntale al jugador por CADA ítem amarillo antes de sancionar."
+    : "<b>✓ Sin coincidencias</b> con firmas actuales (no implica limpieza absoluta).";
+
+  const pcInfo = r.pc || {};
+  const minecraft = r.minecraft || {};
+
+  document.getElementById("detail").innerHTML = `
+    <div class="verdict-banner vb-${r.verdict}">
+      <h2>${verdictLabel(r.verdict).toUpperCase()}</h2>
+      <div class="vc">Código ${esc(r.code || "-")} · ${esc(r.timestamp || "")}</div>
+    </div>
+
+    <div class="action-hint">${actionText}</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">Código</div>
+        <div class="value">${esc(r.code || "-")}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Nick Minecraft</div>
+        <div class="value small">${esc(minecraft.nicks?.join(", ") || "-")}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">País</div>
+        <div class="value small">🌍 ${esc(pcInfo.country || "?")}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Sistema</div>
+        <div class="value small">${esc(pcInfo.hostname || "-")}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Usuario</div>
+        <div class="value small">${esc(pcInfo.username || "-")}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Admin</div>
+        <div class="value small">${r.admin ? "✓ Sí" : "✗ No (limitado)"}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Minecraft abierto</div>
+        <div class="value small">${fmtUptime(minecraft)}</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Duración</div>
+        <div class="value small">${r.duration || "?"}s</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Windows Custom</div>
+        <div class="value small">${esc(pcInfo.custom_os || "No detectado")}</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(event, 'findings')">Hallazgos</button>
+      <button class="tab" onclick="switchTab(event, 'usb')">USB (${(r.usb_events || []).length})</button>
+      <button class="tab" onclick="switchTab(event, 'extra')">Más info</button>
+    </div>
+
+    <div id="findings" class="tab-content active">
+      <div class="findings">${buildFindings(r)}</div>
+    </div>
+
+    <div id="usb" class="tab-content">
+      <div class="findings">${buildUsbTimeline(r)}</div>
+    </div>
+
+    <div id="extra" class="tab-content">
+      <div class="findings">${buildExtraInfo(r)}</div>
+    </div>
+
+    <div class="section-divider"></div>
+    <button class="btn btn-danger" onclick="askDelete('${esc(r.code)}')">🗑️ Eliminar escaneo</button>
+  `;
+}
+
+function switchTab(e, tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  e.target.classList.add("active");
+  document.getElementById(tab).classList.add("active");
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// HALLAZGOS
+// ──────────────────────────────────────────────────────────────────────
+function buildFindings(r) {
+  const all = r.findings || [];
+  if (!all.length) return '<div class="empty" style="padding:40px 10px">Sin hallazgos</div>';
+
+  const order = {red: 0, yellow: 1, info: 2};
+  const sorted = [...all].sort((a, b) => {
+    if (a.probable_fp !== b.probable_fp) return a.probable_fp ? 1 : -1;
+    return (order[a.level] || 3) - (order[b.level] || 3);
+  });
+
+  return sorted.map(f => {
+    const cls = f.probable_fp ? "f-fp" : `f-${f.level}`;
+    const icons = {
+      "Archivos": "📁",
+      "Prefetch": "🕓",
+      "Procesos": "⚙️",
+      "Memoria": "🧠",
+      "DLLs": "🧩",
+      "USB": "🖱️",
+      "Evasión": "🕵️",
+    };
+    const icon = icons[f.module] || "•";
+
+    const titleColor = f.probable_fp ? "#a0a8b8"
+                     : f.level === "red" ? "#ff4d5a"
+                     : f.level === "yellow" ? "#ffbe38" : "#828aa0";
+
+    let html = `<div class="f-card ${cls}">`;
+    if (f.probable_fp) {
+      html += `<div class="fp-warning">⚠️ Falso Positivo Probable — No sancionar</div>`;
+    }
+    html += `<div class="f-head">
+      <span class="f-tag">${icon} ${esc(f.module)}</span>
+    </div>
+    <b style="color:${titleColor}">${esc(f.title)}</b>`;
+    if (f.detail) {
+      html += `<pre>${esc(f.detail)}</pre>`;
+    }
+    html += `</div>`;
+    return html;
+  }).join("");
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// USB TIMELINE
+// ──────────────────────────────────────────────────────────────────────
+function buildUsbTimeline(r) {
+  const evts = (r.usb_events || []).slice(0, 50);
+  if (!evts.length) return '<div class="empty" style="padding:20px">Sin eventos USB registrados</div>';
+
+  const connected = evts.filter(e => e.e === "CONECTADO").length;
+  const disconnected = evts.filter(e => e.e === "DESCONECTADO").length;
+
+  let html = `<div style="font-size:12px;color:var(--muted);margin-bottom:12px">
+    <span style="color:var(--green)">🔌 ${connected} conectados</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <span style="color:var(--red)">🔌 ${disconnected} desconectados</span>
+  </div>`;
+
+  html += evts.map(e => {
+    const on = e.e === "CONECTADO";
+    const msg = (e.m || "").substring(0, 120);
+    return `<div style="
+      padding:10px;
+      margin-bottom:6px;
+      border-radius:8px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      font-size:12px;
+    ">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="color:${on ? 'var(--green)' : 'var(--red)'}">
+          ${on ? '🔗' : '🔌'}
+        </span>
+        <span style="color:var(--muted2);font-family:'JetBrains Mono';font-size:11px">
+          ${esc(e.t || "")}
+        </span>
+      </div>
+      <div style="color:var(--muted);font-size:11px">${esc(msg)}</div>
+    </div>`;
+  }).join("");
+
+  return html;
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// EXTRA INFO
+// ──────────────────────────────────────────────────────────────────────
+function buildExtraInfo(r) {
+  const extra = r.extra || [];
+  if (!extra.length) return '<div class="empty" style="padding:20px">Sin información adicional</div>';
+
+  return extra.map(item => `
+    <div style="margin-bottom:16px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;margin-bottom:6px">
+        ${esc(item.title)}
+      </div>
+      <pre style="
+        font-size:11px;
+        color:var(--muted);
+        white-space:pre-wrap;
+        word-break:break-all;
+        margin:0;
+        font-family:'JetBrains Mono';
+        line-height:1.4;
+      ">${esc(item.body)}</pre>
+    </div>
+  `).join("");
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// DELETE
+// ──────────────────────────────────────────────────────────────────────
+function askDelete(code) {
+  deleteTarget = code;
+  document.getElementById("confirmDelete").classList.add("show");
+}
+
+function cancelDelete() {
+  deleteTarget = null;
+  document.getElementById("confirmDelete").classList.remove("show");
+}
+
+function confirmDelete() {
+  // En producción, aquí se eliminaría el archivo de GitHub
+  // Por ahora, solo simular
+  if (deleteTarget) {
+    ALL_REPORTS = ALL_REPORTS.filter(r => r.code !== deleteTarget);
+    renderList(ALL_REPORTS);
+    document.getElementById("detail").innerHTML = '<div class="empty"><div class="big">✓</div>Escaneo eliminado</div>';
+    deleteTarget = null;
+    document.getElementById("confirmDelete").classList.remove("show");
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// GUÍA
+// ──────────────────────────────────────────────────────────────────────
+function openGuide() {
+  document.getElementById("modalBg").classList.add("open");
+}
+
+function closeGuide() {
+  document.getElementById("modalBg").classList.remove("open");
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// HELPERS
+// ──────────────────────────────────────────────────────────────────────
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+</script>
+</body>
+</html>
