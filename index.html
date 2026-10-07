@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SS Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#06070b; --panel: rgba(20,23,33,0.7); --panel2:#1a1e2b;
+    --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.14);
+    --text:#eef0f5; --muted:#868ea3; --muted2:#5c6479;
+    --red:#ff5461; --red-dim:#3a1620;
+    --yellow:#ffc53d; --yellow-dim:#3a2f10;
+    --green:#3ddc97; --green-dim:#0e2e24;
+    --accent:#6e8cff; --accent2:#a66bff;
+  }
+  *{box-sizing:border-box}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#2a2f40;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  body{
+    margin:0; min-height:100vh; color:var(--text);
+    font-family:'Sora',system-ui,sans-serif;
+    background:
+      radial-gradient(900px 500px at 15% -10%, rgba(110,140,255,0.16), transparent 60%),
+      radial-gradient(700px 500px at 100% 0%, rgba(166,107,255,0.12), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1180px;margin:auto;padding:36px 24px 60px}
+
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:14px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .logo{
+    width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 0 24px rgba(110,140,255,0.35); font-size:20px;
+  }
+  .brand h1{margin:0;font-size:20px;font-weight:700;letter-spacing:-0.2px}
+  .brand .tag{color:var(--muted);font-size:12px;margin-top:1px}
+  .stats-row{display:flex;gap:10px}
+  .stat-pill{
+    background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--border);
+    border-radius:12px;padding:8px 16px;text-align:center;min-width:72px;
+  }
+  .stat-pill .v{font-size:17px;font-weight:700}
+  .stat-pill .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+  .help-bar{
+    display:flex;align-items:center;gap:10px;background:linear-gradient(135deg, rgba(110,140,255,0.08), rgba(166,107,255,0.05));
+    border:1px solid rgba(110,140,255,0.2);border-radius:14px;padding:12px 16px;margin-bottom:20px;cursor:pointer;
+    transition:border-color .15s;
+  }
+  .help-bar:hover{border-color:rgba(110,140,255,0.4)}
+  .help-bar .ic{font-size:18px}
+  .help-bar .t{font-size:13px;font-weight:600}
+  .help-bar .s{font-size:11.5px;color:var(--muted)}
+  .help-bar .arrow{margin-left:auto;color:var(--muted);font-size:12px}
+
+  .toolbar{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+  .search-box{
+    flex:1;min-width:220px;display:flex;align-items:center;gap:10px;
+    background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--border);
+    border-radius:12px;padding:0 14px;transition:border-color .15s;
+  }
+  .search-box:focus-within{border-color:var(--accent)}
+  .search-box svg{flex-shrink:0;opacity:.5}
+  .search-box input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font-family:'Sora';font-size:14px;padding:12px 0}
+  .btn{
+    padding:11px 18px;border-radius:12px;border:1px solid var(--border);
+    background:var(--panel2);color:var(--text);cursor:pointer;font-family:'Sora';
+    font-size:13.5px;font-weight:600;transition:all .15s;white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+  .btn-ghost{background:transparent}
+  .btn-accent{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;
+    box-shadow:0 4px 18px rgba(110,140,255,0.3);
+  }
+  .btn-accent:hover{box-shadow:0 6px 22px rgba(110,140,255,0.45)}
+
+  .gen-box{
+    display:none;margin:-8px 0 20px;padding:16px 18px;border-radius:14px;
+    background:linear-gradient(135deg, rgba(110,140,255,0.1), rgba(166,107,255,0.08));
+    border:1px solid rgba(110,140,255,0.3);font-size:14px;animation:slideDown .25s ease;
+  }
+  @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  .gen-box .code{font-family:'JetBrains Mono';font-size:19px;font-weight:600;letter-spacing:3px;color:var(--accent)}
+  .gen-box .hint{color:var(--muted);font-size:12px;margin-top:8px}
+
+  .grid{display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  .panel{background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .list{max-height:74vh;overflow-y:auto}
+  .list-head{padding:14px 18px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--muted2);border-bottom:1px solid var(--border);font-weight:600}
+  .item{padding:15px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;position:relative}
+  .item:hover{background:rgba(255,255,255,0.03)}
+  .item.active{background:rgba(110,140,255,0.08)}
+  .item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--accent),var(--accent2))}
+  .item .code{font-weight:700;font-size:14px;font-family:'JetBrains Mono';letter-spacing:.5px}
+  .item .meta{color:var(--muted);font-size:11px;margin-top:4px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;
+    font-size:10.5px;font-weight:700;margin-top:8px;letter-spacing:.3px;text-transform:uppercase}
+  .badge::before{content:'';width:6px;height:6px;border-radius:50%}
+  .b-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,84,97,0.35)}
+  .b-red::before{background:var(--red);box-shadow:0 0 8px var(--red)}
+  .b-yellow{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(255,197,61,0.35)}
+  .b-yellow::before{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+  .b-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(61,220,151,0.35)}
+  .b-green::before{background:var(--green);box-shadow:0 0 8px var(--green)}
+
+  .detail{padding:26px;min-height:420px}
+  .verdict-banner{border-radius:16px;padding:28px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden}
+  .verdict-banner::after{content:'';position:absolute;inset:0;opacity:.5;
+    background:radial-gradient(circle at 50% 0%, currentColor, transparent 70%)}
+  .vb-red{background:linear-gradient(160deg,#2a0f14,#190a0d);border:1px solid rgba(255,84,97,0.4);color:var(--red)}
+  .vb-yellow{background:linear-gradient(160deg,#2a2410,#19150a);border:1px solid rgba(255,197,61,0.4);color:var(--yellow)}
+  .vb-green{background:linear-gradient(160deg,#0f2a20,#0a1913);border:1px solid rgba(61,220,151,0.4);color:var(--green)}
+  .verdict-banner h2{margin:0;font-size:30px;font-weight:800;letter-spacing:3px;position:relative;text-shadow:0 0 30px currentColor}
+  .verdict-banner .vcode{color:var(--muted);font-size:12.5px;margin-top:8px;position:relative;font-family:'JetBrains Mono'}
+
+  .action-hint{
+    border-radius:12px;padding:12px 16px;margin-bottom:22px;font-size:12.5px;line-height:1.6;
+    border:1px solid var(--border);background:var(--panel2);color:var(--muted);
+  }
+  .action-hint b{color:var(--text)}
+
+  .top-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+  .mini-card{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px;transition:transform .15s}
+  .mini-card:hover{transform:translateY(-2px)}
+  .mini-card .n{font-size:26px;font-weight:800;font-family:'JetBrains Mono'}
+  .mini-card .l{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted2);font-weight:700;margin:0 0 12px}
+  .chart-card{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px}
+  .chart-fallback{color:var(--muted);font-size:12px;text-align:center;padding:40px 10px}
+  .pcinfo{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:4px 16px;margin-top:14px}
+  .pcinfo div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .pcinfo div:last-child{border-bottom:none}
+  .pcinfo span:first-child{color:var(--muted)}
+  .pcinfo span:last-child{font-family:'JetBrains Mono';font-size:12.5px;text-align:right}
+
+  .findings{max-height:420px;overflow-y:auto;padding-right:4px}
+  .f-card{border-radius:12px;padding:13px 15px;margin-bottom:9px;font-size:13px;transition:transform .12s}
+  .f-card:hover{transform:translateX(2px)}
+  .f-card .f-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .f-tag{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:5px;
+    background:rgba(255,255,255,0.08);color:var(--muted);font-weight:700;display:inline-flex;align-items:center;gap:4px}
+  .f-card b{font-size:13px;font-weight:600}
+  .f-card pre{white-space:pre-wrap;word-break:break-all;margin:6px 0 0;font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono';line-height:1.5}
+  .f-red{background:var(--red-dim);border:1px solid rgba(255,84,97,0.25)}
+  .f-yellow{background:var(--yellow-dim);border:1px solid rgba(255,197,61,0.25)}
+  .f-info{background:rgba(255,255,255,0.03);border:1px solid var(--border)}
+
+  .empty{color:var(--muted);text-align:center;padding:90px 20px;font-size:13px;line-height:1.7}
+  .empty .big{font-size:38px;margin-bottom:12px;opacity:.6}
+  canvas{max-height:230px}
+  footer{text-align:center;color:var(--muted2);font-size:11.5px;margin-top:40px}
+
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+    z-index:50;align-items:center;justify-content:center;padding:20px}
+  .modal-bg.open{display:flex}
+  .modal{background:#12141d;border:1px solid var(--border-strong);border-radius:18px;max-width:560px;width:100%;
+    max-height:85vh;overflow-y:auto;padding:28px}
+  .modal h2{margin:0 0 4px;font-size:19px}
+  .modal .msub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
+  .guide-item{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start}
+  .guide-item .dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0}
+  .guide-item .gt{font-size:13.5px;font-weight:700;margin-bottom:3px}
+  .guide-item .gd{font-size:12.5px;color:var(--muted);line-height:1.6}
+  .modal-close{float:right;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div>
+        <h1>SS Dashboard</h1>
+        <div class="tag">Panel de revisión para moderadores</div>
+      </div>
+    </div>
+    <div class="stats-row" id="statsRow"></div>
+  </header>
+
+  <div class="help-bar" onclick="openGuide()">
+    <span class="ic">💡</span>
+    <div>
+      <div class="t">¿Cómo interpreto un reporte?</div>
+      <div class="s">Guía rápida: qué significa cada color y qué hacer en cada caso</div>
+    </div>
+    <span class="arrow">Ver guía →</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="codeInput" placeholder="Buscar por código (ej: 7F3K9QRT)" onkeydown="if(event.key==='Enter')filterByCode()">
+    </div>
+    <button class="btn" onclick="filterByCode()">Buscar</button>
+    <button class="btn btn-ghost" onclick="loadAll()">↻ Todos</button>
+    <button class="btn btn-accent" onclick="generateCode()">🎲 Generar código</button>
+  </div>
+
+  <div class="gen-box" id="genBox">
+    <div>Código nuevo: <span class="code" id="genCode"></span></div>
+    <button class="btn" style="margin-top:10px;padding:7px 14px" onclick="copyGenCode()">Copiar</button>
+    <div class="hint">Pásale este código al jugador para que lo escriba en el programa al iniciar el escaneo.</div>
+  </div>
+
+  <div class="grid">
+    <div class="panel list" id="listPanel">
+      <div class="list-head" id="listHead">Escaneos</div>
+      <div id="list"></div>
+    </div>
+    <div class="panel detail" id="detail">
+      <div class="empty"><div class="big">🔍</div>Selecciona un escaneo de la lista<br>para ver el detalle completo</div>
+    </div>
+  </div>
+
+  <footer>SS Dashboard · datos alojados en GitHub · generado automáticamente por el escáner</footer>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeGuide()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeGuide()">✕</button>
+    <h2>Guía rápida</h2>
+    <div class="msub">Qué significa cada cosa y qué hacer con el resultado</div>
+
+    <div class="guide-item">
+      <div class="dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></div>
+      <div><div class="gt" style="color:var(--red)">🔴 Cheating</div>
+      <div class="gd">Hay coincidencias fuertes: nombre de cliente de hacks, hash conocido, o logs del sistema borrados. Revisa el detalle de cada hallazgo (rutas, fechas) antes de sancionar — úsalo como evidencia junto con lo que viste en el juego, no como único argumento.</div></div>
+    </div>
+    <div class="guide-item">
+      <div class="dot" style="background:var(--yellow);box-shadow:0 0 8px var(--yellow)"></div>
+      <div><div class="gt" style="color:var(--yellow)">🟡 Sospechoso</div>
+      <div class="gd">Señales que ameritan preguntar más: software de macros instalado, DLLs no estándar, argumentos raros de Java. Muchas veces tienen explicación legítima (mouse gamer, overlay, antivirus) — pregúntale al jugador por cada ítem antes de concluir algo.</div></div>
+    </div>
+    <div class="guide-item">
+      <div class="dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+      <div><div class="gt" style="color:var(--green)">🟢 Limpio</div>
+      <div class="gd">No se encontraron coincidencias con las firmas actuales. No es garantía absoluta (los clientes nuevos u ofuscados pueden no detectarse), pero no hay nada que reportar de este escaneo.</div></div>
+    </div>
+
+    <div class="guide-item" style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border)">
+      <div class="dot" style="background:var(--accent)"></div>
+      <div><div class="gt">📁 Archivos / Prefetch</div>
+      <div class="gd">Carpetas, .jar o programas con nombres de clientes de hacks encontrados en el disco o en el historial de ejecución de Windows.</div></div>
+    </div>
+    <div class="guide-item">
+      <div class="dot" style="background:var(--accent)"></div>
+      <div><div class="gt">🧠 Memoria / DLLs</div>
+      <div class="gd">Cadenas de texto o módulos cargados dentro del propio Minecraft mientras corría. Es la señal más directa de un cliente inyectado.</div></div>
+    </div>
+    <div class="guide-item">
+      <div class="dot" style="background:var(--accent)"></div>
+      <div><div class="gt">🖱️ USB</div>
+      <div class="gd">Periféricos y software de macros (Logitech G HUB, Razer Synapse, etc.) y conexiones recientes de dispositivos. No es prueba de trampa por sí sola — solo contexto para cruzar con lo que pasó en la SS.</div></div>
+    </div>
+    <div class="guide-item">
+      <div class="dot" style="background:var(--accent)"></div>
+      <div><div class="gt">🕵️ Evasión</div>
+      <div class="gd">Señales de que algo se borró o se ocultó justo antes del escaneo: logs del sistema, papelera, servicios apagados. Esto solo, con un 🟡 o 🔴 junto, es bastante fuerte.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- CONFIGURA ESTO con tu usuario y repo de GitHub ----
+const OWNER = "TU_USUARIO";
+const REPO  = "TU_REPO";
+const BRANCH = "main";
+// ----------------------------------------------------------
+
+const MODULE_ICONS = {
+  "Archivos":"📁", "Prefetch":"🕓", "Procesos":"⚙️", "Memoria":"🧠",
+  "DLLs":"🧩", "USB":"🖱️", "Evasion":"🕵️"
+};
+
+let ALL_REPORTS = [];
+let chartInstance = null;
+
+function openGuide(){ document.getElementById("modalBg").classList.add("open"); }
+function closeGuide(){ document.getElementById("modalBg").classList.remove("open"); }
+
+async function fetchJSON(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+
+async function loadAll(){
+  if(OWNER === "TU_USUARIO" || REPO === "TU_REPO"){
+    document.getElementById("listHead").textContent = "Falta configurar";
+    document.getElementById("list").innerHTML =
+      `<div class="empty"><div class="big">⚙️</div>Edita el archivo index.html<br>y reemplaza OWNER y REPO<br>por tu usuario y repo reales de GitHub,<br>luego vuelve a subirlo.</div>`;
+    return;
+  }
+  document.getElementById("listHead").textContent = "Cargando...";
+  document.getElementById("list").innerHTML = '<div class="empty">Cargando escaneos...</div>';
+  try{
+    const files = await fetchJSON(`https://api.github.com/repos/${OWNER}/${REPO}/contents/data?ref=${BRANCH}`);
+    const jsons = files.filter(f => f.name.endsWith(".json"));
+    jsons.sort((a,b) => b.name.localeCompare(a.name));
+    const reports = await Promise.all(jsons.map(f => fetchJSON(f.download_url).catch(() => null)));
+    ALL_REPORTS = reports.filter(Boolean);
+    renderStats(ALL_REPORTS);
+    document.getElementById("listHead").textContent = `${ALL_REPORTS.length} escaneo(s)`;
+    renderList(ALL_REPORTS);
+  }catch(e){
+    document.getElementById("listHead").textContent = "Error";
+    document.getElementById("list").innerHTML =
+      `<div class="empty"><div class="big">⚠️</div>No se pudo conectar con GitHub.<br><br><span class="mono" style="font-size:11px">${escapeHtml(e.message)}</span><br><br>
+       Revisa que el repo <b>${escapeHtml(OWNER)}/${escapeHtml(REPO)}</b> exista,<br>sea accesible, y tenga la carpeta /data con archivos .json<br><br>
+       Tip: pruébalo ya subido a GitHub Pages,<br>no abriendo el archivo local con doble clic.</div>`;
+  }
+}
+
+function renderStats(reports){
+  const total = reports.length;
+  const red = reports.filter(r=>r.verdict==="red").length;
+  const yellow = reports.filter(r=>r.verdict==="yellow").length;
+  document.getElementById("statsRow").innerHTML = `
+    <div class="stat-pill"><div class="v">${total}</div><div class="l">Total</div></div>
+    <div class="stat-pill"><div class="v" style="color:var(--red)">${red}</div><div class="l">Cheating</div></div>
+    <div class="stat-pill"><div class="v" style="color:var(--yellow)">${yellow}</div><div class="l">Dudoso</div></div>
+  `;
+}
+
+function filterByCode(){
+  const q = document.getElementById("codeInput").value.trim().toLowerCase();
+  if(!q){ renderList(ALL_REPORTS); return; }
+  renderList(ALL_REPORTS.filter(r => (r.code||"").toLowerCase().includes(q)));
+}
+
+function renderList(reports){
+  const list = document.getElementById("list");
+  if(!reports.length){ list.innerHTML = `<div class="empty"><div class="big">📭</div>Sin resultados</div>`; return; }
+  list.innerHTML = reports.map((r,i) => `
+    <div class="item" id="item-${i}" onclick="showDetail(${i})">
+      <div class="code">${escapeHtml(r.code || "SIN-CODIGO")}</div>
+      <div class="meta">${escapeHtml(r.timestamp || "")} · ${escapeHtml((r.pc && r.pc.hostname) || "")}</div>
+      <span class="badge b-${r.verdict}">${verdictLabel(r.verdict)}</span>
+    </div>`).join("");
+  window._currentList = reports;
+  if(reports.length) showDetail(0);
+}
+
+function verdictLabel(v){
+  return v === "red" ? "Cheating" : v === "yellow" ? "Sospechoso" : "Limpio";
+}
+
+function showDetail(i){
+  document.querySelectorAll(".item").forEach(e => e.classList.remove("active"));
+  const el = document.getElementById("item-"+i);
+  if(el) el.classList.add("active");
+  const r = window._currentList[i];
+  const counts = {red:0, yellow:0, info:0};
+  (r.findings||[]).forEach(f => counts[f.level] = (counts[f.level]||0) + 1);
+
+  const actionText = r.verdict === "red"
+    ? "Hay hallazgos fuertes. Revisa cada uno abajo antes de sancionar — úsalos como evidencia junto con lo que viste en el juego."
+    : r.verdict === "yellow"
+    ? "Hay señales a revisar manualmente. No sanciones solo por esto — pregúntale al jugador por cada ítem amarillo."
+    : "No se encontraron coincidencias con las firmas actuales.";
+
+  const detail = document.getElementById("detail");
+  detail.innerHTML = `
+    <div class="verdict-banner vb-${r.verdict}">
+      <h2>${verdictLabel(r.verdict).toUpperCase()}</h2>
+      <div class="vcode">Código ${escapeHtml(r.code||"-")} · ${escapeHtml(r.timestamp||"")}</div>
+    </div>
+    <div class="action-hint"><b>Qué hacer:</b> ${actionText}</div>
+    <div class="top-cards">
+      <div class="mini-card"><div class="n" style="color:var(--red)">${counts.red}</div><div class="l">Hallazgos</div></div>
+      <div class="mini-card"><div class="n" style="color:var(--yellow)">${counts.yellow}</div><div class="l">Sospechoso</div></div>
+      <div class="mini-card"><div class="n" style="color:var(--muted)">${counts.info}</div><div class="l">Informativo</div></div>
+    </div>
+    <div class="cols">
+      <div>
+        <p class="section-title">Resumen</p>
+        <div class="chart-card" id="chartCard"><canvas id="radar"></canvas></div>
+        <p class="section-title" style="margin-top:18px">Equipo</p>
+        <div class="pcinfo">
+          <div><span>PC</span><span>${escapeHtml((r.pc&&r.pc.hostname)||"-")}</span></div>
+          <div><span>Usuario</span><span>${escapeHtml((r.pc&&r.pc.user)||"-")}</span></div>
+          <div><span>Sistema</span><span>${escapeHtml((r.pc&&r.pc.os)||"-")}</span></div>
+          <div><span>Duración</span><span>${r.duration||"-"}s</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="section-title">Hallazgos</p>
+        <div class="findings">
+          ${(r.findings||[]).map(f => `
+            <div class="f-card f-${f.level}">
+              <div class="f-head"><span class="f-tag">${MODULE_ICONS[f.module]||"•"} ${escapeHtml(f.module)}</span></div>
+              <b>${escapeHtml(f.title)}</b>
+              <pre>${escapeHtml(f.detail||"")}</pre>
+            </div>`).join("") || '<div class="empty" style="padding:40px 10px">Sin hallazgos registrados</div>'}
+        </div>
+      </div>
+    </div>
+  `;
+
+  drawRadar(r.verdict, counts);
+}
+
+function drawRadar(verdict, counts){
+  if(chartInstance){ try{ chartInstance.destroy(); }catch(e){} chartInstance = null; }
+  if(typeof Chart === "undefined"){
+    document.getElementById("chartCard").innerHTML =
+      '<div class="chart-fallback">No se pudo cargar el gráfico (sin conexión a internet).<br>Los números de arriba siguen siendo válidos.</div>';
+    return;
+  }
+  try{
+    const ctx = document.getElementById("radar").getContext("2d");
+    const accentColor = verdict === "red" ? "#ff5461" : verdict === "yellow" ? "#ffc53d" : "#3ddc97";
+    chartInstance = new Chart(ctx, {
+      type: "radar",
+      data: {
+        labels: ["Hallazgos", "Sospechoso", "Informativo"],
+        datasets: [{
+          label: "Resultado", data: [counts.red, counts.yellow, counts.info],
+          backgroundColor: accentColor + "22", borderColor: accentColor, borderWidth: 2,
+          pointBackgroundColor: accentColor, pointRadius: 4
+        }]
+      },
+      options: {
+        responsive:true,
+        scales: { r: {
+          angleLines:{color:"rgba(255,255,255,0.08)"}, grid:{color:"rgba(255,255,255,0.08)"},
+          pointLabels:{color:"#868ea3", font:{size:11, family:"Sora"}}, ticks:{display:false}
+        }},
+        plugins: { legend: { display:false } }
+      }
+    });
+  }catch(e){
+    document.getElementById("chartCard").innerHTML = '<div class="chart-fallback">No se pudo dibujar el gráfico.</div>';
+  }
+}
+
+function generateCode(){
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for(let i=0;i<8;i++) code += chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById("genCode").textContent = code;
+  document.getElementById("genBox").style.display = "block";
+}
+function copyGenCode(){
+  const code = document.getElementById("genCode").textContent;
+  navigator.clipboard.writeText(code).then(() => alert("Código copiado: " + code));
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+window.addEventListener("load", loadAll);
+</script>
+</body>
+</html>
