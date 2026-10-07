@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SS Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:     #06070b;
+  --panel:  rgba(18,21,32,0.82);
+  --panel2: #141720;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text:   #eef0f5;
+  --muted:  #828aa0;
+  --muted2: #525870;
+  --red:    #ff4d5a; --red-dim:    #2a0f14;
+  --yellow: #ffbe38; --yellow-dim: #2d2510;
+  --green:  #35d48c; --green-dim:  #0a2a1e;
+  --blue:   #6c8fff; --blue-dim:   #0f1530;
+  --purple: #a46bff; --purple-dim: #1a0d30;
+  --fp:     #a0a8b8; --fp-dim:     #14161e;
+}
+*  { box-sizing: border-box; margin: 0; padding: 0; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #222638; border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+body {
+  font-family: 'Sora', system-ui, sans-serif;
+  background: radial-gradient(900px 500px at 10% -10%, rgba(108,143,255,0.13), transparent 55%),
+              radial-gradient(600px 400px at 95% 0, rgba(164,107,255,0.10), transparent 50%),
+              var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+.wrap { max-width: 1220px; margin: auto; padding: 32px 22px 60px; }
+
+/* ── Header ── */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px; flex-wrap: wrap; gap: 14px;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand .logo {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  box-shadow: 0 0 28px rgba(108,143,255,0.3);
+  display: flex; align-items: center; justify-content: center; font-size: 21px;
+}
+.brand h1   { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+.brand .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.pills { display: flex; gap: 9px; }
+.pill {
+  background: var(--panel); border: 1px solid var(--border);
+  backdrop-filter: blur(12px); border-radius: 11px;
+  padding: 8px 15px; text-align: center; min-width: 68px;
+}
+.pill .v { font-size: 18px; font-weight: 700; line-height: 1; }
+.pill .l { font-size: 10px; color: var(--muted); text-transform: uppercase;
+           letter-spacing: .5px; margin-top: 3px; }
+
+/* ── Guide bar ── */
+.guide-bar {
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, rgba(108,143,255,0.07), rgba(164,107,255,0.05));
+  border: 1px solid rgba(108,143,255,0.18); border-radius: 14px;
+  padding: 12px 17px; margin-bottom: 18px; cursor: pointer;
+  transition: border-color .15s;
+}
+.guide-bar:hover { border-color: rgba(108,143,255,0.38); }
+.guide-bar .title { font-size: 13px; font-weight: 600; }
+.guide-bar .sub   { font-size: 11.5px; color: var(--muted); }
+.guide-bar .arrow { margin-left: auto; color: var(--muted); font-size: 12px; }
+
+/* ── Toolbar ── */
+.toolbar { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+.search {
+  flex: 1; min-width: 220px; display: flex; align-items: center; gap: 10px;
+  background: var(--panel); backdrop-filter: blur(14px);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 0 14px; transition: border-color .15s;
+}
+.search:focus-within { border-color: var(--blue); }
+.search svg  { flex-shrink: 0; opacity: .45; }
+.search input {
+  flex: 1; background: transparent; border: 0; outline: 0;
+  color: var(--text); font-family: 'Sora'; font-size: 14px; padding: 12px 0;
+}
+.btn {
+  padding: 11px 18px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--panel2); color: var(--text); cursor: pointer;
+  font-family: 'Sora'; font-size: 13px; font-weight: 600;
+  transition: all .15s; white-space: nowrap;
+}
+.btn:hover { border-color: var(--border2); transform: translateY(-1px); }
+.btn-accent {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  border: none; color: #fff;
+  box-shadow: 0 4px 18px rgba(108,143,255,0.28);
+}
+.btn-accent:hover { box-shadow: 0 6px 24px rgba(108,143,255,0.42); }
+.btn-ghost { background: transparent; }
+
+/* ── Code gen ── */
+.gen-box {
+  display: none; margin: -6px 0 20px; padding: 15px 18px; border-radius: 13px;
+  background: linear-gradient(135deg, rgba(108,143,255,0.09), rgba(164,107,255,0.07));
+  border: 1px solid rgba(108,143,255,0.28); animation: slideIn .2s ease;
+}
+@keyframes slideIn { from { opacity:0; transform:translateY(-7px) } to { opacity:1; transform:translateY(0) } }
+.gen-code { font-family:'JetBrains Mono'; font-size:20px; font-weight:700;
+            letter-spacing:4px; color:var(--blue); }
+.gen-hint { color:var(--muted); font-size:11.5px; margin-top:7px; }
+
+/* ── Main grid ── */
+.grid { display: grid; grid-template-columns: 330px 1fr; gap: 18px; align-items: start; }
+@media(max-width:860px) { .grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--panel); backdrop-filter: blur(16px);
+         border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+
+/* ── List ── */
+.list     { max-height: 76vh; overflow-y: auto; }
+.list-hd  { padding: 13px 17px; font-size: 10.5px; text-transform: uppercase;
+            letter-spacing: .65px; color: var(--muted2); border-bottom: 1px solid var(--border);
+            font-weight: 700; }
+.item {
+  padding: 14px 17px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background .13s; position: relative;
+}
+.item:hover   { background: rgba(255,255,255,0.03); }
+.item.active  { background: rgba(108,143,255,0.07); }
+.item.active::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: linear-gradient(var(--blue), var(--purple));
+}
+.item .code  { font-weight: 700; font-size: 14px; font-family:'JetBrains Mono';
+               letter-spacing: .5px; }
+.item .meta  { color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 99px; font-size: 10px; font-weight: 700;
+  margin-top: 8px; text-transform: uppercase; letter-spacing: .4px;
+}
+.badge::before { content:''; width:6px; height:6px; border-radius:50%; }
+.b-red    { background:var(--red-dim);    color:var(--red);    border:1px solid rgba(255,77,90,.3); }
+.b-red::before    { background:var(--red);    box-shadow:0 0 8px var(--red); }
+.b-yellow { background:var(--yellow-dim); color:var(--yellow); border:1px solid rgba(255,190,56,.3); }
+.b-yellow::before { background:var(--yellow); box-shadow:0 0 8px var(--yellow); }
+.b-green  { background:var(--green-dim);  color:var(--green);  border:1px solid rgba(53,212,140,.3); }
+.b-green::before  { background:var(--green);  box-shadow:0 0 8px var(--green); }
+
+/* ── Detail panel ── */
+.detail { padding: 24px; min-height: 440px; }
+.verdict-banner {
+  border-radius: 15px; padding: 26px; margin-bottom: 16px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.verdict-banner::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% -10%, currentColor 0%, transparent 65%);
+  opacity: .4; pointer-events: none;
+}
+.vb-red    { background: linear-gradient(150deg,#280d12,#180709);
+             border:1px solid rgba(255,77,90,.35);  color:var(--red); }
+.vb-yellow { background: linear-gradient(150deg,#28200d,#181408);
+             border:1px solid rgba(255,190,56,.35); color:var(--yellow); }
+.vb-green  { background: linear-gradient(150deg,#0c2619,#07180f);
+             border:1px solid rgba(53,212,140,.35); color:var(--green); }
+.verdict-banner h2   { font-size:28px; font-weight:800; letter-spacing:4px; position:relative; }
+.verdict-banner .vc  { color:var(--muted); font-size:12px; margin-top:8px;
+                       font-family:'JetBrains Mono'; position:relative; }
+
+.action-hint {
+  border-radius:12px; padding:12px 16px; margin-bottom:20px;
+  border:1px solid var(--border); background:var(--panel2);
+  font-size:12.5px; line-height:1.65; color:var(--muted);
+}
+.action-hint b { color:var(--text); }
+
+.mini-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+@media(max-width:700px) { .mini-cards { grid-template-columns:repeat(2,1fr); } }
+.mini { background:var(--panel2); border:1px solid var(--border);
+        border-radius:13px; padding:14px; transition:transform .13s; }
+.mini:hover { transform:translateY(-2px); }
+.mini .n { font-size:24px; font-weight:800; font-family:'JetBrains Mono'; }
+.mini .l { color:var(--muted); font-size:9.5px; text-transform:uppercase;
+           letter-spacing:.65px; margin-top:4px; }
+
+.cols2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media(max-width:720px) { .cols2 { grid-template-columns:1fr; } }
+.sec-title { font-size:10.5px; text-transform:uppercase; letter-spacing:.65px;
+             color:var(--muted2); font-weight:700; margin:0 0 11px; }
+.chart-wrap { background:var(--panel2); border:1px solid var(--border);
+              border-radius:13px; padding:15px; }
+.pcinfo     { background:var(--panel2); border:1px solid var(--border);
+              border-radius:13px; padding:2px 15px; margin-top:14px; }
+.pcinfo div { display:flex; justify-content:space-between; padding:10px 0;
+              border-bottom:1px solid var(--border); font-size:12.5px; }
+.pcinfo div:last-child { border-bottom:none; }
+.pcinfo span:first-child { color:var(--muted); }
+.pcinfo span:last-child  { font-family:'JetBrains Mono'; font-size:12px; text-align:right;
+                           max-width:60%; word-break:break-all; }
+
+/* ── Finding cards ── */
+.findings { max-height:440px; overflow-y:auto; padding-right:4px; }
+.f-card {
+  border-radius:12px; padding:13px 15px; margin-bottom:9px;
+  font-size:13px; transition:transform .12s; cursor:default;
+}
+.f-card:hover { transform:translateX(2px); }
+.f-head { display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap; }
+.f-tag {
+  font-size:9px; text-transform:uppercase; letter-spacing:.5px;
+  padding:2px 7px; border-radius:5px; background:rgba(255,255,255,0.07);
+  color:var(--muted); font-weight:700; display:inline-flex; align-items:center; gap:4px;
+}
+.f-fp-tag {
+  font-size:9px; font-weight:700; letter-spacing:.4px;
+  padding:2px 8px; border-radius:5px;
+  background:rgba(160,168,184,0.12); color:var(--fp);
+  border:1px solid rgba(160,168,184,0.22);
+}
+.f-card b { font-size:13px; font-weight:600; display:block; margin-bottom:4px; }
+.f-card pre {
+  white-space:pre-wrap; word-break:break-all; margin:5px 0 0;
+  font-size:11.5px; color:var(--muted); font-family:'JetBrains Mono'; line-height:1.55;
+}
+.f-red    { background:var(--red-dim);    border:1px solid rgba(255,77,90,.22); }
+.f-yellow { background:var(--yellow-dim); border:1px solid rgba(255,190,56,.22); }
+.f-info   { background:rgba(255,255,255,0.025); border:1px solid var(--border); }
+.f-fp     { background:var(--fp-dim); border:1px solid rgba(160,168,184,.15);
+            opacity:.75; }
+
+/* ── USB Timeline ── */
+.usb-timeline { margin-top:18px; }
+.usb-event {
+  display:flex; gap:12px; padding:9px 0;
+  border-bottom:1px solid var(--border); font-size:12px;
+  align-items:flex-start;
+}
+.usb-event:last-child { border-bottom:none; }
+.usb-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px;
+}
+.usb-dot.on  { background:var(--green); box-shadow:0 0 8px var(--green); }
+.usb-dot.off { background:var(--red);   box-shadow:0 0 8px var(--red); }
+.usb-time    { font-family:'JetBrains Mono'; font-size:10.5px; color:var(--muted2);
+               white-space:nowrap; flex-shrink:0; }
+.usb-msg     { color:var(--muted); flex:1; line-height:1.5; word-break:break-word; }
+.usb-label   { font-size:9.5px; font-weight:700; padding:1px 7px; border-radius:99px;
+               flex-shrink:0; white-space:nowrap; }
+.usb-label.on  { background:rgba(53,212,140,.12); color:var(--green);
+                 border:1px solid rgba(53,212,140,.3); }
+.usb-label.off { background:rgba(255,77,90,.12);   color:var(--red);
+                 border:1px solid rgba(255,77,90,.3); }
+
+/* ── Empty / modal ── */
+.empty { color:var(--muted); text-align:center; padding:80px 20px;
+         font-size:13px; line-height:1.8; }
+.empty .big { font-size:40px; margin-bottom:12px; opacity:.5; }
+canvas { max-height:220px; }
+footer { text-align:center; color:var(--muted2); font-size:11px; margin-top:40px; }
+
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+            backdrop-filter:blur(4px); z-index:50;
+            align-items:center; justify-content:center; padding:20px; }
+.modal-bg.open { display:flex; }
+.modal {
+  background:#111421; border:1px solid var(--border2);
+  border-radius:18px; max-width:580px; width:100%;
+  max-height:88vh; overflow-y:auto; padding:28px;
+}
+.modal h2   { font-size:18px; margin-bottom:3px; }
+.modal .sub { color:var(--muted); font-size:12px; margin-bottom:20px; }
+.modal-close { float:right; background:none; border:none; color:var(--muted);
+               font-size:20px; cursor:pointer; }
+.g-item { display:flex; gap:12px; margin-bottom:16px; align-items:flex-start; }
+.g-dot  { width:10px; height:10px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+.g-name { font-size:13.5px; font-weight:700; margin-bottom:3px; }
+.g-desc { font-size:12.5px; color:var(--muted); line-height:1.65; }
+.g-sep  { border:none; border-top:1px solid var(--border); margin:18px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div>
+        <h1>SS Dashboard</h1>
+        <div class="sub">Panel de moderacion — screenshare Minecraft</div>
+      </div>
+    </div>
+    <div class="pills" id="pills"></div>
+  </header>
+
+  <div class="guide-bar" onclick="openGuide()">
+    <span style="font-size:18px">💡</span>
+    <div>
+      <div class="title">¿Cómo interpreto un reporte?</div>
+      <div class="sub">Qué significa cada color, qué es un falso positivo y qué hacer en cada caso</div>
+    </div>
+    <span class="arrow">Ver guía →</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="codeInput" placeholder="Buscar por código (ej: 7F3K9QRT)"
+             onkeydown="if(event.key==='Enter')filterByCode()">
+    </div>
+    <button class="btn" onclick="filterByCode()">Buscar</button>
+    <button class="btn btn-ghost" onclick="loadAll()">↻ Recargar</button>
+    <button class="btn btn-accent" onclick="generateCode()">🎲 Generar código</button>
+  </div>
+
+  <div class="gen-box" id="genBox">
+    <div>Código nuevo: <span class="gen-code" id="genCode"></span></div>
+    <button class="btn" style="margin-top:10px;padding:7px 14px" onclick="copyCode()">Copiar</button>
+    <div class="gen-hint">Pásale este código al jugador para que lo ingrese en el programa al inicio del escaneo.</div>
+  </div>
+
+  <div class="grid">
+    <div class="panel list" id="listPanel">
+      <div class="list-hd" id="listHd">Escaneos</div>
+      <div id="list"></div>
+    </div>
+    <div class="panel detail" id="detail">
+      <div class="empty"><div class="big">🔍</div>Selecciona un escaneo<br>para ver el detalle completo</div>
+    </div>
+  </div>
+
+  <footer>SS Dashboard v2.0 · datos en GitHub · generado por SS Helper</footer>
+</div>
+
+<!-- ── MODAL GUÍA ── -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeGuide()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeGuide()">✕</button>
+    <h2>Guía rápida del moderador</h2>
+    <div class="sub">Qué significa cada hallazgo y qué hacer con él</div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></div>
+      <div>
+        <div class="g-name" style="color:var(--red)">🔴 CHEATING — Evidencia fuerte</div>
+        <div class="g-desc">Coincidencia directa: hash de archivo conocido, nombre de cliente cargado en memoria,
+        log del sistema borrado recientemente. Revisa el detalle de cada hallazgo (ruta, fecha, contexto)
+        antes de sancionar — úsalos como evidencia junto con lo que viste en el juego.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--yellow);box-shadow:0 0 8px var(--yellow)"></div>
+      <div>
+        <div class="g-name" style="color:var(--yellow)">🟡 SOSPECHOSO — Revisar</div>
+        <div class="g-desc">Señales que ameritan preguntar más: software de macros, DLLs no estándar,
+        USB desconectado antes del SS, argumento Java raro. Muchas tienen explicación legítima —
+        pregúntale al jugador antes de concluir algo.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+      <div>
+        <div class="g-name" style="color:var(--green)">🟢 LIMPIO — Sin hallazgos</div>
+        <div class="g-desc">No se encontraron coincidencias con las firmas actuales. No es garantía
+        absoluta (clientes nuevos u ofuscados pueden no detectarse), pero no hay nada que reportar.</div>
+      </div>
+    </div>
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--fp)"></div>
+      <div>
+        <div class="g-name" style="color:var(--fp)">⚠️ FALSO POSITIVO PROBABLE — Descartado</div>
+        <div class="g-desc">El escáner detectó una palabra clave, pero el <b>contexto</b> indica que
+        proviene de un resource pack, cosmético, o mod legítimo — no de un cliente de hacks.
+        Por ejemplo: "ravenb" en la ruta <code style="font-size:11px;color:var(--muted)">cosmetics/wings/ravenblackwings.webp</code>,
+        o "huzuni" como nombre de un ítem cosmético en una skin pack.
+        <b>No sanciones por estos hallazgos.</b></div>
+      </div>
+    </div>
+
+    <hr class="g-sep">
+
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">📁 Archivos / Prefetch</div>
+        <div class="g-desc">Carpetas, JARs o programas con nombres de hacks encontrados en el disco o en
+        el historial de ejecución de Windows. El Prefetch registra automáticamente cada programa que se
+        ejecutó, aunque ya no esté instalado.</div>
+      </div>
+    </div>
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">🧠 Memoria / DLLs</div>
+        <div class="g-desc">Cadenas encontradas en la RAM activa de Minecraft o módulos cargados dentro
+        del proceso. Es la señal más directa de un cliente inyectado — pero siempre verifica el contexto
+        antes de sacar conclusiones.</div>
+      </div>
+    </div>
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">🖱️ USB — Dispositivos y macros</div>
+        <div class="g-desc">Historial completo de dispositivos conectados y desconectados. Presta especial
+        atención a desconexiones en la <b>última hora</b> — puede indicar que retiraron un dispositivo
+        con hacks antes del escaneo. El software gaming (Razer, Logitech G HUB) es contexto, no evidencia.</div>
+      </div>
+    </div>
+    <div class="g-item">
+      <div class="g-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="g-name">🕵️ Evasión</div>
+        <div class="g-desc">Señales de que algo se borró u ocultó: logs del sistema eliminados, servicios
+        clave detenidos, archivos enviados a la papelera recientemente. Combinado con otros hallazgos,
+        es evidencia muy relevante.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIGURACIÓN ──────────────────────────────────────────────────────────
+const OWNER  = "kaspercito";
+const REPO   = "ss-milagros";
+const BRANCH = "main";
+// ──────────────────────────────────────────────────────────────────────────
+
+const MODULE_ICONS = {
+  "Archivos":"📁","Prefetch":"🕓","Procesos":"⚙️","Memoria":"🧠",
+  "DLLs":"🧩","USB":"🖱️","Evasion":"🕵️","Evasión":"🕵️",
+};
+
+let ALL_REPORTS  = [];
+let chartInst    = null;
+
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function openGuide()  { document.getElementById("modalBg").classList.add("open"); }
+function closeGuide() { document.getElementById("modalBg").classList.remove("open"); }
+
+// ── CARGA DE DATOS ─────────────────────────────────────────────────────────
+async function loadAll() {
+  document.getElementById("listHd").textContent = "Cargando...";
+  document.getElementById("list").innerHTML =
+    '<div class="empty">Conectando con GitHub...</div>';
+  try {
+    const files = await fetchJSON(
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/data?ref=${BRANCH}`);
+    const jsons = files.filter(f => f.name.endsWith(".json"))
+                       .sort((a,b) => b.name.localeCompare(a.name));
+    const reports = await Promise.all(
+      jsons.map(f => fetchJSON(f.download_url).catch(() => null)));
+    ALL_REPORTS = reports.filter(Boolean);
+    renderPills(ALL_REPORTS);
+    document.getElementById("listHd").textContent = `${ALL_REPORTS.length} escaneo(s)`;
+    renderList(ALL_REPORTS);
+  } catch(e) {
+    document.getElementById("listHd").textContent = "Error de conexión";
+    document.getElementById("list").innerHTML =
+      `<div class="empty"><div class="big">⚠️</div>No se pudo conectar con GitHub.<br><br>
+       <span class="mono" style="font-size:11px">${esc(e.message)}</span><br><br>
+       Verifica que el repo <b>${esc(OWNER)}/${esc(REPO)}</b> sea público y tenga
+       la carpeta <code>/data</code> con archivos .json<br><br>
+       Tip: debe estar en GitHub Pages, no abierto localmente.</div>`;
+  }
+}
+
+async function fetchJSON(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+
+// ── PILLS ──────────────────────────────────────────────────────────────────
+function renderPills(reports) {
+  const total  = reports.length;
+  const reds   = reports.filter(r => r.verdict === "red").length;
+  const yellows= reports.filter(r => r.verdict === "yellow").length;
+  document.getElementById("pills").innerHTML = `
+    <div class="pill"><div class="v">${total}</div><div class="l">Total</div></div>
+    <div class="pill"><div class="v" style="color:var(--red)">${reds}</div><div class="l">Cheating</div></div>
+    <div class="pill"><div class="v" style="color:var(--yellow)">${yellows}</div><div class="l">Sospechoso</div></div>`;
+}
+
+// ── LISTA ──────────────────────────────────────────────────────────────────
+function filterByCode() {
+  const q = document.getElementById("codeInput").value.trim().toLowerCase();
+  renderList(q ? ALL_REPORTS.filter(r => (r.code||"").toLowerCase().includes(q)) : ALL_REPORTS);
+}
+
+function verdictLabel(v) {
+  return v==="red" ? "Cheating" : v==="yellow" ? "Sospechoso" : "Limpio";
+}
+
+function renderList(reports) {
+  const list = document.getElementById("list");
+  if (!reports.length) {
+    list.innerHTML = `<div class="empty"><div class="big">📭</div>Sin resultados</div>`;
+    return;
+  }
+  list.innerHTML = reports.map((r,i) => `
+    <div class="item" id="item-${i}" onclick="showDetail(${i})">
+      <div class="code">${esc(r.code || "SIN-CODIGO")}</div>
+      <div class="meta">${esc(r.timestamp||"")} · ${esc((r.pc&&r.pc.hostname)||"")}</div>
+      <span class="badge b-${r.verdict}">${verdictLabel(r.verdict)}</span>
+    </div>`).join("");
+  window._curList = reports;
+  showDetail(0);
+}
+
+// ── DETALLE ────────────────────────────────────────────────────────────────
+function showDetail(i) {
+  document.querySelectorAll(".item").forEach(e => e.classList.remove("active"));
+  const el = document.getElementById("item-"+i);
+  if (el) el.classList.add("active");
+  const r = window._curList[i];
+
+  // Contar hallazgos — separar FP
+  const counts = {red:0, yellow:0, info:0, fp:0};
+  (r.findings||[]).forEach(f => {
+    if (f.probable_fp) counts.fp++;
+    else counts[f.level] = (counts[f.level]||0) + 1;
+  });
+
+  const actionText = r.verdict === "red"
+    ? "<b>Hay evidencia fuerte.</b> Revisa cada hallazgo rojo abajo: fíjate en la ruta, fecha y contexto. Usa esto como evidencia junto con lo que observaste en el juego."
+    : r.verdict === "yellow"
+    ? "<b>Hay señales a revisar.</b> Ninguna sola justifica una sanción — pregúntale al jugador por cada ítem amarillo antes de concluir algo."
+    : "<b>Sin coincidencias</b> con las firmas actuales. No implica limpieza absoluta, pero no hay nada que reportar.";
+
+  document.getElementById("detail").innerHTML = `
+    <div class="verdict-banner vb-${r.verdict}">
+      <h2>${verdictLabel(r.verdict).toUpperCase()}</h2>
+      <div class="vc">Código ${esc(r.code||"-")} · ${esc(r.timestamp||"")}</div>
+    </div>
+    <div class="action-hint">${actionText}</div>
+
+    <div class="mini-cards">
+      <div class="mini"><div class="n" style="color:var(--red)">${counts.red}</div>
+        <div class="l">Hallazgos</div></div>
+      <div class="mini"><div class="n" style="color:var(--yellow)">${counts.yellow}</div>
+        <div class="l">Sospechoso</div></div>
+      <div class="mini"><div class="n" style="color:var(--muted)">${counts.info}</div>
+        <div class="l">Info</div></div>
+      <div class="mini"><div class="n" style="color:var(--fp)">${counts.fp}</div>
+        <div class="l">FP Descartados</div></div>
+    </div>
+
+    <div class="cols2">
+      <div>
+        <p class="sec-title">Resumen</p>
+        <div class="chart-wrap"><canvas id="radar"></canvas></div>
+        <p class="sec-title" style="margin-top:16px">Equipo</p>
+        <div class="pcinfo">
+          <div><span>PC</span><span>${esc((r.pc&&r.pc.hostname)||"-")}</span></div>
+          <div><span>Usuario</span><span>${esc((r.pc&&r.pc.user)||"-")}</span></div>
+          <div><span>Sistema</span><span>${esc((r.pc&&r.pc.os)||"-")}</span></div>
+          <div><span>Admin</span><span>${r.admin ? "✓ Sí":"✗ No (parcial)"}</span></div>
+          <div><span>Duración</span><span>${r.duration||"-"}s</span></div>
+        </div>
+        ${buildUsbTimeline(r)}
+      </div>
+      <div>
+        <p class="sec-title">Hallazgos</p>
+        <div class="findings">
+          ${buildFindings(r)}
+        </div>
+      </div>
+    </div>`;
+
+  drawRadar(r.verdict, counts);
+}
+
+// ── FINDINGS ───────────────────────────────────────────────────────────────
+function buildFindings(r) {
+  const all = r.findings || [];
+  if (!all.length) return '<div class="empty" style="padding:40px 10px">Sin hallazgos registrados</div>';
+
+  // Ordenar: red → yellow → info → FP al final
+  const order = {red:0, yellow:1, info:2};
+  const sorted = [...all].sort((a,b) => {
+    if (a.probable_fp !== b.probable_fp)
+      return a.probable_fp ? 1 : -1;
+    return (order[a.level]||3) - (order[b.level]||3);
+  });
+
+  return sorted.map(f => {
+    const cls  = f.probable_fp ? "f-fp" : `f-${f.level}`;
+    const icon = MODULE_ICONS[f.module] || "•";
+    const fpTag = f.probable_fp
+      ? `<span class="f-fp-tag">⚠️ Falso Positivo Probable</span>` : "";
+
+    // Colorear titulo segun nivel
+    const titleColor = f.probable_fp   ? "var(--fp)"
+                     : f.level==="red"    ? "var(--red)"
+                     : f.level==="yellow" ? "var(--yellow)" : "var(--muted)";
+    return `
+      <div class="f-card ${cls}">
+        <div class="f-head">
+          <span class="f-tag">${icon} ${esc(f.module)}</span>${fpTag}
+        </div>
+        <b style="color:${titleColor}">${esc(f.title)}</b>
+        <pre>${esc(f.detail||"")}</pre>
+      </div>`;
+  }).join("");
+}
+
+// ── USB TIMELINE ───────────────────────────────────────────────────────────
+function buildUsbTimeline(r) {
+  const evts = (r.usb_events || []).slice(0, 25);
+  if (!evts.length) return "";
+
+  const rows = evts.map(e => {
+    const on = e.e === "CONECTADO";
+    // Limpiar el mensaje del evento
+    let msg = (e.m||"").replace(/^.*?:/, "").trim();
+    if (msg.length > 80) msg = msg.slice(0,80)+"…";
+    return `
+      <div class="usb-event">
+        <div class="usb-dot ${on?'on':'off'}"></div>
+        <span class="usb-time">${esc(e.t||"")}</span>
+        <span class="usb-label ${on?'on':'off'}">${on?"CONECTADO":"DESCONECTADO"}</span>
+        <span class="usb-msg">${esc(msg)}</span>
+      </div>`;
+  }).join("");
+
+  const connected    = evts.filter(e=>e.e==="CONECTADO").length;
+  const disconnected = evts.filter(e=>e.e==="DESCONECTADO").length;
+
+  return `
+    <p class="sec-title" style="margin-top:16px">
+      Historial USB (${evts.length} eventos)
+    </p>
+    <div class="chart-wrap" style="padding:10px 13px">
+      <div style="font-size:11.5px;color:var(--muted);margin-bottom:8px">
+        <span style="color:var(--green)">↑ ${connected} conectados</span>
+        &nbsp;&nbsp;
+        <span style="color:var(--red)">↓ ${disconnected} desconectados</span>
+      </div>
+      <div class="usb-timeline">${rows}</div>
+    </div>`;
+}
+
+// ── RADAR CHART ────────────────────────────────────────────────────────────
+function drawRadar(verdict, counts) {
+  if (chartInst) { try { chartInst.destroy(); } catch(e){} chartInst = null; }
+  if (typeof Chart === "undefined") return;
+  const canvas = document.getElementById("radar");
+  if (!canvas) return;
+  try {
+    const accent = verdict==="red"    ? "#ff4d5a"
+                 : verdict==="yellow" ? "#ffbe38" : "#35d48c";
+    chartInst = new Chart(canvas.getContext("2d"), {
+      type: "radar",
+      data: {
+        labels: ["Hallazgos", "Sospechoso", "Info"],
+        datasets: [{
+          label: "Resultado",
+          data: [counts.red, counts.yellow, counts.info],
+          backgroundColor: accent + "22",
+          borderColor: accent,
+          borderWidth: 2,
+          pointBackgroundColor: accent,
+          pointRadius: 4,
+        }],
+      },
+      options: {
+        responsive: true,
+        scales: { r: {
+          angleLines: { color: "rgba(255,255,255,0.07)" },
+          grid:       { color: "rgba(255,255,255,0.07)" },
+          pointLabels:{ color: "#828aa0", font: { size:11, family:"Sora" } },
+          ticks:      { display: false },
+        }},
+        plugins: { legend: { display: false } },
+      },
+    });
+  } catch(e) {}
+}
+
+// ── CÓDIGO ALEATORIO ───────────────────────────────────────────────────────
+function generateCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i=0;i<8;i++) code += chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById("genCode").textContent = code;
+  document.getElementById("genBox").style.display = "block";
+}
+function copyCode() {
+  const code = document.getElementById("genCode").textContent;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Código copiado: " + code));
+}
+
+window.addEventListener("load", loadAll);
+</script>
+</body>
+</html>
