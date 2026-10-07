@@ -1,7 +1,11 @@
 {
   "code": "SS-T6GC-US6P",
   "label": "kaspercito",
-  "status": "pending",
+  "status": "done",
   "created": "2026-10-07T23:36:40.961Z",
-  "created_by": "dashboard"
+  "created_by": "dashboard",
+  "scan_file": "data/SS-T6GC-US6P_20261007_184154.json",
+  "completed_at": "2026-10-07 18:41:54",
+  "verdict": "yellow",
+  "nick": "kaspercitoo"
 }
