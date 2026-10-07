@@ -1,0 +1,200 @@
+{
+  "version": "3.0",
+  "code": "SS-DNKX-QJ4S",
+  "timestamp": "2026-10-07 17:56:33",
+  "verdict": "yellow",
+  "duration": 23,
+  "admin": true,
+  "pc": {
+    "hostname": "DESKTOP-2H4NTC4",
+    "user": "Miguel",
+    "os": "Windows 11 Pro 25H2 (build 26200)",
+    "country": "Ecuador",
+    "city": "Guayaquil",
+    "custom_os": [
+      "AtlasOS"
+    ],
+    "install_date": "2026-09-13 22:31:47",
+    "boot_time": "2026-10-07 10:17:45",
+    "uptime": "7 h 38 min",
+    "boots": [
+      "2026-10-07 10:17:45",
+      "2026-10-07 02:05:09",
+      "2026-10-06 14:53:06",
+      "2026-10-06 02:59:31",
+      "2026-10-05 14:41:56",
+      "2026-10-04 15:02:31",
+      "2026-10-04 02:51:45",
+      "2026-10-03 14:34:10"
+    ]
+  },
+  "minecraft": {
+    "nick": "?",
+    "alts": [],
+    "runtime": "Abierto desde 2026-10-07 17:55 (0 min)",
+    "start": "2026-10-07 17:55:27",
+    "sessions": []
+  },
+  "system": {
+    "recycle_bin": "Vacía",
+    "recent_files": [],
+    "executed": [
+      "2026-10-07 17:55:58  C:\\Users\\Miguel\\Desktop\\SSHelper\\dist\\SSHelper.exe",
+      "2026-10-07 17:55:49  C:\\Users\\Miguel\\.lunarclient\\jre\\5a6eb763f735cdeb6ad9d2c080e07ef2b949a771\\zulu17.64.17-ca-jre17.0.18-win_x64\\bin\\javaw.exe",
+      "2026-10-07 17:55:48  C:\\Users\\Miguel\\AppData\\Local\\Programs\\Lunar Client\\Lunar Client.exe",
+      "2026-10-07 17:55:25  C:\\Users\\Miguel\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+      "2026-10-07 17:55:07  C:\\Users\\Miguel\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+      "2026-10-07 17:53:46  C:\\Riot Games\\VALORANT\\live\\ShooterGame\\Binaries\\Win64\\VALORANT-Win64-Shipping.exe",
+      "2026-10-07 17:13:19  C:\\Users\\Miguel\\AppData\\Local\\Discord\\app-1.0.9260\\Discord.exe",
+      "2026-10-07 15:48:06  C:\\Riot Games\\Riot Client\\RiotClientElectron\\Riot Client.exe",
+      "2026-10-07 15:44:25  C:\\Riot Games\\Riot Client\\RiotClientServices.exe",
+      "2026-10-07 15:24:12  C:\\Users\\Miguel\\AppData\\Roaming\\Spotify\\Spotify.exe",
+      "2026-10-07 10:54:01  C:\\Users\\Miguel\\AppData\\Local\\Python\\pythoncore-3.14-64\\pythonw.exe",
+      "2026-10-07 00:06:56  G:\\Descargas\\Claude Setup (1).exe",
+      "2026-10-06 03:26:04  G:\\Documentos\\WoWAuraTLK\\Aura\\Wow.exe",
+      "2026-10-05 01:03:38  C:\\Users\\Miguel\\AppData\\Local\\lunarclient-updater\\pending\\Lunar Client v3.7.23-ow.exe",
+      "2026-10-03 19:22:52  G:\\Descargas\\TCPOptimizer.exe",
+      "2026-09-13 22:49:44  C:\\Users\\Miguel\\Downloads\\AME Beta\\AME Beta.exe  (x1)",
+      "2026-09-13 22:44:59  C:\\Users\\Miguel\\Downloads\\whql-amd-software-adrenalin-edition-26.5.2-win11-may-vega-polaris.exe  (x1)"
+    ]
+  },
+  "timeline": [
+    {
+      "t": "2026-10-07 17:55:27",
+      "src": "Minecraft",
+      "e": "Minecraft abierto (PID 15580)"
+    },
+    {
+      "t": "2026-10-07 10:17:45",
+      "src": "Sistema",
+      "e": "PC encendido (arranque actual de Windows)"
+    },
+    {
+      "t": "2026-10-07 10:17:45",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-07 02:05:09",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-06 14:53:06",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-06 02:59:31",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-05 14:41:56",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-04 15:02:31",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-04 02:51:45",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-10-03 14:34:10",
+      "src": "Sistema",
+      "e": "Windows arrancó"
+    },
+    {
+      "t": "2026-09-13 22:31:47",
+      "src": "Sistema",
+      "e": "Windows instalado"
+    }
+  ],
+  "usb_events": [
+    {
+      "t": "2026-09-22 15:25:54",
+      "e": "DESCONECTADO",
+      "m": "Kingston DataTraveler 3.0 USB Device"
+    },
+    {
+      "t": "2026-09-22 15:22:14",
+      "e": "CONECTADO",
+      "m": "Kingston DataTraveler 3.0 USB Device"
+    }
+  ],
+  "stats": {
+    "files_scanned": 358,
+    "jars_inspected": 16,
+    "java_modules": 130,
+    "usn_lines": 322913
+  },
+  "findings": [
+    {
+      "level": "yellow",
+      "module": "Sistema",
+      "title": "Windows customizado detectado",
+      "detail": "Posible: AtlasOS.\nDetección heurística; estos sistemas suelen desactivar servicios (Defender, Prefetch, telemetría) que sirven para revisar el PC.",
+      "probable_fp": false
+    },
+    {
+      "level": "yellow",
+      "module": "Minecraft",
+      "title": "La carpeta de logs de Minecraft está vacía o no existe",
+      "detail": "Existe .minecraft/versions pero no hay logs: pudieron borrarse.",
+      "probable_fp": false
+    },
+    {
+      "level": "yellow",
+      "module": "Inyección",
+      "title": "DLL sin firma válida cargada en Java: webp-imageio64.dll",
+      "detail": "C:\\Users\\Miguel\\.lunarclient\\offline\\multiver\\natives\\webp-imageio64.dll\nFirma digital: NotSigned\nLos clientes inyectados cargan DLLs propias dentro del proceso del juego.",
+      "probable_fp": false
+    },
+    {
+      "level": "yellow",
+      "module": "Archivos",
+      "title": "Carpeta sospechosa: AnyDesk",
+      "detail": "G:\\Videos\\AnyDesk\nFirma: anydesk",
+      "probable_fp": false
+    },
+    {
+      "level": "yellow",
+      "module": "Archivos",
+      "title": "Acceso remoto: AnyDesk (1).exe",
+      "detail": "G:\\Descargas\\AnyDesk (1).exe\nModificado: 2026-09-24 15:13:21\nFirma: anydesk",
+      "probable_fp": false
+    },
+    {
+      "level": "yellow",
+      "module": "Archivos",
+      "title": "Acceso remoto: AnyDesk.exe",
+      "detail": "G:\\Descargas\\AnyDesk.exe\nModificado: 2026-09-07 01:57:03\nFirma: anydesk",
+      "probable_fp": false
+    },
+    {
+      "level": "yellow",
+      "module": "Prefetch",
+      "title": "Acceso remoto ejecutado: ANYDESK (1).EXE",
+      "detail": "Última ejecución aprox.: 2026-09-24 15:13:58 (hace 13.1 días)\nFirma: anydesk",
+      "probable_fp": false
+    },
+    {
+      "level": "info",
+      "module": "Scanner",
+      "title": "El paso 'Windows Defender' falló",
+      "detail": "AttributeError: 'NoneType' object has no attribute 'lower'",
+      "probable_fp": false
+    }
+  ],
+  "findings_count": {
+    "red": 0,
+    "yellow": 7,
+    "fp": 0,
+    "info": 1
+  }
+}
