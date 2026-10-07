@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SS Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0d13; --panel:#11141c; --panel2:#161a24; --border:#232838;
+    --text:#e6e8ee; --muted:#8b92a5; --red:#e74c3c; --yellow:#f1c40f; --green:#2ecc71;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
+  .wrap{max-width:1100px;margin:auto;padding:24px}
+  h1{margin:0 0 4px;font-size:22px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+  .search{display:flex;gap:10px;margin-bottom:20px}
+  .search input{flex:1;padding:10px 14px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel);color:var(--text);font-size:14px}
+  .search button{padding:10px 18px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel2);color:var(--text);cursor:pointer}
+  .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
+  .list{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+    max-height:70vh;overflow-y:auto}
+  .item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}
+  .item:hover{background:var(--panel2)}
+  .item.active{background:var(--panel2);border-left:3px solid #5b8cff}
+  .item .code{font-weight:700;font-size:14px}
+  .item .meta{color:var(--muted);font-size:11px;margin-top:3px}
+  .badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;margin-top:6px}
+  .b-red{background:#3a1414;color:var(--red);border:1px solid var(--red)}
+  .b-yellow{background:#3a3210;color:var(--yellow);border:1px solid var(--yellow)}
+  .b-green{background:#12331f;color:var(--green);border:1px solid var(--green)}
+  .detail{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;min-height:300px}
+  .verdict-banner{border-radius:10px;padding:18px;margin-bottom:18px;text-align:center}
+  .verdict-banner h2{margin:0;font-size:26px;letter-spacing:2px}
+  .vb-red{background:linear-gradient(135deg,#2a1012,#3a1414);border:1px solid var(--red)}
+  .vb-yellow{background:linear-gradient(135deg,#2a2510,#3a3210);border:1px solid var(--yellow)}
+  .vb-green{background:linear-gradient(135deg,#102a1a,#12331f);border:1px solid var(--green)}
+  .top-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+  .mini-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:12px}
+  .mini-card .n{font-size:22px;font-weight:700}
+  .mini-card .l{color:var(--muted);font-size:11px;text-transform:uppercase}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:700px){.cols{grid-template-columns:1fr}}
+  .pcinfo div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .pcinfo span:first-child{color:var(--muted)}
+  .findings{max-height:380px;overflow-y:auto}
+  .f-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px}
+  .f-card b{display:block;margin-bottom:3px;font-size:13px}
+  .f-card pre{white-space:pre-wrap;word-break:break-all;margin:4px 0 0;font-size:11.5px;color:#cfd3dc}
+  .f-red{background:#1c1012;border:1px solid var(--red)}
+  .f-yellow{background:#1c1a10;border:1px solid var(--yellow)}
+  .f-info{background:#10131c;border:1px solid var(--border)}
+  .empty{color:var(--muted);text-align:center;padding:60px 0}
+  canvas{max-height:220px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🛡️ SS Dashboard</h1>
+  <div class="sub" id="subtitle">Cargando escaneos...</div>
+  <div class="search">
+    <input id="codeInput" placeholder="Buscar por codigo (ej: DEMO8PIN)">
+    <button onclick="filterByCode()">Buscar</button>
+    <button onclick="loadAll()">Ver todos</button>
+  </div>
+  <div class="grid">
+    <div class="list" id="list"></div>
+    <div class="detail" id="detail"><div class="empty">Selecciona un escaneo de la lista</div></div>
+  </div>
+</div>
+
+<script>
+// ---- CONFIGURA ESTO con tu usuario y repo de GitHub ----
+const OWNER = "TU_USUARIO";
+const REPO  = "TU_REPO";
+const BRANCH = "main";
+// ----------------------------------------------------------
+
+let ALL_REPORTS = [];
+let chartInstance = null;
+
+async function fetchJSON(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+
+async function loadAll(){
+  document.getElementById("subtitle").textContent = "Cargando escaneos...";
+  try{
+    const files = await fetchJSON(`https://api.github.com/repos/${OWNER}/${REPO}/contents/data?ref=${BRANCH}`);
+    const jsons = files.filter(f => f.name.endsWith(".json"));
+    jsons.sort((a,b) => b.name.localeCompare(a.name)); // mas reciente primero (timestamp en el nombre)
+    const reports = await Promise.all(jsons.map(f => fetchJSON(f.download_url).catch(() => null)));
+    ALL_REPORTS = reports.filter(Boolean);
+    document.getElementById("subtitle").textContent = `${ALL_REPORTS.length} escaneo(s) registrados`;
+    renderList(ALL_REPORTS);
+  }catch(e){
+    document.getElementById("subtitle").textContent = "No se pudieron cargar los escaneos.";
+    document.getElementById("list").innerHTML =
+      `<div class="empty">Error: ${e.message}<br><br>Revisa que OWNER/REPO esten bien configurados arriba en el codigo,<br>que el repo sea publico (o que estes logueado si es privado),<br>y que exista la carpeta /data con archivos .json</div>`;
+  }
+}
+
+function filterByCode(){
+  const q = document.getElementById("codeInput").value.trim().toLowerCase();
+  if(!q){ renderList(ALL_REPORTS); return; }
+  renderList(ALL_REPORTS.filter(r => (r.code||"").toLowerCase().includes(q)));
+}
+
+function renderList(reports){
+  const list = document.getElementById("list");
+  if(!reports.length){ list.innerHTML = `<div class="empty">Sin resultados</div>`; return; }
+  list.innerHTML = reports.map((r,i) => `
+    <div class="item" id="item-${i}" onclick="showDetail(${i})">
+      <div class="code">${escapeHtml(r.code || "SIN-CODIGO")}</div>
+      <div class="meta">${escapeHtml(r.timestamp || "")} · ${escapeHtml((r.pc && r.pc.hostname) || "")}</div>
+      <span class="badge b-${r.verdict}">${verdictLabel(r.verdict)}</span>
+    </div>`).join("");
+  window._currentList = reports;
+  if(reports.length) showDetail(0);
+}
+
+function verdictLabel(v){
+  return v === "red" ? "CHEATING" : v === "yellow" ? "SOSPECHOSO" : "LIMPIO";
+}
+
+function showDetail(i){
+  document.querySelectorAll(".item").forEach(e => e.classList.remove("active"));
+  const el = document.getElementById("item-"+i);
+  if(el) el.classList.add("active");
+  const r = window._currentList[i];
+  const counts = {red:0, yellow:0, info:0};
+  (r.findings||[]).forEach(f => counts[f.level] = (counts[f.level]||0) + 1);
+
+  const detail = document.getElementById("detail");
+  detail.innerHTML = `
+    <div class="verdict-banner vb-${r.verdict}">
+      <h2>${verdictLabel(r.verdict)}</h2>
+      <div style="color:var(--muted);font-size:12px;margin-top:4px">Codigo: ${escapeHtml(r.code||"-")} · ${escapeHtml(r.timestamp||"")}</div>
+    </div>
+    <div class="top-cards">
+      <div class="mini-card"><div class="n" style="color:var(--red)">${counts.red}</div><div class="l">Hallazgos</div></div>
+      <div class="mini-card"><div class="n" style="color:var(--yellow)">${counts.yellow}</div><div class="l">Sospechoso</div></div>
+      <div class="mini-card"><div class="n" style="color:var(--muted)">${counts.info}</div><div class="l">Informativo</div></div>
+    </div>
+    <div class="cols">
+      <div>
+        <canvas id="radar"></canvas>
+        <div class="pcinfo" style="margin-top:14px">
+          <div><span>PC</span><span>${escapeHtml((r.pc&&r.pc.hostname)||"-")}</span></div>
+          <div><span>Usuario</span><span>${escapeHtml((r.pc&&r.pc.user)||"-")}</span></div>
+          <div><span>Sistema</span><span>${escapeHtml((r.pc&&r.pc.os)||"-")}</span></div>
+          <div><span>Duracion</span><span>${r.duration||"-"} s</span></div>
+        </div>
+      </div>
+      <div class="findings">
+        ${(r.findings||[]).map(f => `
+          <div class="f-card f-${f.level}">
+            <b>[${escapeHtml(f.module)}] ${escapeHtml(f.title)}</b>
+            <pre>${escapeHtml(f.detail||"")}</pre>
+          </div>`).join("") || '<div class="empty">Sin hallazgos registrados</div>'}
+      </div>
+    </div>
+  `;
+
+  if(chartInstance) chartInstance.destroy();
+  const ctx = document.getElementById("radar").getContext("2d");
+  chartInstance = new Chart(ctx, {
+    type: "radar",
+    data: {
+      labels: ["Hallazgos", "Sospechoso", "Informativo"],
+      datasets: [{
+        label: "Resultado",
+        data: [counts.red, counts.yellow, counts.info],
+        backgroundColor: "rgba(231,76,60,0.15)",
+        borderColor: "#e74c3c",
+        pointBackgroundColor: "#e74c3c"
+      }]
+    },
+    options: {
+      scales: {
+        r: {
+          angleLines:{color:"#232838"}, grid:{color:"#232838"},
+          pointLabels:{color:"#8b92a5", font:{size:11}},
+          ticks:{display:false}
+        }
+      },
+      plugins: { legend: { display:false } }
+    }
+  });
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+loadAll();
+</script>
+</body>
+</html>
