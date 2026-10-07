@@ -4,73 +4,214 @@
 <meta charset="utf-8">
 <title>SS Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root{
-    --bg:#0b0d13; --panel:#11141c; --panel2:#161a24; --border:#232838;
-    --text:#e6e8ee; --muted:#8b92a5; --red:#e74c3c; --yellow:#f1c40f; --green:#2ecc71;
+    --bg:#06070b; --bg2:#0a0c13;
+    --panel: rgba(20,23,33,0.7); --panel-solid:#141721; --panel2:#1a1e2b;
+    --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.14);
+    --text:#eef0f5; --muted:#868ea3; --muted2:#5c6479;
+    --red:#ff5461; --red-dim:#3a1620;
+    --yellow:#ffc53d; --yellow-dim:#3a2f10;
+    --green:#3ddc97; --green-dim:#0e2e24;
+    --accent:#6e8cff; --accent2:#a66bff;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
-  .wrap{max-width:1100px;margin:auto;padding:24px}
-  h1{margin:0 0 4px;font-size:22px}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:20px}
-  .search{display:flex;gap:10px;margin-bottom:20px}
-  .search input{flex:1;padding:10px 14px;border-radius:8px;border:1px solid var(--border);
-    background:var(--panel);color:var(--text);font-size:14px}
-  .search button{padding:10px 18px;border-radius:8px;border:1px solid var(--border);
-    background:var(--panel2);color:var(--text);cursor:pointer}
-  .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
-  @media(max-width:800px){.grid{grid-template-columns:1fr}}
-  .list{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-    max-height:70vh;overflow-y:auto}
-  .item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-  .item:hover{background:var(--panel2)}
-  .item.active{background:var(--panel2);border-left:3px solid #5b8cff}
-  .item .code{font-weight:700;font-size:14px}
-  .item .meta{color:var(--muted);font-size:11px;margin-top:3px}
-  .badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;margin-top:6px}
-  .b-red{background:#3a1414;color:var(--red);border:1px solid var(--red)}
-  .b-yellow{background:#3a3210;color:var(--yellow);border:1px solid var(--yellow)}
-  .b-green{background:#12331f;color:var(--green);border:1px solid var(--green)}
-  .detail{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;min-height:300px}
-  .verdict-banner{border-radius:10px;padding:18px;margin-bottom:18px;text-align:center}
-  .verdict-banner h2{margin:0;font-size:26px;letter-spacing:2px}
-  .vb-red{background:linear-gradient(135deg,#2a1012,#3a1414);border:1px solid var(--red)}
-  .vb-yellow{background:linear-gradient(135deg,#2a2510,#3a3210);border:1px solid var(--yellow)}
-  .vb-green{background:linear-gradient(135deg,#102a1a,#12331f);border:1px solid var(--green)}
-  .top-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
-  .mini-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:12px}
-  .mini-card .n{font-size:22px;font-weight:700}
-  .mini-card .l{color:var(--muted);font-size:11px;text-transform:uppercase}
-  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  @media(max-width:700px){.cols{grid-template-columns:1fr}}
-  .pcinfo div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#2a2f40;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  body{
+    margin:0; min-height:100vh; color:var(--text);
+    font-family:'Sora',system-ui,sans-serif;
+    background:
+      radial-gradient(900px 500px at 15% -10%, rgba(110,140,255,0.16), transparent 60%),
+      radial-gradient(700px 500px at 100% 0%, rgba(166,107,255,0.12), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1180px;margin:auto;padding:36px 24px 60px}
+
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:14px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .logo{
+    width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 0 24px rgba(110,140,255,0.35);
+    font-size:20px;
+  }
+  .brand h1{margin:0;font-size:20px;font-weight:700;letter-spacing:-0.2px}
+  .brand .tag{color:var(--muted);font-size:12px;margin-top:1px}
+  .stats-row{display:flex;gap:10px}
+  .stat-pill{
+    background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--border);
+    border-radius:12px;padding:8px 16px;text-align:center;min-width:76px;
+  }
+  .stat-pill .v{font-size:17px;font-weight:700}
+  .stat-pill .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+  .toolbar{
+    display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;
+  }
+  .search-box{
+    flex:1;min-width:220px;display:flex;align-items:center;gap:10px;
+    background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--border);
+    border-radius:12px;padding:0 14px;transition:border-color .15s;
+  }
+  .search-box:focus-within{border-color:var(--accent)}
+  .search-box svg{flex-shrink:0;opacity:.5}
+  .search-box input{
+    flex:1;background:transparent;border:0;outline:0;color:var(--text);
+    font-family:'Sora';font-size:14px;padding:12px 0;
+  }
+  .btn{
+    padding:11px 18px;border-radius:12px;border:1px solid var(--border);
+    background:var(--panel2);color:var(--text);cursor:pointer;font-family:'Sora';
+    font-size:13.5px;font-weight:600;transition:all .15s;white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+  .btn-ghost{background:transparent}
+  .btn-accent{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;
+    box-shadow:0 4px 18px rgba(110,140,255,0.3);
+  }
+  .btn-accent:hover{box-shadow:0 6px 22px rgba(110,140,255,0.45)}
+
+  .gen-box{
+    display:none;margin:-8px 0 20px;padding:16px 18px;border-radius:14px;
+    background:linear-gradient(135deg, rgba(110,140,255,0.1), rgba(166,107,255,0.08));
+    border:1px solid rgba(110,140,255,0.3);font-size:14px;
+    animation:slideDown .25s ease;
+  }
+  @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  .gen-box .code{font-family:'JetBrains Mono';font-size:19px;font-weight:600;letter-spacing:3px;color:var(--accent)}
+  .gen-box .hint{color:var(--muted);font-size:12px;margin-top:8px}
+
+  .grid{display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  .panel{
+    background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--border);
+    border-radius:16px; overflow:hidden;
+  }
+  .list{max-height:74vh;overflow-y:auto}
+  .list-head{padding:14px 18px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--muted2);border-bottom:1px solid var(--border);font-weight:600}
+  .item{padding:15px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;position:relative}
+  .item:hover{background:rgba(255,255,255,0.03)}
+  .item.active{background:rgba(110,140,255,0.08)}
+  .item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(var(--accent),var(--accent2))}
+  .item .code{font-weight:700;font-size:14px;font-family:'JetBrains Mono';letter-spacing:.5px}
+  .item .meta{color:var(--muted);font-size:11px;margin-top:4px}
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;
+    font-size:10.5px;font-weight:700;margin-top:8px;letter-spacing:.3px;text-transform:uppercase;
+  }
+  .badge::before{content:'';width:6px;height:6px;border-radius:50%}
+  .b-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,84,97,0.35)}
+  .b-red::before{background:var(--red);box-shadow:0 0 8px var(--red)}
+  .b-yellow{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(255,197,61,0.35)}
+  .b-yellow::before{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+  .b-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(61,220,151,0.35)}
+  .b-green::before{background:var(--green);box-shadow:0 0 8px var(--green)}
+
+  .detail{padding:26px;min-height:420px}
+  .verdict-banner{
+    border-radius:16px;padding:28px;margin-bottom:22px;text-align:center;position:relative;overflow:hidden;
+  }
+  .verdict-banner::after{
+    content:'';position:absolute;inset:0;opacity:.5;
+    background:radial-gradient(circle at 50% 0%, currentColor, transparent 70%);
+  }
+  .vb-red{background:linear-gradient(160deg,#2a0f14,#190a0d);border:1px solid rgba(255,84,97,0.4);color:var(--red)}
+  .vb-yellow{background:linear-gradient(160deg,#2a2410,#19150a);border:1px solid rgba(255,197,61,0.4);color:var(--yellow)}
+  .vb-green{background:linear-gradient(160deg,#0f2a20,#0a1913);border:1px solid rgba(61,220,151,0.4);color:var(--green)}
+  .verdict-banner h2{margin:0;font-size:30px;font-weight:800;letter-spacing:3px;position:relative;text-shadow:0 0 30px currentColor}
+  .verdict-banner .vcode{color:var(--muted);font-size:12.5px;margin-top:8px;position:relative;font-family:'JetBrains Mono'}
+
+  .top-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+  .mini-card{
+    background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px;
+    transition:transform .15s;
+  }
+  .mini-card:hover{transform:translateY(-2px)}
+  .mini-card .n{font-size:26px;font-weight:800;font-family:'JetBrains Mono'}
+  .mini-card .l{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted2);
+    font-weight:700;margin:0 0 12px}
+  .chart-card{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px}
+  .pcinfo{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:4px 16px;margin-top:14px}
+  .pcinfo div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .pcinfo div:last-child{border-bottom:none}
   .pcinfo span:first-child{color:var(--muted)}
-  .findings{max-height:380px;overflow-y:auto}
-  .f-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px}
-  .f-card b{display:block;margin-bottom:3px;font-size:13px}
-  .f-card pre{white-space:pre-wrap;word-break:break-all;margin:4px 0 0;font-size:11.5px;color:#cfd3dc}
-  .f-red{background:#1c1012;border:1px solid var(--red)}
-  .f-yellow{background:#1c1a10;border:1px solid var(--yellow)}
-  .f-info{background:#10131c;border:1px solid var(--border)}
-  .empty{color:var(--muted);text-align:center;padding:60px 0}
-  canvas{max-height:220px}
+  .pcinfo span:last-child{font-family:'JetBrains Mono';font-size:12.5px}
+
+  .findings{max-height:420px;overflow-y:auto;padding-right:4px}
+  .f-card{border-radius:12px;padding:13px 15px;margin-bottom:9px;font-size:13px;transition:transform .12s}
+  .f-card:hover{transform:translateX(2px)}
+  .f-card .f-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .f-tag{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:5px;
+    background:rgba(255,255,255,0.08);color:var(--muted);font-weight:700}
+  .f-card b{font-size:13px;font-weight:600}
+  .f-card pre{white-space:pre-wrap;word-break:break-all;margin:6px 0 0;font-size:11.5px;
+    color:var(--muted);font-family:'JetBrains Mono';line-height:1.5}
+  .f-red{background:var(--red-dim);border:1px solid rgba(255,84,97,0.25)}
+  .f-yellow{background:var(--yellow-dim);border:1px solid rgba(255,197,61,0.25)}
+  .f-info{background:rgba(255,255,255,0.03);border:1px solid var(--border)}
+
+  .empty{color:var(--muted);text-align:center;padding:90px 20px;font-size:13px;line-height:1.7}
+  .empty .big{font-size:38px;margin-bottom:12px;opacity:.6}
+  canvas{max-height:230px}
+  footer{text-align:center;color:var(--muted2);font-size:11.5px;margin-top:40px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🛡️ SS Dashboard</h1>
-  <div class="sub" id="subtitle">Cargando escaneos...</div>
-  <div class="search">
-    <input id="codeInput" placeholder="Buscar por codigo (ej: DEMO8PIN)">
-    <button onclick="filterByCode()">Buscar</button>
-    <button onclick="loadAll()">Ver todos</button>
+  <header>
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div>
+        <h1>SS Dashboard</h1>
+        <div class="tag">Panel de revisión para moderadores</div>
+      </div>
+    </div>
+    <div class="stats-row" id="statsRow"></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="codeInput" placeholder="Buscar por código (ej: 7F3K9QRT)" onkeydown="if(event.key==='Enter')filterByCode()">
+    </div>
+    <button class="btn" onclick="filterByCode()">Buscar</button>
+    <button class="btn btn-ghost" onclick="loadAll()">↻ Todos</button>
+    <button class="btn btn-accent" onclick="generateCode()">🎲 Generar código</button>
   </div>
+
+  <div class="gen-box" id="genBox">
+    <div>Código nuevo: <span class="code" id="genCode"></span></div>
+    <button class="btn" style="margin-top:10px;padding:7px 14px" onclick="copyGenCode()">Copiar</button>
+    <div class="hint">Pásale este código al jugador para que lo escriba en el programa al iniciar el escaneo.</div>
+  </div>
+
   <div class="grid">
-    <div class="list" id="list"></div>
-    <div class="detail" id="detail"><div class="empty">Selecciona un escaneo de la lista</div></div>
+    <div class="panel list" id="listPanel">
+      <div class="list-head" id="listHead">Escaneos</div>
+      <div id="list"></div>
+    </div>
+    <div class="panel detail" id="detail">
+      <div class="empty"><div class="big">🔍</div>Selecciona un escaneo de la lista<br>para ver el detalle completo</div>
+    </div>
   </div>
+
+  <footer>SS Dashboard · datos alojados en GitHub · generado automáticamente por el escáner</footer>
 </div>
 
 <script>
@@ -90,20 +231,34 @@ async function fetchJSON(url){
 }
 
 async function loadAll(){
-  document.getElementById("subtitle").textContent = "Cargando escaneos...";
+  document.getElementById("listHead").textContent = "Cargando...";
+  document.getElementById("list").innerHTML = '<div class="empty">Cargando escaneos...</div>';
   try{
     const files = await fetchJSON(`https://api.github.com/repos/${OWNER}/${REPO}/contents/data?ref=${BRANCH}`);
     const jsons = files.filter(f => f.name.endsWith(".json"));
-    jsons.sort((a,b) => b.name.localeCompare(a.name)); // mas reciente primero (timestamp en el nombre)
+    jsons.sort((a,b) => b.name.localeCompare(a.name));
     const reports = await Promise.all(jsons.map(f => fetchJSON(f.download_url).catch(() => null)));
     ALL_REPORTS = reports.filter(Boolean);
-    document.getElementById("subtitle").textContent = `${ALL_REPORTS.length} escaneo(s) registrados`;
+    renderStats(ALL_REPORTS);
+    document.getElementById("listHead").textContent = `${ALL_REPORTS.length} escaneo(s)`;
     renderList(ALL_REPORTS);
   }catch(e){
-    document.getElementById("subtitle").textContent = "No se pudieron cargar los escaneos.";
+    document.getElementById("listHead").textContent = "Error";
     document.getElementById("list").innerHTML =
-      `<div class="empty">Error: ${e.message}<br><br>Revisa que OWNER/REPO esten bien configurados arriba en el codigo,<br>que el repo sea publico (o que estes logueado si es privado),<br>y que exista la carpeta /data con archivos .json</div>`;
+      `<div class="empty">No se pudo conectar con GitHub.<br><br><span class="mono" style="font-size:11px">${e.message}</span><br><br>
+       Revisa OWNER/REPO en el código,<br>que el repo exista y tenga /data con .json</div>`;
   }
+}
+
+function renderStats(reports){
+  const total = reports.length;
+  const red = reports.filter(r=>r.verdict==="red").length;
+  const yellow = reports.filter(r=>r.verdict==="yellow").length;
+  document.getElementById("statsRow").innerHTML = `
+    <div class="stat-pill"><div class="v">${total}</div><div class="l">Total</div></div>
+    <div class="stat-pill"><div class="v" style="color:var(--red)">${red}</div><div class="l">Cheating</div></div>
+    <div class="stat-pill"><div class="v" style="color:var(--yellow)">${yellow}</div><div class="l">Dudoso</div></div>
+  `;
 }
 
 function filterByCode(){
@@ -114,7 +269,7 @@ function filterByCode(){
 
 function renderList(reports){
   const list = document.getElementById("list");
-  if(!reports.length){ list.innerHTML = `<div class="empty">Sin resultados</div>`; return; }
+  if(!reports.length){ list.innerHTML = `<div class="empty"><div class="big">📭</div>Sin resultados</div>`; return; }
   list.innerHTML = reports.map((r,i) => `
     <div class="item" id="item-${i}" onclick="showDetail(${i})">
       <div class="code">${escapeHtml(r.code || "SIN-CODIGO")}</div>
@@ -126,7 +281,7 @@ function renderList(reports){
 }
 
 function verdictLabel(v){
-  return v === "red" ? "CHEATING" : v === "yellow" ? "SOSPECHOSO" : "LIMPIO";
+  return v === "red" ? "Cheating" : v === "yellow" ? "Sospechoso" : "Limpio";
 }
 
 function showDetail(i){
@@ -140,8 +295,8 @@ function showDetail(i){
   const detail = document.getElementById("detail");
   detail.innerHTML = `
     <div class="verdict-banner vb-${r.verdict}">
-      <h2>${verdictLabel(r.verdict)}</h2>
-      <div style="color:var(--muted);font-size:12px;margin-top:4px">Codigo: ${escapeHtml(r.code||"-")} · ${escapeHtml(r.timestamp||"")}</div>
+      <h2>${verdictLabel(r.verdict).toUpperCase()}</h2>
+      <div class="vcode">Código ${escapeHtml(r.code||"-")} · ${escapeHtml(r.timestamp||"")}</div>
     </div>
     <div class="top-cards">
       <div class="mini-card"><div class="n" style="color:var(--red)">${counts.red}</div><div class="l">Hallazgos</div></div>
@@ -150,26 +305,33 @@ function showDetail(i){
     </div>
     <div class="cols">
       <div>
-        <canvas id="radar"></canvas>
-        <div class="pcinfo" style="margin-top:14px">
+        <p class="section-title">Resumen</p>
+        <div class="chart-card"><canvas id="radar"></canvas></div>
+        <p class="section-title" style="margin-top:18px">Equipo</p>
+        <div class="pcinfo">
           <div><span>PC</span><span>${escapeHtml((r.pc&&r.pc.hostname)||"-")}</span></div>
           <div><span>Usuario</span><span>${escapeHtml((r.pc&&r.pc.user)||"-")}</span></div>
           <div><span>Sistema</span><span>${escapeHtml((r.pc&&r.pc.os)||"-")}</span></div>
-          <div><span>Duracion</span><span>${r.duration||"-"} s</span></div>
+          <div><span>Duración</span><span>${r.duration||"-"}s</span></div>
         </div>
       </div>
-      <div class="findings">
-        ${(r.findings||[]).map(f => `
-          <div class="f-card f-${f.level}">
-            <b>[${escapeHtml(f.module)}] ${escapeHtml(f.title)}</b>
-            <pre>${escapeHtml(f.detail||"")}</pre>
-          </div>`).join("") || '<div class="empty">Sin hallazgos registrados</div>'}
+      <div>
+        <p class="section-title">Hallazgos</p>
+        <div class="findings">
+          ${(r.findings||[]).map(f => `
+            <div class="f-card f-${f.level}">
+              <div class="f-head"><span class="f-tag">${escapeHtml(f.module)}</span></div>
+              <b>${escapeHtml(f.title)}</b>
+              <pre>${escapeHtml(f.detail||"")}</pre>
+            </div>`).join("") || '<div class="empty" style="padding:40px 10px">Sin hallazgos registrados</div>'}
+        </div>
       </div>
     </div>
   `;
 
   if(chartInstance) chartInstance.destroy();
   const ctx = document.getElementById("radar").getContext("2d");
+  const accentColor = r.verdict === "red" ? "#ff5461" : r.verdict === "yellow" ? "#ffc53d" : "#3ddc97";
   chartInstance = new Chart(ctx, {
     type: "radar",
     data: {
@@ -177,22 +339,37 @@ function showDetail(i){
       datasets: [{
         label: "Resultado",
         data: [counts.red, counts.yellow, counts.info],
-        backgroundColor: "rgba(231,76,60,0.15)",
-        borderColor: "#e74c3c",
-        pointBackgroundColor: "#e74c3c"
+        backgroundColor: accentColor + "22",
+        borderColor: accentColor,
+        borderWidth: 2,
+        pointBackgroundColor: accentColor,
+        pointRadius: 4
       }]
     },
     options: {
+      responsive:true,
       scales: {
         r: {
-          angleLines:{color:"#232838"}, grid:{color:"#232838"},
-          pointLabels:{color:"#8b92a5", font:{size:11}},
+          angleLines:{color:"rgba(255,255,255,0.08)"}, grid:{color:"rgba(255,255,255,0.08)"},
+          pointLabels:{color:"#868ea3", font:{size:11, family:"Sora"}},
           ticks:{display:false}
         }
       },
       plugins: { legend: { display:false } }
     }
   });
+}
+
+function generateCode(){
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for(let i=0;i<8;i++) code += chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById("genCode").textContent = code;
+  document.getElementById("genBox").style.display = "block";
+}
+function copyGenCode(){
+  const code = document.getElementById("genCode").textContent;
+  navigator.clipboard.writeText(code).then(() => alert("Código copiado: " + code));
 }
 
 function escapeHtml(s){
