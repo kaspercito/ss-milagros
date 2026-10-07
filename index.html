@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SS Dashboard v2.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06070b;
+  --panel: rgba(18,21,32,0.82);
+  --border: rgba(255,255,255,0.07);
+  --text: #eef0f5;
+  --muted: #828aa0;
+  --red: #ff4d5a;
+  --yellow: #ffbe38;
+  --green: #35d48c;
+  --blue: #6c8fff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── LOGIN ── */
+.login-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.login-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 380px;
+  width: 90%;
+}
+
+.login-box h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.login-box .subtitle {
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Sora';
+  font-size: 14px;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--blue), #a46bff);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Sora';
+}
+
+.login-box button:hover {
+  opacity: 0.9;
+}
+
+/* ── LAYOUT PRINCIPAL ── */
+.hidden { display: none !important; }
+.wrap { max-width: 1300px; margin: auto; padding: 24px; }
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+header h1 { font-size: 24px; }
+header .controls { display: flex; gap: 12px; }
+
+.btn {
+  padding: 10px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'Sora';
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.btn:hover { border-color: rgba(255,255,255,0.15); }
+.btn-red { color: var(--red); }
+.btn-danger {
+  background: rgba(255,77,90,0.1);
+  border-color: rgba(255,77,90,0.3);
+  color: var(--red);
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Sora';
+}
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+}
+
+@media(max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ── LIST ── */
+.list { max-height: 70vh; overflow-y: auto; }
+.list-hd {
+  padding: 12px 16px;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+}
+
+.item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.13s;
+}
+
+.item:hover { background: rgba(255,255,255,0.03); }
+.item.active { background: rgba(108,143,255,0.1); }
+
+.item .code {
+  font-weight: 700;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.item .meta {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.b-red { background: rgba(255,77,90,0.2); color: var(--red); }
+.b-yellow { background: rgba(255,190,56,0.2); color: var(--yellow); }
+.b-green { background: rgba(53,212,140,0.2); color: var(--green); }
+
+/* ── DETAIL PANEL ── */
+.detail {
+  padding: 24px;
+  min-height: 500px;
+}
+
+.verdict {
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.verdict.red { background: rgba(255,77,90,0.15); color: var(--red); }
+.verdict.yellow { background: rgba(255,190,56,0.15); color: var(--yellow); }
+.verdict.green { background: rgba(53,212,140,0.15); color: var(--green); }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  background: rgba(0,0,0,0.2);
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 3px solid var(--blue);
+}
+
+.info-item .label {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.info-item .value {
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 4px;
+  word-break: break-word;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.finding {
+  background: rgba(0,0,0,0.2);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 3px solid;
+}
+
+.finding.red { border-left-color: var(--red); }
+.finding.yellow { border-left-color: var(--yellow); }
+.finding.fp { border-left-color: var(--muted); }
+
+.finding-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.finding-detail {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.fps-warning {
+  background: rgba(164,107,255,0.1);
+  border-left-color: #a46bff;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #a46bff;
+  margin-top: 4px;
+}
+
+/* ── GUIDE ── */
+.guide-panel {
+  background: linear-gradient(135deg, rgba(108,143,255,0.08), rgba(164,107,255,0.05));
+  border: 1px solid rgba(108,143,255,0.2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.guide-panel h3 {
+  color: var(--blue);
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.guide-panel p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.guide-panel code {
+  background: rgba(0,0,0,0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: var(--blue);
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  transition: color 0.15s;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── EMPTY STATE ── */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+
+.empty-icon { font-size: 48px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>🛡 SS Dashboard</h1>
+    <p class="subtitle">Ingresa para ver los escaneos</p>
+    <input id="inputUser" type="text" placeholder="Usuario" autocomplete="off">
+    <input id="inputPass" type="password" placeholder="Contraseña">
+    <button onclick="doLogin()">Ingresar</button>
+    <p style="color: var(--muted); font-size: 11px; margin-top: 12px; text-align: center;">
+      Credenciales por defecto: admin / admin2024
+    </p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="wrap hidden" id="mainApp">
+  <header>
+    <div>
+      <h1>🛡 SS Dashboard v2.1</h1>
+      <p style="color: var(--muted); font-size: 12px;">Gestor de escaneos Minecraft</p>
+    </div>
+    <div class="controls">
+      <button class="btn" onclick="toggleGuide()">📖 Guía</button>
+      <button class="btn btn-red" onclick="doLogout()">Salir</button>
+    </div>
+  </header>
+
+  <!-- GUIDE -->
+  <div id="guidePanel" class="guide-panel hidden">
+    <h3>📖 Cómo usar</h3>
+    <p><b>Para ejecutar un cheat (solo si lo necesitas para investigar):</b></p>
+    <p>1. Copia el archivo .DLL a una carpeta temporal</p>
+    <p>2. Abre PowerShell como Admin</p>
+    <p>3. Ejecuta: <code>[Reflection.Assembly]::Load([IO.File]::ReadAllBytes("C:\ruta\archivo.dll"))</code></p>
+    <p style="margin-top: 14px;"><b>Interpretando resultados:</b></p>
+    <p>🔴 <b>Rojo:</b> Evidencia fuerte de cheating — revisar hallazgos</p>
+    <p>🟡 <b>Amarillo:</b> Señales sospechosas — preguntar al jugador</p>
+    <p>🟢 <b>Verde:</b> Sin coincidencias con firmas conocidas</p>
+    <p><b>⚠️ Falsos Positivos:</b> Algunos items pueden ser legítimos (skins, resource packs)</p>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <input type="text" class="search" id="searchBox" placeholder="Buscar por código, nick, país...">
+    <button class="btn" onclick="refreshList()">🔄 Actualizar</button>
+    <button class="btn btn-danger" onclick="deleteSelected()">🗑 Borrar</button>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+    <!-- LIST -->
+    <div class="panel">
+      <div class="list-hd">ESCANEOS</div>
+      <div class="list" id="scanList"></div>
+    </div>
+
+    <!-- DETAIL -->
+    <div class="panel">
+      <div class="detail" id="detail">
+        <div class="empty">
+          <div class="empty-icon">👈</div>
+          <p>Selecciona un escaneo para ver detalles</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────
+const VALID_USER = "admin";
+const VALID_PASS = "admin2024";
+const GITHUB_URL = "https://api.github.com/repos/kaspercito/ss-milagros/contents/data";
+const GITHUB_TOKEN = "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";
+
+let scans = [];
+let selectedIdx = -1;
+
+// ── LOGIN ──────────────────────────────────────────────────────
+function doLogin() {
+  const user = document.getElementById("inputUser").value;
+  const pass = document.getElementById("inputPass").value;
+  
+  if (user === VALID_USER && pass === VALID_PASS) {
+    localStorage.setItem("ssAuth", "true");
+    showApp();
+  } else {
+    alert("Credenciales inválidas");
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem("ssAuth");
+  location.reload();
+}
+
+function showApp() {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("mainApp").classList.remove("hidden");
+  loadScans();
+}
+
+function checkAuth() {
+  if (localStorage.getItem("ssAuth") === "true") {
+    showApp();
+  }
+}
+
+// ── CARGAR ESCANEOS DESDE GITHUB ────────────────────────────────
+async function loadScans() {
+  try {
+    const response = await fetch(GITHUB_URL, {
+      headers: { "Authorization": `Bearer ${GITHUB_TOKEN}` }
+    });
+    const files = await response.json();
+    
+    scans = [];
+    
+    for (const file of files) {
+      if (file.name.endsWith(".json")) {
+        const content = await fetch(file.download_url).then(r => r.text());
+        const data = JSON.parse(atob(content));
+        scans.push({ name: file.name, data });
+      }
+    }
+    
+    scans.sort((a, b) => new Date(b.data.timestamp) - new Date(a.data.timestamp));
+    renderList();
+  } catch (err) {
+    console.error("Error cargando escaneos:", err);
+    document.getElementById("scanList").innerHTML = 
+      '<div class="empty"><p>Error al conectar con GitHub</p></div>';
+  }
+}
+
+// ── RENDERIZAR LISTA ────────────────────────────────────────────
+function renderList(filtered = scans) {
+  const list = document.getElementById("scanList");
+  
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty"><p>Sin escaneos</p></div>';
+    return;
+  }
+  
+  list.innerHTML = filtered.map((scan, i) => {
+    const d = scan.data;
+    const nick = d.minecraft?.nick || "?";
+    const verdict = d.verdict;
+    const badgeClass = `b-${verdict}`;
+    
+    return `
+      <div class="item" onclick="showDetail(${scans.indexOf(scan)})">
+        <div class="code">${d.code}</div>
+        <div class="meta">🎮 ${nick}</div>
+        <div class="meta">📍 ${d.pc?.country || "?"}</div>
+        <div class="meta">${d.timestamp}</div>
+        <span class="badge ${badgeClass}">
+          ${verdict === "red" ? "🔴 Cheating" : verdict === "yellow" ? "🟡 Sospechoso" : "🟢 Limpio"}
+        </span>
+      </div>
+    `;
+  }).join("");
+}
+
+// ── BUSCAR ──────────────────────────────────────────────────────
+document.getElementById("searchBox")?.addEventListener("input", (e) => {
+  const q = e.target.value.toLowerCase();
+  const filtered = scans.filter(s => {
+    const d = s.data;
+    return (d.code?.toLowerCase().includes(q) ||
+            d.minecraft?.nick?.toLowerCase().includes(q) ||
+            d.pc?.country?.toLowerCase().includes(q) ||
+            s.name.includes(q));
+  });
+  renderList(filtered);
+});
+
+// ── MOSTRAR DETALLE ─────────────────────────────────────────────
+function showDetail(i) {
+  selectedIdx = i;
+  const scan = scans[i];
+  const d = scan.data;
+  
+  // Contar hallazgos
+  const reds = d.findings?.filter(f => f.level === "red" && !f.probable_fp).length || 0;
+  const yellows = d.findings?.filter(f => f.level === "yellow" && !f.probable_fp).length || 0;
+  const fps = d.findings?.filter(f => f.probable_fp).length || 0;
+  
+  // Verdictо
+  const verdictText = d.verdict === "red" ? "🔴 CHEATING" : 
+                      d.verdict === "yellow" ? "🟡 SOSPECHOSO" : "🟢 LIMPIO";
+  
+  let html = `
+    <div class="verdict ${d.verdict}">${verdictText}</div>
+    
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="label">Código</div>
+        <div class="value">${d.code}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Fecha</div>
+        <div class="value">${d.timestamp}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Nick Minecraft</div>
+        <div class="value">${d.minecraft?.nick || "?"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Alts Detectadas</div>
+        <div class="value">${d.minecraft?.alts?.join(", ") || "Ninguno"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">País</div>
+        <div class="value">${d.pc?.country}${d.pc?.city ? ", " + d.pc.city : ""}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Dispositivo</div>
+        <div class="value">${d.pc?.hostname}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Usuario Windows</div>
+        <div class="value">${d.pc?.user || "?"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">SO Personalizado</div>
+        <div class="value">${d.pc?.custom_os?.length ? d.pc.custom_os.join(", ") : "Estándar"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Papelera</div>
+        <div class="value" style="font-size: 11px;">${d.system?.recycle_bin || "?"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Runtime Minecraft</div>
+        <div class="value" style="font-size: 11px;">${d.minecraft?.runtime || "?"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Admin</div>
+        <div class="value">${d.admin ? "✓ Sí" : "✗ No"}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Duración Scan</div>
+        <div class="value">${d.duration}s</div>
+      </div>
+    </div>
+    
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">Hallazgos</button>
+      <button class="tab-btn" onclick="switchTab(1)">Archivos Recientes</button>
+      <button class="tab-btn" onclick="switchTab(2)">Dispositivos USB</button>
+    </div>
+    
+    <div class="tab-content active" id="tab0">
+      <div class="section-title">HALLAZGOS (${reds} rojo, ${yellows} amarillo, ${fps} FP)</div>
+  `;
+  
+  if (!d.findings?.length) {
+    html += `<div class="empty"><p>Sin hallazgos</p></div>`;
+  } else {
+    d.findings.forEach(f => {
+      const cls = f.probable_fp ? "fp" : f.level;
+      html += `
+        <div class="finding ${cls}">
+          <div class="finding-title">${f.module}: ${f.title}</div>
+          <div class="finding-detail">${f.detail || "-"}</div>
+          ${f.probable_fp ? '<div class="fps-warning">⚠️ Probable falso positivo</div>' : ''}
+        </div>
+      `;
+    });
+  }
+  
+  html += `</div>`;
+  
+  // Tab 2: Archivos recientes
+  html += `<div class="tab-content" id="tab1">
+    <div class="section-title">ARCHIVOS ABIERTOS RECIENTEMENTE</div>`;
+  
+  if (d.system?.recent_files?.length) {
+    d.system.recent_files.forEach(f => {
+      html += `<div style="padding: 8px; background: rgba(0,0,0,0.2); border-radius: 6px; margin-bottom: 6px; font-size: 12px;">${f}</div>`;
+    });
+  } else {
+    html += `<div class="empty"><p>Sin datos</p></div>`;
+  }
+  
+  html += `</div>`;
+  
+  // Tab 3: USB
+  html += `<div class="tab-content" id="tab2">
+    <div class="section-title">EVENTOS USB</div>`;
+  
+  if (d.usb_events?.length) {
+    d.usb_events.slice(0, 20).forEach(e => {
+      html += `<div style="padding: 8px; background: rgba(0,0,0,0.2); border-radius: 6px; margin-bottom: 6px; font-size: 11px;">
+        <b>${e.t}</b> — ${e.e === "CONECTADO" ? "✓" : "✕"} ${e.m}
+      </div>`;
+    });
+  } else {
+    html += `<div class="empty"><p>Sin eventos</p></div>`;
+  }
+  
+  html += `</div>`;
+  
+  document.getElementById("detail").innerHTML = html;
+  
+  // Marcar como activo
+  document.querySelectorAll(".item").forEach((el, idx) => {
+    el.classList.toggle("active", idx === i);
+  });
+}
+
+function switchTab(idx) {
+  document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+  
+  document.getElementById(`tab${idx}`).classList.add("active");
+  document.querySelectorAll(".tab-btn")[idx].classList.add("active");
+}
+
+// ── BORRAR ESCANEO ──────────────────────────────────────────────
+async function deleteSelected() {
+  if (selectedIdx < 0) {
+    alert("Selecciona un escaneo primero");
+    return;
+  }
+  
+  if (!confirm("¿Borrar este escaneo?")) return;
+  
+  const scan = scans[selectedIdx];
+  
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/kaspercito/ss-milagros/contents/data/${scan.name}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${GITHUB_TOKEN}`,
+          "Accept": "application/vnd.github+json"
+        },
+        body: JSON.stringify({
+          message: `SS v2.1: Borrado ${scan.name}`,
+          sha: await getSHA(scan.name),
+          branch: "main"
+        })
+      }
+    );
+    
+    if (response.ok) {
+      alert("Borrado ✓");
+      scans.splice(selectedIdx, 1);
+      selectedIdx = -1;
+      renderList();
+      document.getElementById("detail").innerHTML = 
+        '<div class="empty"><div class="empty-icon">👈</div><p>Selecciona un escaneo</p></div>';
+    } else {
+      alert("Error al borrar");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error de conexión");
+  }
+}
+
+async function getSHA(filename) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/kaspercito/ss-milagros/contents/data/${filename}`,
+      { headers: { "Authorization": `Bearer ${GITHUB_TOKEN}` } }
+    );
+    const data = await response.json();
+    return data.sha;
+  } catch {
+    return null;
+  }
+}
+
+function refreshList() {
+  loadScans();
+}
+
+function toggleGuide() {
+  document.getElementById("guidePanel").classList.toggle("hidden");
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+window.addEventListener("load", checkAuth);
+</script>
+</body>
+</html>
