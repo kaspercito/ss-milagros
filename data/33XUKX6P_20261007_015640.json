@@ -1,0 +1,35 @@
+{
+  "code": "33XUKX6P",
+  "timestamp": "2026-10-07 01:56:40",
+  "verdict": "yellow",
+  "duration": 1,
+  "pc": {
+    "hostname": "DESKTOP-2H4NTC4",
+    "user": "Miguel",
+    "os": "Windows-11-10.0.26200-SP0"
+  },
+  "findings": [
+    {
+      "level": "info",
+      "module": "Procesos",
+      "title": "Minecraft (javaw.exe) no esta abierto",
+      "detail": "Pidele que abra Minecraft para poder escanear la memoria."
+    },
+    {
+      "level": "yellow",
+      "module": "Evasion",
+      "title": "Servicio detenido: PcaSvc",
+      "detail": "Estos servicios guardan rastros usados en SS. Preguntar por que esta apagado."
+    }
+  ],
+  "extra": [
+    {
+      "title": "Archivos revisados",
+      "body": "3281 archivos recorridos, 113 hasheados (ultimos 30 dias)"
+    },
+    {
+      "title": "Ultimos 25 programas ejecutados (Prefetch)",
+      "body": "2026-10-07 01:56:34  CONSENT.EXE-1A8D0661.pf\n2026-10-07 01:56:19  CODE.EXE-39772249.pf\n2026-10-07 01:56:19  CODE.EXE-39772245.pf\n2026-10-07 01:56:17  CODE.EXE-39772247.pf\n2026-10-07 01:56:17  CODE.EXE-39772250.pf\n2026-10-07 01:56:00  SEARCHFILTERHOST.EXE-DDB228B1.pf\n2026-10-07 01:55:57  SEARCHPROTOCOLHOST.EXE-23DB6E8D.pf\n2026-10-07 01:55:56  WMIPRVSE.EXE-8DDA8D43.pf\n2026-10-07 01:55:51  OPENCONSOLE.EXE-AD62FAD0.pf\n2026-10-07 01:55:51  CONHOST.EXE-E6AFC9F5.pf\n2026-10-07 01:55:50  SSHELPER.EXE-346EB6F5.pf\n2026-10-07 01:55:49  WEVTUTIL.EXE-7B8F2A23.pf\n2026-10-07 01:55:46  POWERSHELL.EXE-3A393AF1.pf\n2026-10-07 01:54:58  MICROSOFTEDGEUPDATE.EXE-E6A90AE0.pf\n2026-10-07 01:54:47  CLAUDE.EXE-59C53A9C.pf\n2026-10-07 01:53:17  CODE.EXE-3977224F.pf\n2026-10-07 01:52:57  PYTHON.EXE-79821542.pf\n2026-10-07 01:52:56  PYTHON.EXE-0DF09CFA.pf\n2026-10-07 01:52:13  BRAVE.EXE-C5D6C026.pf\n2026-10-07 01:52:01  PIP.EXE-C67622D9.pf\n2026-10-07 01:51:59  SVCHOST.EXE-17439280.pf\n2026-10-07 01:51:59  WINDOWSTERMINAL.EXE-3B6FAC1A.pf\n2026-10-07 01:51:49  TASKHOSTW.EXE-0F00F8CF.pf\n2026-10-07 01:51:29  COPILOT-RUNTIME.EXE-EA434AB4.pf\n2026-10-07 01:51:27  CODE.EXE-39772246.pf"
+    }
+  ]
+}
