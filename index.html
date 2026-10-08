@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SS Dashboard v3.3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06070b; --panel: rgba(18,21,32,0.82); --border: rgba(255,255,255,0.07);
+  --text: #eef0f5; --muted: #828aa0; --red: #ff4d5a; --yellow: #ffbe38;
+  --green: #35d48c; --blue: #6c8fff; --purple: #a46bff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.hidden { display: none !important; }
+button, input, select { font-family: 'Sora', sans-serif; }
+
+/* LOGIN */
+.login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.login-box { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 36px; max-width: 420px; width: 92%; }
+.login-box h1 { font-size: 22px; margin-bottom: 6px; text-align: center; }
+.login-box .subtitle { color: var(--muted); text-align: center; margin-bottom: 22px; font-size: 13px; }
+.login-box label { display: block; font-size: 11px; color: var(--muted); margin: 0 0 6px 2px; text-transform: uppercase; font-weight: 600; }
+.login-box input { width: 100%; padding: 12px 14px; margin-bottom: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; }
+.login-box input:focus, .search:focus, .modal input:focus { outline: none; border-color: var(--blue); }
+.login-box .hint { color: var(--muted); font-size: 11px; line-height: 1.5; margin-top: 14px; }
+.login-err { color: var(--red); font-size: 12px; margin-bottom: 12px; white-space: pre-wrap; }
+.btn-primary { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--blue), var(--purple)); border: none; border-radius: 10px; color: #fff; font-weight: 600; cursor: pointer; font-size: 14px; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:disabled { opacity: .5; cursor: wait; }
+
+/* LAYOUT */
+.wrap { max-width: 1300px; margin: auto; padding: 24px; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; }
+header h1 { font-size: 24px; }
+header .sub { color: var(--muted); font-size: 12px; }
+header .controls { display: flex; gap: 10px; }
+.btn { padding: 10px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; color: var(--text); cursor: pointer; font-size: 13px; transition: all .15s; white-space: nowrap; }
+.btn:hover { border-color: rgba(255,255,255,0.18); }
+.btn-red { color: var(--red); }
+.btn-danger { background: rgba(255,77,90,0.1); border-color: rgba(255,77,90,0.3); color: var(--red); }
+.btn-gen { background: linear-gradient(135deg, var(--blue), var(--purple)); border: none; color: #fff; font-weight: 600; }
+.toolbar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.search { flex: 1; min-width: 200px; padding: 10px 14px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; }
+.chips { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+.chip { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+.chip.active { color: var(--text); border-color: var(--blue); background: rgba(108,143,255,.12); }
+.chips .stamp { margin-left: auto; color: var(--muted); font-size: 11px; }
+.grid { display: grid; grid-template-columns: 340px 1fr; gap: 18px; }
+@media(max-width: 900px) { .grid { grid-template-columns: 1fr; } .wrap { padding: 16px; } header { flex-wrap: wrap; } }
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+/* LISTA */
+.list { max-height: 72vh; overflow-y: auto; }
+.list-hd { padding: 12px 16px; font-size: 10px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 700; display: flex; justify-content: space-between; }
+.item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .13s; }
+.item:hover { background: rgba(255,255,255,0.03); }
+.item.active { background: rgba(108,143,255,0.12); }
+.item .code { font-weight: 700; font-size: 13px; font-family: ui-monospace, Consolas, monospace; }
+.item .meta { color: var(--muted); font-size: 11px; margin-top: 3px; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; margin-top: 6px; }
+.b-red { background: rgba(255,77,90,0.2); color: var(--red); }
+.b-yellow { background: rgba(255,190,56,0.2); color: var(--yellow); }
+.b-green { background: rgba(53,212,140,0.2); color: var(--green); }
+.b-pending { background: rgba(108,143,255,0.2); color: var(--blue); }
+.b-local { background: rgba(164,107,255,0.2); color: var(--purple); margin-left: 6px; }
+
+/* DETALLE */
+.detail { padding: 24px; min-height: 500px; }
+.verdict { padding: 22px; border-radius: 12px; margin-bottom: 18px; text-align: center; font-size: 30px; font-weight: 800; }
+.verdict.red { background: rgba(255,77,90,0.15); color: var(--red); }
+.verdict.yellow { background: rgba(255,190,56,0.15); color: var(--yellow); }
+.verdict.green { background: rgba(53,212,140,0.15); color: var(--green); }
+.verdict.pending { background: rgba(108,143,255,0.12); color: var(--blue); }
+.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+@media(max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+.info-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border-left: 3px solid var(--blue); }
+.info-item .label { color: var(--muted); font-size: 11px; text-transform: uppercase; }
+.info-item .value { font-weight: 600; font-size: 13px; margin-top: 4px; word-break: break-word; }
+.section-title { font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.finding { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--muted); }
+.finding.red { border-left-color: var(--red); }
+.finding.yellow { border-left-color: var(--yellow); }
+.finding.info { border-left-color: var(--blue); }
+.finding.fp { border-left-color: var(--muted); opacity: .8; }
+.finding-title { font-weight: 600; margin-bottom: 4px; font-size: 13px; }
+
+/* PRUEBAS / HALLAZGOS ORGANIZADOS */
+.evidence { background: rgba(255,77,90,.08); border: 1px solid rgba(255,77,90,.35); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+.evidence.yellow { background: rgba(255,190,56,.08); border-color: rgba(255,190,56,.35); }
+.evidence.green { background: rgba(53,212,140,.08); border-color: rgba(53,212,140,.3); }
+.ev-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; font-size: 13px; }
+.ev-item { display: flex; gap: 10px; padding: 10px; background: rgba(0,0,0,.25); border-radius: 8px; margin-bottom: 8px; }
+.ev-n { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.fbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.fbar input { flex: 1; min-width: 160px; padding: 8px 12px; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 12px; }
+.fbar input:focus { outline: none; border-color: var(--blue); }
+.fchip { padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; cursor: pointer; }
+.fchip.active { color: var(--text); border-color: var(--blue); background: rgba(108,143,255,.12); }
+details.mod { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; background: rgba(0,0,0,.12); }
+details.mod > summary { cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: 13px; display: flex; gap: 8px; align-items: center; list-style: none; }
+details.mod > summary::-webkit-details-marker { display: none; }
+details.mod > summary::before { content: "▸"; color: var(--muted); }
+details.mod[open] > summary::before { content: "▾"; }
+details.mod .mod-body { padding: 0 12px 4px; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.badge.red { background: rgba(255,77,90,.16); color: var(--red); }
+.badge.yellow { background: rgba(255,190,56,.16); color: var(--yellow); }
+.badge.info { background: rgba(108,143,255,.16); color: var(--blue); }
+.badge.fp { background: rgba(130,138,160,.16); color: var(--muted); }
+.finding.hide, details.mod.hide { display: none; }
+.finding .copy1 { float: right; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; font-size: 10px; padding: 2px 7px; cursor: pointer; }
+.finding .copy1:hover { color: var(--text); }
+
+
+details.how { margin-top: 8px; border: 1px dashed rgba(108,143,255,.45); border-radius: 8px; background: rgba(108,143,255,.05); }
+details.how > summary { cursor: pointer; padding: 7px 10px; font-size: 12px; font-weight: 600; color: var(--blue); }
+.how-body { padding: 4px 12px 12px; font-size: 12px; line-height: 1.55; }
+.how-body ol { margin: 8px 0 0 18px; } .how-body li { margin-bottom: 6px; }
+.how-title { font-weight: 700; margin-bottom: 4px; }
+.how-body code, .how-path { font-family: ui-monospace, Consolas, monospace; font-size: 11px; background: rgba(0,0,0,.35); padding: 2px 6px; border-radius: 5px; word-break: break-all; }
+.how-file { background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px; margin: 8px 0; }
+.how-file .actions { margin-top: 8px; }
+.warnbox { background: rgba(255,190,56,.1); border: 1px solid rgba(255,190,56,.35); border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 12px; }
+.kv { color: var(--muted); } .kv b { color: var(--text); font-weight: 600; }
+
+.finding-detail { font-size: 12px; color: var(--muted); white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, Consolas, monospace; }
+.fps-warning { background: rgba(164,107,255,0.1); padding: 6px 8px; border-radius: 6px; font-size: 11px; color: var(--purple); margin-top: 6px; display: inline-block; }
+.row { padding: 8px 10px; background: rgba(0,0,0,0.2); border-radius: 6px; margin-bottom: 6px; font-size: 12px; font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
+.row.usb { font-size: 11px; }
+.tabs { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; }
+.tabs { flex-wrap: wrap; }
+.tab-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 600; padding: 8px 12px; border-bottom: 2px solid transparent; }
+.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 13px; }
+.empty-icon { font-size: 44px; margin-bottom: 12px; }
+.err-box { margin: 16px; padding: 14px; border-radius: 10px; background: rgba(255,77,90,.08); border: 1px solid rgba(255,77,90,.3); color: var(--red); font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+.err-box .btn { margin-top: 10px; margin-right: 8px; color: var(--text); }
+.bigcode { font-family: ui-monospace, Consolas, monospace; font-size: 38px; font-weight: 800; letter-spacing: 2px; text-align: center; padding: 22px 10px; background: rgba(0,0,0,.3); border: 1px dashed rgba(108,143,255,.5); border-radius: 12px; margin: 14px 0; word-break: break-all; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+pre.raw { background: rgba(0,0,0,.3); padding: 14px; border-radius: 8px; font-size: 11px; overflow: auto; max-height: 520px; color: var(--muted); }
+
+/* GUIA / MODAL / TOAST */
+.guide-panel { background: linear-gradient(135deg, rgba(108,143,255,0.08), rgba(164,107,255,0.05)); border: 1px solid rgba(108,143,255,0.2); border-radius: 12px; padding: 20px; margin-bottom: 18px; }
+.guide-panel h3 { color: var(--blue); margin-bottom: 12px; font-size: 14px; }
+.guide-panel p { font-size: 12px; line-height: 1.7; color: var(--muted); margin-bottom: 6px; }
+.guide-panel code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, Consolas, monospace; color: var(--blue); }
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; z-index: 5000; }
+.modal { background: #0f111a; border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 92%; max-width: 460px; }
+.modal h2 { font-size: 18px; margin-bottom: 6px; }
+.modal p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.modal input { width: 100%; padding: 12px 14px; margin: 14px 0 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: #151827; border: 1px solid var(--border); padding: 10px 18px; border-radius: 10px; font-size: 13px; z-index: 6000; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+.toast.err { border-color: rgba(255,77,90,.5); color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <form class="login-box" id="loginForm" autocomplete="off">
+    <h1>🛡 SS Dashboard</h1>
+    <p class="subtitle">Conecta con el repositorio donde se guardan los escaneos</p>
+    <label for="inRepo">Repositorio (dueño/nombre)</label>
+    <input id="inRepo" type="text" value="kaspercito/ss-milagros" spellcheck="false">
+    <label for="inToken">Token de GitHub</label>
+    <input id="inToken" type="password" placeholder="github_pat_..." spellcheck="false">
+    <div class="login-err hidden" id="loginErr"></div>
+    <button class="btn-primary" id="loginBtn" type="submit">Ingresar</button>
+    <p class="hint">El token se guarda solo en este navegador y nunca está escrito en el código de la página.
+    Usa un token <b>fine-grained</b> limitado a este repositorio con permiso <b>Contents: Read and write</b>.</p>
+  </form>
+</div>
+
+<!-- APP -->
+<div class="wrap hidden" id="mainApp">
+  <header>
+    <div>
+      <h1>🛡 SS Dashboard v3.3</h1>
+      <p class="sub">Gestor de escaneos Minecraft · <span id="repoLabel"></span></p>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btnGuide">📖 Guía</button>
+      <button class="btn btn-red" id="btnLogout">Salir</button>
+    </div>
+  </header>
+
+  <div id="guidePanel" class="guide-panel hidden">
+    <h3>📖 Cómo se usa</h3>
+    <p><b>1.</b> Pulsa <b>➕ Generar código</b> (opcional: pon una nota, por ejemplo el nick del jugador).</p>
+    <p><b>2.</b> Pásale al jugador el <code>SSHelper.exe</code> y el código (formato <code>SS-ABCD-1234</code>).</p>
+    <p><b>3.</b> El jugador abre el programa (mejor como administrador), escribe el código y espera el escaneo.</p>
+    <p><b>4.</b> El resultado aparece aquí solo (se actualiza cada 30 s). El código pasa de ⏳ Pendiente a un veredicto.</p>
+    <p style="margin-top:10px"><b>Veredictos:</b> 🔴 evidencia fuerte · 🟡 señales sospechosas, pregunta al jugador · 🟢 sin coincidencias con las firmas conocidas.
+    Los hallazgos con <i>probable falso positivo</i> no cuentan para el veredicto, pero revísalos.</p>
+    <p><b>Si el envío falla</b> el programa guarda un .json local: usa <b>📥 Importar</b> para verlo aquí.</p>
+    <p><b>Firmas propias:</b> sube <code>config/signatures.json</code> al repo con listas <code>strong</code>, <code>weak</code>, <code>ambiguous</code>, <code>tools</code>, <code>evasion</code>; el exe las lee sin recompilar.</p>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" class="search" id="searchBox" placeholder="Buscar por código, nick, país, nota, PC...">
+    <button class="btn btn-gen" id="btnGen">➕ Generar código</button>
+    <button class="btn" id="btnRefresh">🔄 Actualizar</button>
+    <button class="btn" id="btnImport">📥 Importar</button>
+    <button class="btn btn-danger" id="btnDelete">🗑 Borrar</button>
+    <input type="file" id="fileImport" accept=".json,application/json" class="hidden">
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="list-hd"><span>ESCANEOS</span><span id="countLabel"></span></div>
+      <div class="list" id="scanList"></div>
+    </div>
+    <div class="panel">
+      <div class="detail" id="detail"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+"use strict";
+// ── CONFIG ───────────────────────────────────────────────────────
+const DEFAULT_BRANCH = "main";
+const POLL_MS = 30000;
+const LEVELS = ["red", "yellow", "green"];
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sin 0/O/1/I
+
+// ── UTILIDADES ───────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
+function b64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = ""; bytes.forEach((b) => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+function toast(msg, isErr) {
+  const t = document.createElement("div");
+  t.className = "toast" + (isErr ? " err" : "");
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), isErr ? 5000 : 2600);
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); toast("Copiado ✓"); }
+  catch {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast("Copiado ✓"); } catch { toast("No se pudo copiar", true); }
+    ta.remove();
+  }
+}
+function genCode() {
+  const r = new Uint32Array(8); crypto.getRandomValues(r);
+  const s = Array.from(r, (n) => CODE_ALPHABET[n % CODE_ALPHABET.length]).join("");
+  return `SS-${s.slice(0, 4)}-${s.slice(4)}`;
+}
+
+// ── ESTADO ───────────────────────────────────────────────────────
+let cfg = null;                 // { repo, token, branch }
+let scanCache = new Map();      // name -> { sha, data }
+let codeCache = new Map();      // name -> { sha, data }
+let entries = [];               // lista unificada
+let localEntries = [];          // importados desde archivo
+let selectedKey = null;
+let filter = "all";
+let loading = false;
+let lastLoad = null;
+let loadError = null;
+let pollTimer = null;
+
+// ── API GITHUB ───────────────────────────────────────────────────
+function explain(status, data) {
+  const msg = (data && data.message) ? ` — GitHub dice: "${data.message}"` : "";
+  if (status === 0) return "Sin conexión con GitHub (revisa tu internet o un bloqueador)." + msg;
+  if (status === 401) return "Token inválido, vencido o revocado (HTTP 401)." + msg + "\nGenera uno nuevo en GitHub → Settings → Developer settings → Fine-grained tokens.";
+  if (status === 403) return "El token no tiene permiso para este repositorio, o se superó el límite de GitHub (HTTP 403)." + msg;
+  if (status === 404) return "No se encontró el repositorio, o el token no tiene acceso a él (HTTP 404)." + msg;
+  if (status === 409) return "Conflicto al guardar: alguien modificó el archivo. Actualiza e intenta otra vez (HTTP 409).";
+  return `Error HTTP ${status}.` + msg;
+}
+async function api(method, path, body, raw) {
+  const headers = {
+    "Authorization": `Bearer ${cfg.token}`,
+    "Accept": raw ? "application/vnd.github.raw+json" : "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+  if (body) headers["Content-Type"] = "application/json";
+  try {
+    const res = await fetch(`https://api.github.com/repos/${cfg.repo}${path ? "/" + path : ""}`, {
+      method, headers, body: body ? JSON.stringify(body) : undefined, cache: "no-store",
+    });
+    if (raw && res.ok) return { status: res.status, text: await res.text() };
+    let data = null; try { data = await res.json(); } catch {}
+    return { status: res.status, data };
+  } catch (e) {
+    return { status: 0, data: { message: String(e) } };
+  }
+}
+const refQ = () => `?ref=${encodeURIComponent(cfg.branch)}`;
+
+// ── LOGIN ────────────────────────────────────────────────────────
+function showLoginError(msg) { const e = $("loginErr"); e.textContent = msg; e.classList.toggle("hidden", !msg); }
+
+$("loginForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const repo = $("inRepo").value.trim().replace(/^https?:\/\/github\.com\//, "").replace(/\.git$/, "").replace(/\/$/, "");
+  const token = $("inToken").value.trim();
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) return showLoginError("El repositorio debe tener el formato dueño/nombre.");
+  if (!token) return showLoginError("Pega tu token de GitHub.");
+  $("loginBtn").disabled = true; showLoginError("");
+  cfg = { repo, token, branch: DEFAULT_BRANCH };
+  const r = await api("GET", "");
+  $("loginBtn").disabled = false;
+  if (r.status !== 200) { cfg = null; return showLoginError(explain(r.status, r.data)); }
+  if (r.data && r.data.default_branch) cfg.branch = r.data.default_branch;
+  store.set("ss.cfg", JSON.stringify(cfg));
+  if (r.data && r.data.permissions && r.data.permissions.push === false) toast("⚠ Este token solo puede leer: no podrás generar ni borrar.", true);
+  startApp();
+});
+
+function logout() { store.del("ss.cfg"); cfg = null; location.reload(); }
+function startApp() {
+  $("loginScreen").classList.add("hidden");
+  $("mainApp").classList.remove("hidden");
+  $("repoLabel").textContent = cfg.repo;
+  renderChips(); renderDetail();
+  loadAll();
+  clearInterval(pollTimer);
+  pollTimer = setInterval(() => { if (!document.hidden && !loading) loadAll(true); }, POLL_MS);
+}
+function boot() {
+  try { const saved = JSON.parse(store.get("ss.cfg") || "null"); if (saved && saved.token && saved.repo) { cfg = saved; startApp(); return; } } catch {}
+  $("loginScreen").classList.remove("hidden");
+}
+
+// ── CARGA DE DATOS ───────────────────────────────────────────────
+async function listDir(dir) {
+  const r = await api("GET", `contents/${dir}${refQ()}`);
+  if (r.status === 404) return { ok: true, files: [] };        // carpeta aún no existe: no es un error
+  if (r.status !== 200 || !Array.isArray(r.data)) return { ok: false, status: r.status, data: r.data };
+  return { ok: true, files: r.data.filter((f) => f.type === "file" && f.name.endsWith(".json")) };
+}
+async function loadJsonFiles(dir, files, cache) {
+  const names = new Set(files.map((f) => f.name));
+  for (const k of [...cache.keys()]) if (!names.has(k)) cache.delete(k);
+  const todo = files.filter((f) => !cache.has(f.name) || cache.get(f.name).sha !== f.sha);
+  let i = 0;
+  async function worker() {
+    while (i < todo.length) {
+      const f = todo[i++];
+      const r = await api("GET", `contents/${dir}/${encodeURIComponent(f.name)}${refQ()}`, null, true);
+      let data = null;
+      if (r.status === 200) { try { data = JSON.parse(r.text); } catch { data = { _broken: true }; } }
+      else data = { _broken: true, _status: r.status };
+      cache.set(f.name, { sha: f.sha, data });
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(6, todo.length) }, worker));
+}
+
+async function loadAll(silent) {
+  if (loading || !cfg) return;
+  loading = true; loadError = null;
+  if (!silent) renderList();
+  try {
+    const [d, c] = await Promise.all([listDir("data"), listDir("codes")]);
+    if (!d.ok || !c.ok) {
+      const bad = !d.ok ? d : c;
+      loadError = explain(bad.status, bad.data);
+    } else {
+      await Promise.all([loadJsonFiles("data", d.files, scanCache), loadJsonFiles("codes", c.files, codeCache)]);
+      lastLoad = new Date();
+    }
+  } catch (e) {
+    loadError = "Error inesperado: " + e;
+  }
+  loading = false;
+  buildEntries();
+  renderChips(); renderList();
+  if (selectedKey) {
+    const ce = current();
+    const sig = ce ? [ce.key, ce.sha || "", ce.data && ce.data.verdict, ce.data && ce.data.timestamp].join("|") : "";
+    if (sig !== _detailSig) renderDetail();      // no tocar la vista si no cambió nada (evita que salte de pestaña)
+  }
+}
+
+function buildEntries() {
+  const list = [];
+  const doneCodes = new Set();
+  for (const [name, v] of scanCache) {
+    const d = v.data;
+    if (!d || d._broken) continue;
+    const code = String(d.code || "");
+    doneCodes.add(code);
+    list.push({ key: "scan:" + name, kind: "scan", name, sha: v.sha, data: d, ts: Date.parse(String(d.timestamp).replace(" ", "T")) || 0, validCode: codeCache.has(code + ".json") });
+  }
+  for (const [name, v] of codeCache) {
+    const d = v.data;
+    if (!d || d._broken) continue;
+    if (d.status === "done" || doneCodes.has(String(d.code))) continue;
+    list.push({ key: "code:" + name, kind: "pending", name, sha: v.sha, data: d, ts: Date.parse(d.created) || 0 });
+  }
+  for (const l of localEntries) list.push(l);
+  list.sort((a, b) => b.ts - a.ts);
+  entries = list;
+}
+
+// ── LISTA ────────────────────────────────────────────────────────
+function entryLevel(e) { return e.kind === "pending" ? "pending" : (LEVELS.includes(e.data.verdict) ? e.data.verdict : "green"); }
+function matches(e, q) {
+  if (!q) return true;
+  const d = e.data;
+  const hay = [d.code, d.label, d.minecraft && d.minecraft.nick, d.pc && d.pc.country, d.pc && d.pc.hostname, d.pc && d.pc.user, e.name]
+    .filter(Boolean).join(" ").toLowerCase();
+  return hay.includes(q);
+}
+function renderChips() {
+  const count = (f) => entries.filter((e) => f === "all" ? true : entryLevel(e) === f).length;
+  const defs = [["all", "Todos"], ["red", "🔴 Cheating"], ["yellow", "🟡 Sospechoso"], ["green", "🟢 Limpio"], ["pending", "⏳ Pendientes"]];
+  $("chips").innerHTML = defs.map(([k, t]) => `<button class="chip ${filter === k ? "active" : ""}" data-f="${k}">${t} (${count(k)})</button>`).join("")
+    + `<span class="stamp">${loading ? "Actualizando…" : lastLoad ? "Actualizado " + lastLoad.toLocaleTimeString() : ""}</span>`;
+}
+function renderList() {
+  const box = $("scanList");
+  const q = $("searchBox").value.trim().toLowerCase();
+  const shown = entries.filter((e) => (filter === "all" || entryLevel(e) === filter) && matches(e, q));
+  $("countLabel").textContent = shown.length;
+  let html = "";
+  if (loadError) {
+    html += `<div class="err-box">❌ No se pudieron cargar los escaneos\n\n${esc(loadError)}<br>
+      <button class="btn" data-act="retry">Reintentar</button><button class="btn" data-act="relogin">Cambiar token</button></div>`;
+  }
+  if (!shown.length && !loadError) {
+    html += `<div class="empty"><p>${loading ? "Cargando…" : entries.length ? "Sin resultados" : "Aún no hay escaneos.<br>Genera un código para empezar."}</p></div>`;
+  }
+  html += shown.map((e) => {
+    const d = e.data, lvl = entryLevel(e);
+    const local = e.kind === "local" ? `<span class="badge b-local">archivo local</span>` : "";
+    if (e.kind === "pending") {
+      return `<div class="item ${selectedKey === e.key ? "active" : ""}" data-key="${esc(e.key)}">
+        <div class="code">${esc(d.code)}</div>
+        <div class="meta">${d.label ? "📝 " + esc(d.label) : "Esperando al jugador…"}</div>
+        <div class="meta">${esc(d.created ? new Date(d.created).toLocaleString() : "")}</div>
+        <span class="badge b-pending">⏳ Pendiente</span></div>`;
+    }
+    const text = lvl === "red" ? "🔴 Cheating" : lvl === "yellow" ? "🟡 Sospechoso" : "🟢 Limpio";
+    return `<div class="item ${selectedKey === e.key ? "active" : ""}" data-key="${esc(e.key)}">
+      <div class="code">${esc(d.code)}</div>
+      <div class="meta">🎮 ${esc(d.minecraft && d.minecraft.nick || "?")}</div>
+      <div class="meta">📍 ${esc(d.pc && d.pc.country || "?")}</div>
+      <div class="meta">${esc(d.timestamp)}</div>
+      <span class="badge b-${lvl}">${text}</span>${local}</div>`;
+  }).join("");
+  box.innerHTML = html;
+}
+
+// ── DETALLE ──────────────────────────────────────────────────────
+const current = () => entries.find((e) => e.key === selectedKey);
+
+function instructionsText(code) {
+  return `SS de Minecraft — 1) Deja Minecraft ABIERTO (dentro de un mundo/servidor). 2) Abre SSHelper.exe, acepta administrador y escribe este código: ${code}. No cierres programas ni borres archivos antes del escaneo.`;
+}
+
+function renderDetail() {
+  _fl = "all";
+  const box = $("detail");
+  const e = current();
+  _detailSig = e ? [e.key, e.sha || "", e.data && e.data.verdict, e.data && e.data.timestamp].join("|") : "";
+  if (!e) { box.innerHTML = `<div class="empty"><div class="empty-icon">👈</div><p>Selecciona un escaneo para ver detalles</p></div>`; return; }
+  const d = e.data;
+  if (e.kind === "pending") {
+    box.innerHTML = `
+      <div class="verdict pending">⏳ PENDIENTE</div>
+      <p style="color:var(--muted);font-size:13px">El jugador todavía no ha ejecutado el programa con este código.</p>
+      <div class="bigcode">${esc(d.code)}</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Nota</div><div class="value">${esc(d.label || "—")}</div></div>
+        <div class="info-item"><div class="label">Creado</div><div class="value">${esc(d.created ? new Date(d.created).toLocaleString() : "?")}</div></div>
+      </div>
+      <div class="actions">
+        <button class="btn" data-act="copy" data-text="${esc(d.code)}">📋 Copiar código</button>
+        <button class="btn" data-act="copy" data-text="${esc(instructionsText(d.code))}">💬 Copiar instrucciones</button>
+      </div>`;
+    return;
+  }
+  const f = Array.isArray(d.findings) ? d.findings : [];
+  const real = f.filter((x) => !x.probable_fp && x.level !== "info");
+  const reds = real.filter((x) => x.level === "red").length;
+  const yellows = real.filter((x) => x.level === "yellow").length;
+  const fps = f.filter((x) => x.probable_fp).length;
+  const infos = f.filter((x) => x.level === "info" && !x.probable_fp).length;
+  const lvl = entryLevel(e);
+  const vt = lvl === "red" ? "🔴 CHEATING" : lvl === "yellow" ? "🟡 SOSPECHOSO" : "🟢 LIMPIO";
+  const pc = d.pc || {}, mc = d.minecraft || {};
+  const item = (l, v, small) => `<div class="info-item"><div class="label">${l}</div><div class="value"${small ? ' style="font-size:11px"' : ""}>${esc(v)}</div></div>`;
+  const codeNote = e.kind === "scan" ? (e.validCode ? "" : " (⚠ sin código previo en el repo)") : "";
+
+  const order = { red: 0, yellow: 1, info: 2 };
+  const kindOf = (x) => (x.probable_fp ? "fp" : (["red", "yellow", "info"].includes(x.level) ? x.level : "info"));
+  const kindLabel = { red: "GRAVE", yellow: "ALERTA", info: "INFO", fp: "POSIBLE FP" };
+  const sorted = [...f].sort((a, b) => (a.probable_fp ? 1 : 0) - (b.probable_fp ? 1 : 0) || (order[a.level] ?? 3) - (order[b.level] ?? 3));
+  const keyEvid = real.filter((x) => x.level === "red");
+  const evHtml = keyEvid.length
+    ? `<div class="evidence"><div class="ev-head"><b>🚨 PRUEBAS CLAVE PARA SANCIONAR (${keyEvid.length})</b>
+        <button class="btn" data-act="copySummary">📋 Copiar resumen para sanción</button></div>` +
+      keyEvid.map((x, i) => `<div class="ev-item"><span class="ev-n">${i + 1}</span><div><div class="finding-title">${esc(x.module)}: ${esc(x.title)}</div><div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div></div>`).join("") + `</div>`
+    : (yellows
+      ? `<div class="evidence yellow"><div class="ev-head"><b>🟡 Sin pruebas graves: ${yellows} alerta(s) para revisar a mano en la llamada</b>
+          <button class="btn" data-act="copySummary">📋 Copiar resumen</button></div></div>`
+      : `<div class="evidence green"><div class="ev-head"><b>🟢 Sin pruebas ni alertas</b></div></div>`);
+  const byMod = {};
+  sorted.forEach((x) => { (byMod[x.module || "Otros"] = byMod[x.module || "Otros"] || []).push(x); });
+  const modRank = (arr) => Math.min(...arr.map((x) => (x.probable_fp ? 3 : (order[x.level] ?? 3))));
+  const findingsHtml = sorted.length
+    ? Object.entries(byMod).sort((a, b) => modRank(a[1]) - modRank(b[1]) || b[1].length - a[1].length).map(([m, arr]) => {
+        const rr = arr.filter((x) => kindOf(x) === "red").length, yy = arr.filter((x) => kindOf(x) === "yellow").length;
+        return `<details class="mod" ${modRank(arr) <= 1 ? "open" : ""}><summary>${esc(m)}
+          ${rr ? `<span class="badge red">${rr} grave(s)</span>` : ""}${yy ? `<span class="badge yellow">${yy} alerta(s)</span>` : ""}
+          <span class="badge info">${arr.length} total</span></summary><div class="mod-body">` +
+          arr.map((x) => { const k = kindOf(x);
+            return `<div class="finding ${k}" data-kind="${k}" data-q="${esc((x.module + " " + x.title + " " + (x.detail || "")).toLowerCase())}">
+              <button class="copy1" data-act="copyFinding" data-text="${esc(`[${x.module}] ${x.title}\\n${x.detail || ""}`)}">copiar</button>
+              <div class="finding-title"><span class="badge ${k}">${kindLabel[k]}</span> ${esc(x.title)}</div>
+              <div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div>`; }).join("") + `</div></details>`;
+      }).join("")
+    : `<div class="empty"><p>Sin hallazgos</p></div>`;
+  const filterBar = `<div class="fbar"><input id="fSearch" placeholder="Buscar en hallazgos (ej: killaura, .jar, javaw)…">
+      <button class="fchip active" data-fl="all">Todos (${f.length})</button>
+      <button class="fchip" data-fl="red">Graves (${reds})</button>
+      <button class="fchip" data-fl="yellow">Alertas (${yellows})</button>
+      <button class="fchip" data-fl="info">Info (${infos})</button>
+      <button class="fchip" data-fl="fp">Posibles FP (${fps})</button></div>`;
+
+  const recent = (d.system && d.system.recent_files) || [];
+  const prio = ["Microcontrolador", "Mouse", "Mando", "Teclado", "Almacenamiento USB", "Teléfono / cámara", "Bluetooth", "Cámara", "RGB / iluminación"];
+  const usbRaw = Array.isArray(d.usb_events) ? d.usb_events : [];
+  const usbG = new Map();
+  usbRaw.forEach((u) => {
+    const nm = u.m || "";
+    const k0 = (/\b(led|rgb|aura|lighting|rainbow)\b/i.test(nm) && u.k === "Mando") ? "RGB / iluminación" : u.k;
+    const key = [u.vp || nm, u.e, String(u.t).slice(0, 16)].join("|");
+    const g = usbG.get(key) || { ...u, k: k0, _kinds: new Set() };
+    g._kinds.add(k0); usbG.set(key, g);
+  });
+  const usb = [...usbG.values()].map((g) => {
+    if (g._kinds.size > 1) { g.k = prio.find((k) => g._kinds.has(k)) || g.k; if (g._kinds.has("Mouse") && g._kinds.has("Teclado")) g.i = "mouse + interfaz de teclado (normal en mouse gamer)"; }
+    return g;
+  });
+  const tline = Array.isArray(d.timeline) ? d.timeline : [];
+  const sessions = mc.sessions || [];
+  const executed = (d.system && d.system.executed) || [];
+  const empty = (t) => `<div class="empty"><p>${t}</p></div>`;
+  const tlHtml = tline.length ? tline.map((x) => `<div class="row usb"><b>${esc(x.t)}</b> · <span style="color:var(--blue)">${esc(x.src)}</span> — ${esc(x.e)}</div>`).join("") : empty("Sin eventos");
+  const usbIcon = { "Mouse": "🖱️", "Teclado": "⌨️", "Almacenamiento USB": "💾", "Mando": "🎮", "Teléfono / cámara": "📱", "Bluetooth": "📶", "Cámara": "📷", "Microcontrolador": "🔧", "RGB / iluminación": "💡" };
+  const usbAgo = (t) => { const ms = Date.now() - new Date(String(t).replace(" ", "T")).getTime(); if (isNaN(ms)) return ""; const m = Math.floor(ms / 60000); return m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${(m / 60).toFixed(1)} h` : `hace ${(m / 1440).toFixed(1)} d`; };
+  const usbCounts = usb.reduce((a, u) => { const k = u.k || "USB"; a[k] = (a[k] || 0) + 1; return a; }, {});
+  const usbHtml = usb.length
+    ? `<div class="row usb" style="color:var(--muted)">${Object.entries(usbCounts).map(([k, n]) => `${usbIcon[k] || "🔌"} ${esc(k)}: ${n}`).join(" &nbsp;·&nbsp; ")}</div>` +
+      usb.slice(0, 90).map((u) => { const on = u.e === "CONECTADO"; return `<div class="row usb" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="font-size:16px">${usbIcon[u.k] || "🔌"}</span><b style="min-width:145px">${esc(u.t)}</b><span style="padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;background:${on ? "rgba(60,200,120,.16)" : "rgba(255,77,90,.16)"};color:${on ? "#3cc878" : "var(--red)"}">${on ? "CONECTADO" : "DESCONECTADO"}</span><span style="font-weight:600">${esc(u.m)}</span><span style="color:var(--muted)">${esc(u.k || "")}${u.i ? " (" + esc(u.i) + ")" : ""}${u.vp ? " · " + esc(u.vp) : ""} · ${usbAgo(u.t)}</span></div>`; }).join("")
+    : empty("Sin eventos (o requiere administrador)");
+  const sessHtml = (pc.boots && pc.boots.length ? `<div class="row usb">Arranques de Windows: ${pc.boots.map(esc).join(" · ")}</div>` : "")
+    + (sessions.length ? sessions.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : empty("Sin sesiones en los logs (¿logs borrados o launcher no reconocido?)"))
+    + `<div class="section-title" style="margin-top:18px">CARPETAS DE LOGS REVISADAS</div>`
+    + ((mc.log_sources || []).length ? mc.log_sources.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : empty("No se encontró ninguna carpeta de logs"));
+
+  const wu = Array.isArray(d.windows_users) ? d.windows_users : [];
+  const wuHtml = wu.length ? wu.map((u) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:16px">👤</span><b style="min-width:120px">${esc(u.name)}</b>
+      ${u.current ? '<span class="badge info">usuario actual</span>' : '<span class="badge yellow">otro usuario</span>'}
+      ${u.enabled === false ? '<span class="badge fp">deshabilitado</span>' : ""}
+      <span style="color:var(--muted)">Último uso del perfil: <b style="color:var(--text)">${esc(u.last_use || "?")}</b> · Último inicio de sesión: <b style="color:var(--text)">${esc(u.last_logon || "?")}</b></span></div>`).join("")
+    : empty("Sin datos de usuarios de Windows (puede requerir administrador)");
+  const accs = Array.isArray(mc.accounts) ? mc.accounts : [];
+  const accHtml = accs.length ? accs.map((a) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:16px">⛏️</span><b style="min-width:140px">${esc(a.nick)}</b>
+      ${a.nick === mc.nick ? '<span class="badge info">principal</span>' : '<span class="badge yellow">alterna</span>'}
+      <span style="color:var(--muted)">Última vez visto en logs: <b style="color:var(--text)">${esc(a.last_seen || "?")}</b> · fuente: ${esc(a.source || "?")}</span></div>`).join("")
+    : (mc.alts && mc.alts.length ? [mc.nick, ...mc.alts].map((n) => `<div class="row usb">⛏️ <b>${esc(n)}</b></div>`).join("") : empty("Sin cuentas de Minecraft registradas"));
+
+  const lg = d.logs || {};
+  const lgDirs = Array.isArray(lg.dirs) ? lg.dirs : [], lgFiles = Array.isArray(lg.files) ? lg.files : [];
+  const lgHtml = (lgDirs.length || lgFiles.length)
+    ? `<div class="section-title">CARPETAS DE LOGS Y SUS ARCHIVOS</div>` + lgDirs.map((dd) => `<details class="mod"><summary>${esc(dd.dir)} <span class="badge info">${dd.count} archivo(s)</span></summary><div class="mod-body">
+        ${(dd.files || []).map((f2) => `<div class="row usb" style="display:flex;gap:12px;flex-wrap:wrap"><b style="min-width:200px">${esc(f2.n)}</b><span class="kv">modificado <b>${esc(f2.m)}</b></span><span class="kv">${f2.kb} KB</span></div>`).join("")}</div></details>`).join("")
+      + `<div class="section-title" style="margin-top:18px">LÍNEAS CLAVE POR LOG (el chat nunca se envía)</div>` + (lgFiles.length ? lgFiles.map((f2) => {
+        const groups = {}; (f2.key || []).forEach((k) => { (groups[k.c] = groups[k.c] || []).push(k.l); });
+        const sus = (groups["Firma de cheat"] || []).length + (groups["Agente / inyección"] || []).length + (groups["Módulos / cliente"] || []).length;
+        return `<details class="mod" ${sus ? "open" : ""}><summary>${esc(f2.name)} ${sus ? `<span class="badge red">${sus} línea(s) a revisar</span>` : ""}
+          <span class="kv">modificado <b>${esc(f2.modified)}</b> · ${f2.lines} líneas · ${esc(f2.first || "?")} → ${esc(f2.last || "?")}</span></summary><div class="mod-body">
+          <div class="kv" style="margin:0 0 8px">Carpeta: ${esc(f2.dir)}</div>
+          ${Object.keys(groups).length ? Object.entries(groups).map(([c, ls]) => `<div class="section-title" style="margin-top:8px">${esc(c)}</div>` + ls.map((l) => `<div class="row usb">${esc(l)}</div>`).join("")).join("") : `<div class="empty"><p>Sin líneas relevantes</p></div>`}
+          </div></details>`; }).join("") : `<div class="empty"><p>Sin contenido de logs</p></div>`)
+    : `<div class="empty"><p>${parseFloat(d.version) < 3.2 ? "Este escaneo es de una versión anterior: no incluía el contenido de los logs. Usa la v3.3." : "No se encontraron logs de Minecraft en este PC (pudieron borrarse)."}</p></div>`
+      + ((mc.log_sources || []).length ? `<div class="section-title" style="margin-top:14px">CARPETAS REVISADAS</div>` + mc.log_sources.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : "");
+  const shot = d.screenshot || null;
+  const shotHtml = shot && shot.file
+    ? `<div class="info-grid" style="margin-bottom:12px">
+         ${item("Hora de la captura", shot.taken_at || "?")}
+         ${item("Ventana al frente", (shot.proc || "?") + " · " + (shot.title || "sin título"), true)}
+         ${item("Resolución", shot.w ? shot.w + "×" + shot.h : "?")}
+       </div>
+       <div id="shotBox" class="empty"><p>Cargando captura…</p></div>`
+    : `<div class="empty"><p>${shot ? "La captura se tomó pero no se pudo subir al repo (revisa que el token tenga permiso de escritura)."
+        : (parseFloat(d.version) < 3.3 ? `Este escaneo lo hizo SSHelper v${esc(d.version || "?")}: la captura existe desde la v3.2. Recompila con build.bat y pásale al jugador el nuevo SSHelper.exe.`
+        : "Este escaneo se hizo sin captura (--no-shot) o no se pudo tomar la captura en el PC del jugador.")}</p></div>`;
+
+  box.innerHTML = `
+    <div class="verdict ${lvl}">${vt}</div>
+    <div class="info-grid">
+      ${item("Código", (d.code || "?") + codeNote)}
+      ${item("Fecha", d.timestamp || "?")}
+      ${item("Nick Minecraft", mc.nick || "?")}
+      ${item("Otras cuentas", (mc.alts && mc.alts.length) ? mc.alts.join(", ") : "Ninguna")}
+      ${item("País", (pc.country || "?") + (pc.city ? ", " + pc.city : ""))}
+      ${item("Dispositivo", pc.hostname || "?")}
+      ${item("Usuario Windows", pc.user || "?")}
+      ${item("Sistema", pc.os || "?", true)}
+      ${item("Windows instalado", pc.install_date || "?", true)}
+      ${item("PC encendido desde", pc.boot_time ? `${pc.boot_time} (${pc.uptime || "?"})` : "?", true)}
+      ${item("Minecraft abierto desde", mc.start || mc.runtime || "No estaba abierto", true)}
+      ${item("SO personalizado", (pc.custom_os && pc.custom_os.length) ? pc.custom_os.join(", ") : "Estándar")}
+      ${item("Papelera", (d.system && d.system.recycle_bin) || "?", true)}
+      ${item("Minecraft", mc.runtime || "?", true)}
+      ${item("Administrador", d.admin ? "✓ Sí" : "✗ No (escaneo parcial)")}
+      ${item("Duración / archivos", `${d.duration ?? "?"}s · ${(d.stats && d.stats.files_scanned) ?? "?"} archivos · v${d.version || "?"}`, true)}
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="0">Hallazgos</button>
+      <button class="tab-btn" data-tab="7">📸 Captura</button>
+      <button class="tab-btn" data-tab="1">Línea de tiempo</button>
+      <button class="tab-btn" data-tab="2">Minecraft</button>
+      <button class="tab-btn" data-tab="9">📄 Logs</button>
+      <button class="tab-btn" data-tab="8">👤 Cuentas</button>
+      <button class="tab-btn" data-tab="3">Ejecutados</button>
+      <button class="tab-btn" data-tab="4">Recientes</button>
+      <button class="tab-btn" data-tab="5">USB</button>
+      <button class="tab-btn" data-tab="6">JSON</button>
+    </div>
+    <div class="tab-content active" id="tab0">
+      ${evHtml}<div class="section-title">TODOS LOS HALLAZGOS POR MÓDULO</div>${filterBar}${findingsHtml}
+    </div>
+    <div class="tab-content" id="tab1"><div class="section-title">LÍNEA DE TIEMPO (más reciente primero)</div>${tlHtml}</div>
+    <div class="tab-content" id="tab2"><div class="section-title">SESIONES DE MINECRAFT Y ARRANQUES</div>${sessHtml}</div>
+    <div class="tab-content" id="tab3"><div class="section-title">PROGRAMAS EJECUTADOS (BAM / UserAssist)</div>
+      ${executed.length ? executed.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : empty("Sin datos (requiere administrador)")}</div>
+    <div class="tab-content" id="tab4"><div class="section-title">ARCHIVOS ABIERTOS RECIENTEMENTE</div>
+      ${(d.system && d.system.recent_note) ? `<div class="warnbox">⚠️ ${esc(d.system.recent_note)}</div>` : ""}
+      ${recent.length ? recent.map((r) => `<div class="row">${esc(r)}</div>`).join("") : `<div class="empty"><p>${parseFloat(d.version) < 3.3 ? "Sin datos: este escaneo es de una versión anterior que no explicaba por qué. Con la v3.3 verás el motivo." : "Sin archivos recientes (mira el aviso de arriba si existe)."}</p></div>`}</div>
+    <div class="tab-content" id="tab5"><div class="section-title">DISPOSITIVOS USB (mouse, teclado, almacenamiento, mandos…)</div>
+      ${usbHtml}</div>
+    <div class="tab-content" id="tab9">${lgHtml}</div>
+    <div class="tab-content" id="tab7"><div class="section-title">CAPTURA DE PANTALLA AL MOMENTO DEL SCAN</div>${shotHtml}</div>
+    <div class="tab-content" id="tab8"><div class="section-title">USUARIOS DE WINDOWS (último uso)</div>${wuHtml}
+      <div class="section-title" style="margin-top:18px">CUENTAS DE MINECRAFT (último uso según logs)</div>${accHtml}</div>
+    <div class="tab-content" id="tab6"><div class="section-title">REPORTE COMPLETO</div>
+      <div class="actions" style="margin:0 0 12px"><button class="btn" data-act="download">⬇ Descargar JSON</button></div>
+      <pre class="raw">${esc(JSON.stringify(d, null, 2))}</pre></div>`;
+  if (activeTab !== "0" && $("tab" + activeTab)) {
+    document.querySelectorAll(".tab-content").forEach((x) => x.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach((x) => x.classList.toggle("active", x.dataset.tab === activeTab));
+    $("tab" + activeTab).classList.add("active");
+    if (activeTab === "7") loadShot();
+  }
+}
+
+// ── CAPTURA: se descarga con el token (repo privado) ────────────
+const _shotCache = new Map();
+async function loadShot() {
+  const e = current(); const box = $("shotBox");
+  if (!e || !box || !e.data || !e.data.screenshot || !e.data.screenshot.file) return;
+  const file = e.data.screenshot.file;
+  try {
+    if (!_shotCache.has(file)) {
+      const res = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${file.split("/").map(encodeURIComponent).join("/")}${refQ()}`, {
+        headers: { "Authorization": `Bearer ${cfg.token}`, "Accept": "application/vnd.github.raw+json", "X-GitHub-Api-Version": "2022-11-28" }, cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      _shotCache.set(file, URL.createObjectURL(await res.blob()));
+    }
+    const url = _shotCache.get(file);
+    const b = $("shotBox"); if (!b) return;
+    b.className = "";
+    b.innerHTML = `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Captura del jugador" style="width:100%;border-radius:10px;border:1px solid var(--border)"></a>
+      <div class="actions"><a class="btn" href="${url}" download="${esc((e.data.code || "captura") + ".jpg")}">⬇ Descargar captura</a>
+      <a class="btn" href="${url}" target="_blank" rel="noopener">🔍 Abrir en grande</a></div>`;
+  } catch (err) {
+    const b = $("shotBox"); if (b) { b.className = "empty"; b.innerHTML = `<p>No se pudo cargar la captura (${esc(String(err.message || err))}).</p>`; }
+  }
+}
+
+// ── ACCIONES ─────────────────────────────────────────────────────
+function openModal(html) {
+  $("modalRoot").innerHTML = `<div class="modal-bg" data-act="closeModal"><div class="modal">${html}</div></div>`;
+}
+const closeModal = () => { $("modalRoot").innerHTML = ""; };
+
+function openGenerate() {
+  openModal(`
+    <h2>➕ Generar código</h2>
+    <p>Crea un código de un solo uso. El jugador lo escribe en SSHelper.exe y su reporte aparecerá aquí.</p>
+    <input id="genLabel" type="text" maxlength="60" placeholder="Nota opcional (ej: nick del jugador)" autocomplete="off">
+    <div class="actions"><button class="btn-primary" id="genGo" style="width:auto;padding:11px 22px">Generar</button>
+    <button class="btn" data-act="closeModal">Cancelar</button></div>
+    <div class="login-err" id="genErr" style="margin-top:12px"></div>`);
+  $("genLabel").focus();
+  const go = async () => {
+    $("genGo").disabled = true; $("genErr").textContent = "";
+    const label = $("genLabel").value.trim();
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const code = genCode();
+      const info = { code, label, status: "pending", created: new Date().toISOString(), created_by: "dashboard" };
+      const r = await api("PUT", `contents/codes/${code}.json`, {
+        message: `SS: código ${code}`, content: b64(JSON.stringify(info, null, 2)), branch: cfg.branch,
+      });
+      if (r.status === 201 || r.status === 200) {
+        codeCache.set(`${code}.json`, { sha: r.data && r.data.content && r.data.content.sha, data: info });
+        buildEntries(); selectedKey = `code:${code}.json`;
+        renderChips(); renderList(); renderDetail();
+        openModal(`
+          <h2>✅ Código listo</h2>
+          <div class="bigcode">${esc(code)}</div>
+          <p>Pásale al jugador el <b>SSHelper.exe</b> y este código. Cuando termine, el resultado aparece en la lista.</p>
+          <div class="actions">
+            <button class="btn btn-gen" data-act="copy" data-text="${esc(code)}">📋 Copiar código</button>
+            <button class="btn" data-act="copy" data-text="${esc(instructionsText(code))}">💬 Copiar instrucciones</button>
+            <button class="btn" data-act="closeModal">Cerrar</button></div>`);
+        return;
+      }
+      if (r.status !== 422) { $("genErr").textContent = explain(r.status, r.data) + (r.status === 403 || r.status === 404 ? "\nPara generar códigos el token necesita permiso Contents: Read and write." : ""); $("genGo").disabled = false; return; }
+    }
+    $("genErr").textContent = "No se pudo crear un código único. Intenta de nuevo."; $("genGo").disabled = false;
+  };
+  $("genGo").onclick = go;
+  $("genLabel").addEventListener("keydown", (ev) => { if (ev.key === "Enter") go(); });
+}
+
+async function deleteSelected() {
+  const e = current();
+  if (!e) return toast("Selecciona un escaneo primero", true);
+  if (e.kind === "local") { localEntries = localEntries.filter((x) => x.key !== e.key); selectedKey = null; buildEntries(); renderChips(); renderList(); renderDetail(); return; }
+  if (!confirm(e.kind === "pending" ? `¿Anular el código ${e.data.code}?` : `¿Borrar el escaneo ${e.data.code}?`)) return;
+  const dir = e.kind === "pending" ? "codes" : "data";
+  const r = await api("DELETE", `contents/${dir}/${encodeURIComponent(e.name)}`, {
+    message: `SS: borrado ${e.name}`, sha: e.sha, branch: cfg.branch,
+  });
+  if (r.status !== 200) return toast(explain(r.status, r.data), true);
+  const shotFile = e.kind === "scan" && e.data && e.data.screenshot && e.data.screenshot.file;
+  if (shotFile) {      // borrar también la captura asociada
+    const q = shotFile.split("/").map(encodeURIComponent).join("/");
+    const g = await api("GET", `contents/${q}${refQ()}`);
+    if (g.status === 200 && g.data && g.data.sha) await api("DELETE", `contents/${q}`, { message: `SS: borrada captura de ${e.name}`, sha: g.data.sha, branch: cfg.branch });
+  }
+  (e.kind === "pending" ? codeCache : scanCache).delete(e.name);
+  selectedKey = null; buildEntries(); renderChips(); renderList(); renderDetail();
+  toast("Borrado ✓");
+}
+
+function importFile(file) {
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const d = JSON.parse(rd.result);
+      if (!d || typeof d !== "object" || !d.verdict) throw new Error("no parece un reporte de SSHelper");
+      const key = "local:" + file.name + ":" + Date.now();
+      localEntries.push({ key, kind: "local", name: file.name, data: d, ts: Date.parse(String(d.timestamp).replace(" ", "T")) || Date.now() });
+      buildEntries(); selectedKey = key; renderChips(); renderList(); renderDetail();
+      toast("Importado (solo visible aquí, no se sube al repo)");
+    } catch (err) { toast("Archivo inválido: " + err.message, true); }
+  };
+  rd.readAsText(file);
+}
+
+function downloadCurrent() {
+  const e = current(); if (!e) return;
+  const blob = new Blob([JSON.stringify(e.data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = e.name.endsWith(".json") ? e.name : e.name + ".json";
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+
+
+// ── GUÍAS: CÓMO COMPROBAR CADA HALLAZGO ─────────────────────────
+const GUIDES = {
+  dll: { t: "DLL sospechosa cargada dentro de Java", intro: "Una DLL no se \"abre\" ni se ejecuta con doble clic (no es un programa) y nunca debes cargarla en tu propio PC. Se inspecciona así:",
+    steps: [
+      "Con el jugador en la llamada y compartiendo pantalla, abre <b>System Informer</b> (antes Process Hacker) → doble clic en <b>javaw.exe</b> → pestaña <b>Modules</b> → busca el nombre de la DLL. Mira su ruta, descripción y si aparece como verificada (firmada).",
+      "Abre la carpeta de la DLL (botón de abajo o pega la ruta en el Explorador). Clic derecho → <b>Propiedades</b> → pestañas <b>Detalles</b> y <b>Firmas digitales</b>. Una DLL legítima trae empresa, producto y versión; las de cheats suelen venir vacías o con nombres genéricos.",
+      "Anota <b>Creado</b> y <b>Modificado</b> y compáralos con la hora en que se abrió Minecraft (pestaña Minecraft / Línea de tiempo). Si se creó minutos antes del juego, es muy sospechoso.",
+      "Calcula el hash con el comando de abajo y búscalo en virustotal.com. Aunque salga limpio, un cheat privado puede no estar en sus bases de datos.",
+      "Para reforzar: en System Informer → javaw.exe → Properties → <b>Memory</b> → <b>Strings…</b> busca nombres de módulos (KillAura, Reach, AimAssist, ClickGUI).",
+      "Si el archivo ya no existe, pide al jugador que NO cierre Minecraft y haz captura de la pestaña Modules: sin eso es un indicio, no una prueba."] },
+  jar: { t: "Mod / archivo .jar sospechoso", intro: "Un .jar es un ZIP con clases de Java. No lo ejecutes: ábrelo como archivo comprimido.",
+    steps: [
+      "Abre la carpeta del archivo. Clic derecho en el .jar → <b>7-Zip → Abrir archivo</b> (o copia el .jar, renombra la copia a .zip y ábrela).",
+      "Busca carpetas o clases con nombres de módulos: <code>KillAura</code>, <code>AimAssist</code>, <code>Velocity</code>, <code>Reach</code>, <code>ClickGUI</code>, <code>Scaffold</code>, paquetes de clientes (<code>meteordevelopment</code>, <code>liquidbounce</code>, <code>wurstclient</code>).",
+      "Abre <code>fabric.mod.json</code> / <code>mcmod.info</code> (nombre, autor, web) y <code>META-INF/MANIFEST.MF</code>: si tiene <code>Premain-Class</code> o <code>Agent-Class</code> es un agente de inyección.",
+      "Compara con los mods permitidos por tu servidor. Los legítimos (OptiFine, Sodium, Iris...) tienen autor y web conocidos; si el nombre no coincide con su contenido, es sospechoso.",
+      "Calcula el hash y búscalo en virustotal.com. Revisa abajo \"Descargado desde\": la web de origen es una prueba muy fuerte.",
+      "Compara la fecha de modificación con la última sesión de Minecraft."] },
+  exe: { t: "Ejecutable (.exe/.dll) con nombre o contenido de cheat", intro: "No lo abras en tu PC. Se revisa sin ejecutarlo:",
+    steps: [
+      "Clic derecho → <b>Propiedades → Detalles / Firmas digitales</b>: mira empresa, producto y si la firma es válida.",
+      "Calcula el hash (comando de abajo) y búscalo en virustotal.com.",
+      "Mira \"Descargado desde\" abajo: indica la web de donde se bajó. Si no hay marca, lo copiaron de un USB/otro PC o la borraron.",
+      "Pestaña <b>Ejecutados</b> y <b>Línea de tiempo</b>: comprueba si Windows registra que se ejecutó (BAM/Prefetch) y a qué hora, frente a la apertura de Minecraft.",
+      "Pregunta al jugador qué es y de dónde lo sacó; compara su respuesta con las fechas y el origen."] },
+  disguised: { t: "Archivo disfrazado (otra extensión)", intro: "Windows se guía por la extensión, pero el contenido real lo dice la cabecera del archivo (MZ = programa, PK = zip/jar).",
+    steps: [
+      "Si es tipo <b>PK</b> (zip/jar): ábrelo con 7-Zip y mira el contenido como en la guía de .jar.",
+      "Si es tipo <b>MZ</b> (programa): NO lo ejecutes. Mira Propiedades → Detalles, calcula el hash y búscalo en virustotal.com.",
+      "Pregunta por qué un archivo .dat/.txt/.png pesa tanto y es un programa: no tiene explicación normal.",
+      "Mira fechas y origen de descarga abajo."] },
+  folder: { t: "Carpeta con nombre de cheat", intro: "Revisa qué hay dentro y de cuándo es.",
+    steps: ["Abre la carpeta con la ruta de abajo y mira los archivos (jar, exe, json de configuración, perfiles).",
+      "Los archivos de configuración (config, profiles) suelen tener los nombres de módulos activados.",
+      "Compara la fecha de modificación con las sesiones de Minecraft."] },
+  mem: { t: "Texto de cheat en la memoria de Minecraft", intro: "Aunque el archivo esté borrado, esto indica que el juego lo tuvo cargado. Necesita Minecraft abierto.",
+    steps: [
+      "NO cierres Minecraft. Abre <b>System Informer</b> → doble clic en <b>javaw.exe</b> → <b>Memory</b> → botón <b>Strings…</b>.",
+      "Marca Private, Image y Mapped, longitud mínima 8, y usa <b>Filter</b> para buscar el módulo/cliente detectado (por ejemplo KillAura o el nombre del paquete).",
+      "Haz captura del resultado junto con la hora: es una prueba directa.",
+      "Cuidado con falsos positivos: algunos mods legítimos tienen módulos con esos nombres. Mira el contexto de la cadena."] },
+  exec: { t: "Programa ejecutado (Prefetch / BAM / UserAssist)", intro: "Windows guarda cuándo se ejecutó cada programa, aunque luego lo borren.",
+    steps: [
+      "Prefetch: abre <code>C:\\Windows\\Prefetch</code> con <b>WinPrefetchView</b> (NirSoft) o <b>PECmd</b>; muestra las últimas ejecuciones y las carpetas que tocó.",
+      "BAM: en el Registro, <code>HKLM\\SYSTEM\\CurrentControlSet\\Services\\bam\\State\\UserSettings\\&lt;SID&gt;</code> lista la última ejecución de cada ruta.",
+      "Si \"ya no existe\", busca el nombre en la Papelera y en el diario USN (hallazgos de USN).",
+      "Cruza la hora con la Línea de tiempo: ¿se ejecutó justo antes de abrir Minecraft o antes del SS?"] },
+  usn: { t: "Archivo borrado o renombrado (diario USN)", intro: "El diario USN del disco registra creaciones, borrados y renombres de archivos.",
+    steps: [
+      "En PowerShell como administrador: <code>fsutil usn readjournal C: csv &gt; usn.csv</code> y busca el nombre del archivo.",
+      "Cada línea muestra la hora y la acción (creado, renombrado, borrado). Un archivo con nombre de cheat creado y borrado cerca del SS es muy sospechoso.",
+      "Mira si lo renombraron: el nombre viejo y el nuevo aparecen en líneas seguidas."] },
+  recycle: { t: "Papelera de reciclaje", intro: "Los archivos borrados normalmente siguen en la papelera hasta que se vacía.",
+    steps: ["Abre la Papelera del jugador, vista <b>Detalles</b>, y ordena por <b>Fecha de eliminación</b>.",
+      "Mira \"Ubicación original\": indica de qué carpeta venían (Downloads, .minecraft/mods...).",
+      "Si se vació hace poco, el hallazgo lo marca: pregunta por qué."] },
+  usb: { t: "Dispositivo USB", intro: "Sirve para detectar cambios de mouse/teclado o hardware para cheats.",
+    steps: ["Abre <b>USBDeview</b> (NirSoft) o el Administrador de dispositivos → Ver → <b>Mostrar dispositivos ocultos</b>.",
+      "Si el mouse tiene software de macros (G HUB, Razer Synapse, Bloody), revisa sus perfiles y macros activos.",
+      "Un Arduino/Pico/Teensy conectado como mouse o teclado es una señal de hardware de cheats; pregunta para qué lo usa.",
+      "Mira cuándo se conectó/desconectó frente a la hora del SS."] },
+  defender: { t: "Windows Defender (exclusiones / amenazas)", intro: "Los cheats se suelen esconder en carpetas excluidas del antivirus.",
+    steps: ["Seguridad de Windows → Protección contra virus y amenazas → <b>Administrar configuración → Exclusiones</b>.",
+      "Revisa si excluyó carpetas como .minecraft, Downloads o el Escritorio.",
+      "En <b>Historial de protección</b> mira qué se detectó/puso en cuarentena y cuándo."] },
+  events: { t: "Registros de eventos / hora del sistema", intro: "Limpiar los registros o cambiar la hora son formas de esconder rastros.",
+    steps: ["Abre <code>eventvwr</code> → Registros de Windows → <b>Sistema</b>: evento <b>104</b> = registro borrado. En <b>Seguridad</b>: <b>1102</b>.",
+      "Cambio de hora: evento <b>4616</b> en Seguridad (quién y cuándo).",
+      "Si hay registros borrados justo antes del SS, anótalo junto con la hora."] },
+  proc: { t: "Procesos y argumentos de Java", intro: "Los agentes de inyección se cargan con <code>-javaagent</code> en los argumentos de Java.",
+    steps: ["Administrador de tareas → pestaña <b>Detalles</b> → clic derecho en la cabecera → Seleccionar columnas → <b>Línea de comandos</b>.",
+      "O en PowerShell: <code>Get-CimInstance Win32_Process -Filter \"name='javaw.exe'\" | Select CommandLine</code>.",
+      "Un <code>-javaagent:ruta.jar</code> que no sea de Lunar/Badlion/Feather/Essential es sospechoso: abre ese .jar con 7-Zip (guía de .jar)."] },
+  system: { t: "Sistema (Windows reinstalado / personalizado / Prefetch desactivado)", intro: "Estos ajustes dificultan o borran las pruebas.",
+    steps: ["Fecha de instalación: PowerShell <code>(Get-ComputerInfo).OsInstallDate</code>. Reinstalar justo antes del SS es una evasión común.",
+      "Windows personalizado (Atlas, Revi...) desactiva servicios útiles para revisar el PC.",
+      "Prefetch/SysMain desactivado: <code>services.msc</code> → SysMain. Pregunta por qué."] },
+  drivers: { t: "Driver sospechoso", intro: "Los cheats avanzados cargan drivers sin firma con mapeadores (kdmapper).",
+    steps: ["PowerShell: <code>driverquery /v</code> para ver ruta y fecha.", "Con <b>Sigcheck</b> (Sysinternals): <code>sigcheck -a ruta.sys</code> para ver la firma.",
+      "Un driver sin firma o con nombre aleatorio en una carpeta temporal es muy sospechoso."] },
+  logs: { t: "Pista en los logs de Minecraft", intro: "Los logs guardan lo que cargó el juego.",
+    steps: ["Abre la pestaña <b>📄 Logs</b> de este reporte: muestra las líneas clave de cada archivo.",
+      "En el PC: <code>%APPDATA%\\.minecraft\\logs</code> o <code>%USERPROFILE%\\.lunarclient\\profiles\\&lt;versión&gt;\\logs</code>; abre latest.log y busca con Ctrl+F.",
+      "Si faltan logs de días en que sí jugó, pudieron borrarlos."] },
+  recent: { t: "Archivos recientes", intro: "Windows guarda accesos a los últimos archivos abiertos.",
+    steps: ["Win+R → <code>shell:recent</code> para ver la carpeta.", "Clic derecho en un acceso → Propiedades → <b>Destino</b> para ver la ruta real del archivo.",
+      "Si está vacía y Windows la tiene activada, la borraron."] },
+  users: { t: "Otro usuario de Windows", intro: "Un cheat puede estar escondido en una cuenta secundaria.",
+    steps: ["Pide al jugador cambiar de usuario en la llamada, o abre <code>C:\\Users\\&lt;nombre&gt;</code> como administrador.",
+      "Revisa <code>AppData\\Roaming\\.minecraft\\mods</code>, Descargas y Escritorio de ese usuario.",
+      "Mira cuándo fue su último uso (pestaña 👤 Cuentas)."] },
+  shot: { t: "Captura de pantalla", intro: "Sirve para ver qué estaba abierto en ese momento.",
+    steps: ["Abre la pestaña <b>📸 Captura</b>: mira barras de tareas, ventanas abiertas y el estado del juego.",
+      "Si Minecraft no estaba al frente, pregunta por qué."] },
+  generic: { t: "Cómo comprobar este hallazgo", intro: "Pasos generales:",
+    steps: ["Copia la ruta o el nombre del hallazgo y búscalo en el PC del jugador durante la llamada.",
+      "Mira Propiedades → fechas (creado/modificado) y compáralas con la hora de Minecraft.",
+      "Calcula el hash y búscalo en virustotal.com.",
+      "Pregunta al jugador y compara con lo que ves; las firmas son indicios, no pruebas."] },
+};
+function guideFor(x) {
+  const m = x.module || "", t = ((x.title || "") + " " + (x.detail || "")).toLowerCase();
+  if (m === "Inyección") return GUIDES.dll;
+  if (m === "Memoria") return GUIDES.mem;
+  if (m === "Archivos") {
+    if (/disfrazad/.test(t)) return GUIDES.disguised;
+    if (/carpeta sospechosa/.test(t)) return GUIDES.folder;
+    if (/\.jar\b|mod /.test((x.file && x.file.path) || t)) return GUIDES.jar;
+    return GUIDES.exe;
+  }
+  if (m === "Ejecutados" || m === "Prefetch") return GUIDES.exec;
+  if (m === "USN") return GUIDES.usn;
+  if (m === "Papelera") return GUIDES.recycle;
+  if (m === "USB") return GUIDES.usb;
+  if (m === "Defender") return GUIDES.defender;
+  if (m === "Eventos") return GUIDES.events;
+  if (m === "Procesos" || m === "Java") return GUIDES.proc;
+  if (m === "Sistema") return GUIDES.system;
+  if (m === "Drivers") return GUIDES.drivers;
+  if (m === "Logs" || m === "Minecraft") return GUIDES.logs;
+  if (m === "Recientes") return GUIDES.recent;
+  if (m === "Usuarios") return GUIDES.users;
+  if (m === "Captura") return GUIDES.shot;
+  return GUIDES.generic;
+}
+function howHtml(x) {
+  const g = guideFor(x), f = x.file || null;
+  const pm = !f && (x.detail || "").match(/[A-Za-z]:\\[^\r\n"<>|?*]+?\.(?:jar|dll|exe|dat|txt|png|zip|tmp|bin|sys|bat|cmd|ps1|rar|7z)/i);
+  const path = f ? f.path : (pm ? pm[0] : "");
+  let fileBlock = "";
+  if (path) {
+    const hashCmd = `Get-FileHash -Algorithm SHA256 -LiteralPath "${path}"`;
+    const openCmd = `explorer.exe /select,"${path}"`;
+    fileBlock = `<div class="how-file"><div class="kv">Ruta: <span class="how-path">${esc(path)}</span></div>
+      ${f ? `<div class="kv" style="margin-top:6px">Tamaño: <b>${Math.round((f.size || 0) / 1024)} KB</b> · Creado: <b>${esc(f.created || "?")}</b> · Modificado: <b>${esc(f.modified || "?")}</b></div>
+      ${f.sha256 ? `<div class="kv" style="margin-top:4px">SHA-256: <span class="how-path">${esc(f.sha256)}</span></div>` : ""}
+      <div class="kv" style="margin-top:4px">Descargado desde: <b>${esc(f.hosturl || "sin marca de descarga")}</b>${f.referrerurl ? " · Página: <b>" + esc(f.referrerurl) + "</b>" : ""}</div>` : ""}
+      <div class="actions">
+        <button class="btn" data-act="copy" data-text="${esc(path)}">📋 Copiar ruta</button>
+        <button class="btn" data-act="copy" data-text="${esc(openCmd)}">📂 Copiar comando "abrir carpeta"</button>
+        <button class="btn" data-act="copy" data-text="${esc(hashCmd)}">#️⃣ Copiar comando de hash</button>
+        ${f && f.sha256 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/file/${esc(f.sha256)}">🛡 Buscar en VirusTotal</a>` : ""}
+      </div></div>`;
+  }
+  return `<details class="how"><summary>🔎 Cómo comprobarlo y dónde encontrarlo</summary><div class="how-body">
+    <div class="how-title">${g.t}</div><div>${g.intro}</div>${fileBlock}<ol>${g.steps.map((t) => `<li>${t}</li>`).join("")}</ol></div></details>`;
+}
+
+// ── RESUMEN PARA SANCIÓN + FILTROS ───────────────────────────────
+let _fl = "all";
+let activeTab = "0", _detailSig = "";
+function sanctionText(d) {
+  const f = Array.isArray(d.findings) ? d.findings : [];
+  const real = f.filter((x) => !x.probable_fp && x.level !== "info");
+  const reds = real.filter((x) => x.level === "red"), yel = real.filter((x) => x.level === "yellow");
+  const pc = d.pc || {}, mc = d.minecraft || {};
+  const cut = (t, n) => { t = String(t || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n) + "…" : t; };
+  const L = [];
+  L.push(`REPORTE SS ${d.code || "?"} — ${d.verdict === "red" ? "CHEATING" : d.verdict === "yellow" ? "SOSPECHOSO" : "LIMPIO"}`);
+  L.push(`Jugador (nick): ${mc.nick || "?"}${mc.alts && mc.alts.length ? " | Otras cuentas: " + mc.alts.join(", ") : ""}`);
+  L.push(`Fecha del escaneo: ${d.timestamp || "?"} | PC: ${pc.hostname || "?"} / ${pc.user || "?"} | País: ${pc.country || "?"}`);
+  L.push(`PC encendido desde: ${pc.boot_time || "?"} (${pc.uptime || "?"}) | Minecraft abierto desde: ${mc.start || "no estaba abierto"}`);
+  L.push(`Administrador: ${d.admin ? "sí" : "NO (escaneo parcial)"}`);
+  L.push("");
+  if (reds.length) { L.push(`PRUEBAS GRAVES (${reds.length}):`); reds.forEach((x, i) => L.push(`${i + 1}. [${x.module}] ${x.title}\n   ${cut(x.detail, 350)}`)); L.push(""); }
+  if (yel.length) { L.push(`ALERTAS A REVISAR (${yel.length}):`); yel.slice(0, 15).forEach((x, i) => L.push(`${i + 1}. [${x.module}] ${x.title}`)); if (yel.length > 15) L.push(`… y ${yel.length - 15} más`); L.push(""); }
+  L.push("Nota: las detecciones por firmas son indicios; confirmar en la llamada antes de sancionar.");
+  return L.join("\n");
+}
+function applyFindingFilter() {
+  const q = (($("fSearch") || {}).value || "").toLowerCase().trim();
+  document.querySelectorAll("#tab0 .finding").forEach((el) => {
+    const okKind = _fl === "all" || el.dataset.kind === _fl;
+    const okQ = !q || el.dataset.q.includes(q);
+    el.classList.toggle("hide", !(okKind && okQ));
+  });
+  document.querySelectorAll("#tab0 details.mod").forEach((m) => {
+    const vis = m.querySelectorAll(".finding:not(.hide)").length;
+    m.classList.toggle("hide", vis === 0);
+    if ((q || _fl !== "all") && vis) m.open = true;
+  });
+}
+document.addEventListener("input", (ev) => { if (ev.target.id === "fSearch") applyFindingFilter(); });
+document.addEventListener("click", (ev) => {
+  const c = ev.target.closest("[data-fl]");
+  if (!c) return;
+  _fl = c.dataset.fl;
+  document.querySelectorAll(".fchip").forEach((x) => x.classList.toggle("active", x === c));
+  applyFindingFilter();
+});
+
+// ── EVENTOS ──────────────────────────────────────────────────────
+document.addEventListener("click", (ev) => {
+  const t = ev.target.closest("[data-act],[data-key],[data-f],[data-tab]");
+  if (!t) return;
+  if (t.dataset.key) { if (selectedKey !== t.dataset.key) activeTab = "0"; selectedKey = t.dataset.key; renderList(); renderDetail(); return; }
+  if (t.dataset.f) { filter = t.dataset.f; renderChips(); renderList(); return; }
+  if (t.dataset.tab !== undefined) {
+    document.querySelectorAll(".tab-content").forEach((x) => x.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach((x) => x.classList.remove("active"));
+    $("tab" + t.dataset.tab).classList.add("active"); t.classList.add("active");
+    activeTab = t.dataset.tab; if (activeTab === "7") loadShot(); return;
+  }
+  switch (t.dataset.act) {
+    case "copy": copyText(t.dataset.text); break;
+    case "closeModal": if (ev.target === t) closeModal(); break;   // clic en el fondo o en "Cancelar", no dentro del cuadro
+    case "retry": loadAll(); break;
+    case "relogin": logout(); break;
+    case "download": downloadCurrent(); break;
+    case "copySummary": { const e = current(); if (e && e.data) copyText(sanctionText(e.data)); break; }
+    case "copyFinding": copyText(t.dataset.text); break;
+  }
+});
+$("btnGen").onclick = openGenerate;
+$("btnRefresh").onclick = () => loadAll();
+$("btnDelete").onclick = deleteSelected;
+$("btnLogout").onclick = logout;
+$("btnGuide").onclick = () => $("guidePanel").classList.toggle("hidden");
+$("btnImport").onclick = () => $("fileImport").click();
+$("fileImport").onchange = (ev) => { if (ev.target.files[0]) importFile(ev.target.files[0]); ev.target.value = ""; };
+$("searchBox").addEventListener("input", renderList);
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeModal(); });
+
+renderDetail();
+boot();
+</script>
+</body>
+</html>
