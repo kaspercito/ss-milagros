@@ -232,9 +232,9 @@ class MainActivity : Activity() {
         setContentView(root)
         showFrame(fCode)
 
-        btn.setOnClickListener { onStart() }
+        btn.setOnClickListener { onStartClick() }
         entry.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_GO) { onStart(); true } else false
+            if (actionId == EditorInfo.IME_ACTION_GO) { onStartClick(); true } else false
         }
         btnRetry.setOnClickListener {
             btnRetry.visibility = View.GONE
@@ -266,7 +266,7 @@ class MainActivity : Activity() {
         f.visibility = View.VISIBLE
     }
 
-    private fun onStart() {
+    private fun onStartClick() {
         if (busy) return
         val code = Github.normalizeCode(entry.text.toString())
         if (code.isEmpty()) {
