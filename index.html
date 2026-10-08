@@ -715,7 +715,7 @@ function renderDetail() {
         <button class="btn" data-act="copySummary">📋 Copiar resumen para sanción</button></div>` +
       keyEvid.map((x, i) => `<div class="ev-item"><span class="ev-n">${i + 1}</span><div><div class="finding-title">${esc(x.module)}: ${esc(x.title)}</div><div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div></div>`).join("") + `</div>`
     : (yellows
-      ? `<div class="evidence yellow"><div class="ev-head"><b>🟡 Sin pruebas graves: ${yellows} alerta(s) para revisar a mano en la llamada</b>
+      ? `<div class="evidence yellow"><div class="ev-head"><b>🟡 Sin pruebas graves: ${yellows} alerta(s)</b>
           <button class="btn" data-act="copySummary">📋 Copiar resumen</button></div></div>`
       : `<div class="evidence green"><div class="ev-head"><b>🟢 Sin pruebas ni alertas</b></div></div>`);
   const byMod = {};
@@ -944,18 +944,18 @@ function renderDetail() {
       ${item("Duración / archivos", `${d.duration ?? "?"}s · ${(d.stats && d.stats.files_scanned) ?? "?"} archivos · v${d.version || "?"}`, true)}
     </div>
     <div class="tabs">
-      <button class="tab-btn active" data-tab="0">Hallazgos</button>
+      <button class="tab-btn active" data-tab="0">🚨 Hallazgos</button>
       <button class="tab-btn" data-tab="7">📸 Captura</button>
-      <button class="tab-btn" data-tab="1">Línea de tiempo</button>
-      <button class="tab-btn" data-tab="2">Minecraft</button>
+      <button class="tab-btn" data-tab="1">🕒 Línea de tiempo</button>
+      <button class="tab-btn" data-tab="2">⛏️ Minecraft</button>
       <button class="tab-btn" data-tab="9">📄 Logs</button>
       <button class="tab-btn" data-tab="8">👤 Cuentas</button>
-      <button class="tab-btn" data-tab="3">Ejecutados</button>
-      <button class="tab-btn" data-tab="4">Recientes</button>
-      <button class="tab-btn" data-tab="5">USB</button>
-      <button class="tab-btn" data-tab="10">🖱 Macros</button>
+      <button class="tab-btn" data-tab="3">⚙️ Ejecutados</button>
+      <button class="tab-btn" data-tab="4">📂 Recientes</button>
+      <button class="tab-btn" data-tab="5">🔌 USB</button>
+      <button class="tab-btn" data-tab="10">🖱️ Macros</button>
       <button class="tab-btn" data-tab="11">🖥️ AnyDesk y programa</button>
-      <button class="tab-btn" data-tab="6">JSON</button>
+      <button class="tab-btn" data-tab="6">🧾 JSON</button>
     </div>
     <div class="tab-content active" id="tab0">
       ${evHtml}<div class="section-title">TODOS LOS HALLAZGOS POR MÓDULO</div>${filterBar}${findingsHtml}
@@ -1113,7 +1113,7 @@ function downloadCurrent() {
 const GUIDES = {
   dll: { t: "DLL sospechosa cargada dentro de Java", intro: "Una DLL no se \"abre\" ni se ejecuta con doble clic (no es un programa) y nunca debes cargarla en tu propio PC. Se inspecciona así:",
     steps: [
-      "Con el jugador en la llamada y compartiendo pantalla, abre <b>System Informer</b> (antes Process Hacker) → doble clic en <b>javaw.exe</b> → pestaña <b>Modules</b> → busca el nombre de la DLL. Mira su ruta, descripción y si aparece como verificada (firmada).",
+      "Abre <b>System Informer</b> (antes Process Hacker) → doble clic en <b>javaw.exe</b> → pestaña <b>Modules</b> → busca el nombre de la DLL. Mira su ruta, descripción y si aparece como verificada (firmada).",
       "Abre la carpeta de la DLL (botón de abajo o pega la ruta en el Explorador). Clic derecho → <b>Propiedades</b> → pestañas <b>Detalles</b> y <b>Firmas digitales</b>. Una DLL legítima trae empresa, producto y versión; las de cheats suelen venir vacías o con nombres genéricos.",
       "Anota <b>Creado</b> y <b>Modificado</b> y compáralos con la hora en que se abrió Minecraft (pestaña Minecraft / Línea de tiempo). Si se creó minutos antes del juego, es muy sospechoso.",
       "Calcula el hash con el comando de abajo y búscalo en virustotal.com. Aunque salga limpio, un cheat privado puede no estar en sus bases de datos.",
@@ -1206,14 +1206,14 @@ const GUIDES = {
     steps: ["Win+R → <code>shell:recent</code> para ver la carpeta.", "Clic derecho en un acceso → Propiedades → <b>Destino</b> para ver la ruta real del archivo.",
       "Si está vacía y Windows la tiene activada, la borraron."] },
   users: { t: "Otro usuario de Windows", intro: "Un cheat puede estar escondido en una cuenta secundaria.",
-    steps: ["Pide al jugador cambiar de usuario en la llamada, o abre <code>C:\\Users\\&lt;nombre&gt;</code> como administrador.",
+    steps: ["Cambiar de usuario en Windows, o abre <code>C:\\Users\\&lt;nombre&gt;</code> como administrador.",
       "Revisa <code>AppData\\Roaming\\.minecraft\\mods</code>, Descargas y Escritorio de ese usuario.",
       "Mira cuándo fue su último uso (pestaña 👤 Cuentas)."] },
   shot: { t: "Captura de pantalla", intro: "Sirve para ver qué estaba abierto en ese momento.",
     steps: ["Abre la pestaña <b>📸 Captura</b>: mira barras de tareas, ventanas abiertas y el estado del juego.",
       "Si Minecraft no estaba al frente, pregunta por qué."] },
   generic: { t: "Cómo comprobar este hallazgo", intro: "Pasos generales:",
-    steps: ["Copia la ruta o el nombre del hallazgo y búscalo en el PC del jugador durante la llamada.",
+    steps: ["Copia la ruta o el nombre del hallazgo y búscalo en el PC del jugador.",
       "Mira Propiedades → fechas (creado/modificado) y compáralas con la hora de Minecraft.",
       "Calcula el hash y búscalo en virustotal.com.",
       "Pregunta al jugador y compara con lo que ves; las firmas son indicios, no pruebas."] },
@@ -1286,7 +1286,7 @@ function sanctionText(d) {
   L.push("");
   if (reds.length) { L.push(`PRUEBAS GRAVES (${reds.length}):`); reds.forEach((x, i) => L.push(`${i + 1}. [${x.module}] ${x.title}\n   ${cut(x.detail, 350)}`)); L.push(""); }
   if (yel.length) { L.push(`ALERTAS A REVISAR (${yel.length}):`); yel.slice(0, 15).forEach((x, i) => L.push(`${i + 1}. [${x.module}] ${x.title}`)); if (yel.length > 15) L.push(`… y ${yel.length - 15} más`); L.push(""); }
-  L.push("Nota: las detecciones por firmas son indicios; confirmar en la llamada antes de sancionar.");
+  L.push("Nota: las detecciones por firmas son indicios; confirmar antes de sancionar.");
   return L.join("\n");
 }
 function applyFindingFilter() {
