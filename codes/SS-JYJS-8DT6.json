@@ -2,7 +2,11 @@
   "code": "SS-JYJS-8DT6",
   "label": "",
   "platform": "java",
-  "status": "pending",
+  "status": "done",
   "created": "2026-10-08T06:11:52.225Z",
-  "created_by": "dashboard"
+  "created_by": "dashboard",
+  "scan_file": "data/SS-JYJS-8DT6_20261008_011401.json",
+  "completed_at": "2026-10-08 01:13:59",
+  "verdict": "yellow",
+  "nick": "kaspercitoo"
 }
