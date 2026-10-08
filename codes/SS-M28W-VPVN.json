@@ -1,8 +1,1 @@
-{
-  "code": "SS-M28W-VPVN",
-  "label": "kaspercito",
-  "platform": "mobile",
-  "status": "pending",
-  "created": "2026-10-08T05:45:29.962Z",
-  "created_by": "dashboard"
-}
+{"code":"SS-M28W-VPVN","label":"kaspercito","platform":"mobile","status":"done","created":"2026-10-08T05:45:29.962Z","created_by":"dashboard","completed_at":"2026-10-08 00:47:11","verdict":"yellow","scan_file":"data\/SS-M28W-VPVN_20261008_004711.json","nick":"?"}
