@@ -1,7 +1,11 @@
 {
   "code": "SS-4AZ8-AD2H",
   "label": "kaspercito",
-  "status": "pending",
+  "status": "done",
   "created": "2026-10-08T00:44:58.637Z",
-  "created_by": "dashboard"
+  "created_by": "dashboard",
+  "scan_file": "data/SS-4AZ8-AD2H_20261007_194628.json",
+  "completed_at": "2026-10-07 19:46:28",
+  "verdict": "yellow",
+  "nick": "kaspercitoo"
 }
