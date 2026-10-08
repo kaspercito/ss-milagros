@@ -1,0 +1,42 @@
+name: Compilar APK de SSHelper (móvil)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "android/**"
+      - ".github/workflows/build-apk.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Poner la configuración (token) dentro de la app, desde el secreto
+        env:
+          SS_GITHUB_JSON: ${{ secrets.SS_GITHUB_JSON }}
+        run: |
+          if [ -z "$SS_GITHUB_JSON" ]; then echo "Falta el secreto SS_GITHUB_JSON (ver ANDROID.md)"; exit 1; fi
+          mkdir -p android/app/src/main/assets
+          printf '%s' "$SS_GITHUB_JSON" > android/app/src/main/assets/github.json
+          python3 -c "import json; d=json.load(open('android/app/src/main/assets/github.json')); assert d['owner'] and d['repo'] and d['token']; print('github.json OK para', d['owner'] + '/' + d['repo'])"
+
+      - name: Compilar
+        working-directory: android
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SSHelper-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
