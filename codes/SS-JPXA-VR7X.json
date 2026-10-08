@@ -2,7 +2,11 @@
   "code": "SS-JPXA-VR7X",
   "label": "kaspercito",
   "platform": "java",
-  "status": "pending",
+  "status": "done",
   "created": "2026-10-08T05:49:23.439Z",
-  "created_by": "dashboard"
+  "created_by": "dashboard",
+  "scan_file": "data/SS-JPXA-VR7X_20261008_005210.json",
+  "completed_at": "2026-10-08 00:52:10",
+  "verdict": "yellow",
+  "nick": "kaspercitoo"
 }
