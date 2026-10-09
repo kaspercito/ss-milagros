@@ -889,17 +889,18 @@ function renderDetail() {
       ${item("Duración / archivos", `${d.duration ?? "?"}s · ${(d.stats && d.stats.files_scanned) ?? "?"} archivos · v${d.version || "?"}`, true)}
     </div>
     <div class="tabs">
-      <button class="tab-btn active" data-tab="0">Hallazgos</button>
+      <button class="tab-btn active" data-tab="0">🚨 Hallazgos</button>
       <button class="tab-btn" data-tab="7">📸 Captura</button>
-      <button class="tab-btn" data-tab="1">Línea de tiempo</button>
-      <button class="tab-btn" data-tab="2">Minecraft</button>
+      <button class="tab-btn" data-tab="1">🕒 Línea de tiempo</button>
+      <button class="tab-btn" data-tab="2">⛏️ Minecraft</button>
       <button class="tab-btn" data-tab="9">📄 Logs</button>
       <button class="tab-btn" data-tab="8">👤 Cuentas</button>
-      <button class="tab-btn" data-tab="3">Ejecutados</button>
-      <button class="tab-btn" data-tab="4">Recientes</button>
-      <button class="tab-btn" data-tab="5">USB</button>
-      <button class="tab-btn" data-tab="10">🖱 Macros</button>
-      <button class="tab-btn" data-tab="6">JSON</button>
+      <button class="tab-btn" data-tab="3">⚙️ Ejecutados</button>
+      <button class="tab-btn" data-tab="4">📂 Recientes</button>
+      <button class="tab-btn" data-tab="5">🔌 USB</button>
+      <button class="tab-btn" data-tab="10">🖱️ Macros</button>
+      <button class="tab-btn" data-tab="11">🖥️ AnyDesk y programa</button>
+      <button class="tab-btn" data-tab="6">🧾 JSON</button>
     </div>
     <div class="tab-content active" id="tab0">
       ${evHtml}<div class="section-title">TODOS LOS HALLAZGOS POR MÓDULO</div>${filterBar}${findingsHtml}
