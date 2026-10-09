@@ -1,0 +1,1843 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFMklEQVR42tVXS4wc1RU9575XVT3t6Z6eGbex4yR8xMewQIpCFAUsby15SSJvoihIbFlFkdiytmDFhg1CfJRsQLBAIgQJIkewcSwvsI0tWQpRMP60Z7p7pvpX/d69LLp6ZjzuEeNJIuIrPbVev7qvzr333E8BP7Bw2152qad3qWPl+v8Tbvm1Zpa9TPJnNrFwu2VKQMzsXGs0+iMALC8v13yev6PkfGnhdo9Gks7MPm4Nh6cAOABx6wO+XAJAHXnUkb80AOC2u8zAifa+UgfJaFQhecKRfkcLSShwa8u7sBWEBxCmm26MqwQjiKjj4My0vEQgiY8wOIOtTnWu5/mtqk/aIJd28EAA6WE61Ql3ADxQqbxBMw7M7PkDS8cPZ+mhflHY8pHHWD10EADQv3YdK5cuWzVNeXVUXHv95urHiQjqItnvm41fZ86landyzAw650Qu94dX3m51TjcS54PZhTIcBGCe5HOOBKPi57V9eGZhHp1enw888RgaTxwBALQvfoV/fXuVjfk5fN7tHXqr1XkuIZEKcXyxjoZ3CGWIbiOAQRpe8C7wsBAPOxJB9QyATQBmFrT039pw6FY82c0HaBQFXFSYGdZCRDdGMCq6MVo7xJgKoZMzT3AnAAAMfVUzoFAzB7Izi4SAKhbu/yma9zVRGRXQ4RDt8xcgzmF44wYS76BqOJB4Prtc955ERYiKCIQTenMGCR0JmRz5MgvcdgAACVNF88kn8ePHH0EPxDd//QRXT/8dvlIBSDjvMVLFA1mKl35y3zTG6KtCZ1i/W/G3k8Ymt5pBvIevVOCzDFr+RwDBDN1gG8VD+J8VIr8lYTFo3cL6/Bx6Zhj3ehPPTEFtqViO/71K6AEYzEDncP3MGf7z4nnkqvDiIN5PAOxBbNu6c7sJYMOexHtkaYKxahmJvfcPV1ZBT05Z58s4+9sBmLWnsPox1jrj6NdVURUiJffUwghgoIaBKgyGkWphwJrNSEMuLCws7lOV3vq6LlWrHyTCY90Q4x9+1HQnFmtYC3pXMY8G1L3glW9b+Ki9Hhre+bHan1b6/Rfm5uf9OM+HK8D6hge63W67O23sIYxSEe2EqIWaAOC0LXKXcZ8OCv1o1glRAWhQDLpAu5vnM0nIaTdMyH2JiHiqZELMCVGUeVbsItczEimBOSEyIT2ZJiKAxSo2i1HYSkS/Bbipcy/EGPdDGT5cXXvxb2u9450Q49Fa1f222UAv2sy8t/Llr91YwcXBKNadc61ifArKv8QYPc2+KR8Ls7Jgegdu9fvnpgdne3YyEYZOiOFg4klSgin8pLRuTik2ae4ZgYv9Ufwi743rztlY9Wwvjj/rxTuw7lwJy1AkAMK8k/2ZiI8GX/eCupONejRQ3WB7zQmMQFWIuhNXc87VncMQWOpNstEDGG+bI3ccSqcgtFmpHE3MHu2ohqfm5449VMme7wbVRyqpnNzfQDTDUA1vtFbRj2qZkJf6o1OXBsMLNRE/Bk63RqMr0/t2OxXPlDRNf5OBf16PMTxdqyavPnjYFWpYixG/u/Lv0A1RvVBU9VeDEP6x52Y0wxMpgLDk2MzovCN8wzvUvWCsBhBY9M4TQCJECGgONttusZtR3H/P7F8A0Gj8soC9OTaLedDD76+sHQ9mKFSLQu29oDoEKQS+Lpmu/7PvgDnvf1FN0lBN0lD1yc3dhnEvHtjOlRRAXHBu2Yk4m8wPi/VKtv96nrfLZ8LdWu7voruOJ2VVbyj5qQEQszxk2RB5HqZDJu414R51uMOH6r0n3wFF6ZaCHYllYgAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAACvUlEQVR42u3dsY3CQBRF0T+IwBUQE7oaClhteSsKoBqHxFTgDCpAWqGdp/X4nAZGeKSrIXpVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDfaamDTtP09Ll/77Guzb3s+24SDq4T9ksAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQC6a6lhiNt87n7G/P0V+WjLz7X7GZflXqPcy2gSd5MaH/ECAH8BAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAKCDY+qgxGpPYrEnxWIPXgCAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAIACAAgAIAAAAIACAAgAIAAAAIAbFtsGGSk0Q7wAgAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQDeaqmDTtP07H3GbT670R27LPfIOY91baN8My8A8BcAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABADpoI/2YxPpQlQWiTyRWe0Za7PECAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEAAQAJ8ABAAQAEAAAAEABAAQAEAAAAEAts+QwgcSAySp8ZHEYEeV0Q4vAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAQAAAAQAEANgRay3/VGJ9qMpijxcAIACAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAW/AC9OY1s5Bifx0AAAAASUVORK5CYII=">
+<title>SS Menú v4.1</title>
+<meta name="theme-color" content="#050408">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06070b; --panel: rgba(18,21,32,0.82); --border: rgba(255,255,255,0.07);
+  --text: #eef0f5; --muted: #828aa0; --red: #ff4d5a; --yellow: #ffbe38;
+  --green: #35d48c; --blue: #6c8fff; --purple: #a46bff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.hidden { display: none !important; }
+button, input, select { font-family: 'Sora', sans-serif; }
+
+/* LOGIN */
+.login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.login-box { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 36px; max-width: 420px; width: 92%; }
+.login-box h1 { font-size: 22px; margin-bottom: 6px; text-align: center; }
+.login-box .subtitle { color: var(--muted); text-align: center; margin-bottom: 22px; font-size: 13px; }
+.login-box label { display: block; font-size: 11px; color: var(--muted); margin: 0 0 6px 2px; text-transform: uppercase; font-weight: 600; }
+.login-box input { width: 100%; padding: 12px 14px; margin-bottom: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; }
+.login-box input:focus, .search:focus, .modal input:focus { outline: none; border-color: var(--blue); }
+.login-box .hint { color: var(--muted); font-size: 11px; line-height: 1.5; margin-top: 14px; }
+.login-err { color: var(--red); font-size: 12px; margin-bottom: 12px; white-space: pre-wrap; }
+.btn-primary { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--blue), var(--purple)); border: none; border-radius: 10px; color: #fff; font-weight: 600; cursor: pointer; font-size: 14px; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:disabled { opacity: .5; cursor: wait; }
+
+/* LAYOUT */
+.wrap { max-width: 1300px; margin: auto; padding: 24px; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; }
+header h1 { font-size: 24px; }
+header .sub { color: var(--muted); font-size: 12px; }
+header .controls { display: flex; gap: 10px; }
+.btn { padding: 10px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; color: var(--text); cursor: pointer; font-size: 13px; transition: all .15s; white-space: nowrap; }
+.btn:hover { border-color: rgba(255,255,255,0.18); }
+.btn-red { color: var(--red); }
+.btn-danger { background: rgba(255,77,90,0.1); border-color: rgba(255,77,90,0.3); color: var(--red); }
+.btn-gen { background: linear-gradient(135deg, var(--blue), var(--purple)); border: none; color: #fff; font-weight: 600; }
+.toolbar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.search { flex: 1; min-width: 200px; padding: 10px 14px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; }
+.chips { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+.chip { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+.chip.active { color: var(--text); border-color: var(--blue); background: rgba(108,143,255,.12); }
+.chips .stamp { margin-left: auto; color: var(--muted); font-size: 11px; }
+.grid { display: grid; grid-template-columns: 340px 1fr; gap: 18px; }
+@media(max-width: 900px) { .grid { grid-template-columns: 1fr; } .wrap { padding: 16px; } header { flex-wrap: wrap; } }
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+/* LISTA */
+.list { max-height: 72vh; overflow-y: auto; }
+.list-hd { padding: 12px 16px; font-size: 10px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 700; display: flex; justify-content: space-between; }
+.item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .13s; }
+.item:hover { background: rgba(255,255,255,0.03); }
+.item.active { background: rgba(108,143,255,0.12); }
+.item .code { font-weight: 700; font-size: 13px; font-family: ui-monospace, Consolas, monospace; }
+.item .meta { color: var(--muted); font-size: 11px; margin-top: 3px; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; margin-top: 6px; }
+.b-red { background: rgba(255,77,90,0.2); color: var(--red); }
+.b-yellow { background: rgba(255,190,56,0.2); color: var(--yellow); }
+.b-green { background: rgba(53,212,140,0.2); color: var(--green); }
+.b-pending { background: rgba(108,143,255,0.2); color: var(--blue); }
+.b-plat { background: rgba(160,120,255,0.18); color: #b79bff; margin-left: 6px; }
+.b-local { background: rgba(164,107,255,0.2); color: var(--purple); margin-left: 6px; }
+
+/* DETALLE */
+.detail { padding: 24px; min-height: 500px; }
+.verdict { padding: 22px; border-radius: 12px; margin-bottom: 18px; text-align: center; font-size: 30px; font-weight: 800; }
+.verdict.red { background: rgba(255,77,90,0.15); color: var(--red); }
+.verdict.yellow { background: rgba(255,190,56,0.15); color: var(--yellow); }
+.verdict.green { background: rgba(53,212,140,0.15); color: var(--green); }
+.verdict.pending { background: rgba(108,143,255,0.12); color: var(--blue); }
+.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+@media(max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+.info-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border-left: 3px solid var(--blue); }
+.info-item .label { color: var(--muted); font-size: 11px; text-transform: uppercase; }
+.info-item .value { font-weight: 600; font-size: 13px; margin-top: 4px; word-break: break-word; }
+.section-title { font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.finding { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--muted); }
+.finding.red { border-left-color: var(--red); }
+.finding.yellow { border-left-color: var(--yellow); }
+.finding.info { border-left-color: var(--blue); }
+.finding.fp { border-left-color: var(--muted); opacity: .8; }
+.finding-title { font-weight: 600; margin-bottom: 4px; font-size: 13px; }
+
+/* PRUEBAS / HALLAZGOS ORGANIZADOS */
+.evidence { background: rgba(255,77,90,.08); border: 1px solid rgba(255,77,90,.35); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+.evidence.yellow { background: rgba(255,190,56,.08); border-color: rgba(255,190,56,.35); }
+.evidence.green { background: rgba(53,212,140,.08); border-color: rgba(53,212,140,.3); }
+.ev-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; font-size: 13px; }
+.ev-item { display: flex; gap: 10px; padding: 10px; background: rgba(0,0,0,.25); border-radius: 8px; margin-bottom: 8px; }
+.ev-n { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.fbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.fbar input { flex: 1; min-width: 160px; padding: 8px 12px; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 12px; }
+.fbar input:focus { outline: none; border-color: var(--blue); }
+.fchip { padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; cursor: pointer; }
+.fchip.active { color: var(--text); border-color: var(--blue); background: rgba(108,143,255,.12); }
+details.mod { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; background: rgba(0,0,0,.12); }
+details.mod > summary { cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: 13px; display: flex; gap: 8px; align-items: center; list-style: none; }
+details.mod > summary::-webkit-details-marker { display: none; }
+details.mod > summary::before { content: "▸"; color: var(--muted); }
+details.mod[open] > summary::before { content: "▾"; }
+details.mod .mod-body { padding: 0 12px 4px; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.badge.red { background: rgba(255,77,90,.16); color: var(--red); }
+.badge.yellow { background: rgba(255,190,56,.16); color: var(--yellow); }
+.badge.info { background: rgba(108,143,255,.16); color: var(--blue); }
+.badge.fp { background: rgba(130,138,160,.16); color: var(--muted); }
+.finding.hide, details.mod.hide { display: none; }
+.finding .copy1 { float: right; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; font-size: 10px; padding: 2px 7px; cursor: pointer; }
+.finding .copy1:hover { color: var(--text); }
+
+
+details.how { margin-top: 8px; border: 1px dashed rgba(108,143,255,.45); border-radius: 8px; background: rgba(108,143,255,.05); }
+details.how > summary { cursor: pointer; padding: 7px 10px; font-size: 12px; font-weight: 600; color: var(--blue); }
+.how-body { padding: 4px 12px 12px; font-size: 12px; line-height: 1.55; }
+.how-body ol { margin: 8px 0 0 18px; } .how-body li { margin-bottom: 6px; }
+.how-title { font-weight: 700; margin-bottom: 4px; }
+.how-body code, .how-path { font-family: ui-monospace, Consolas, monospace; font-size: 11px; background: rgba(0,0,0,.35); padding: 2px 6px; border-radius: 5px; word-break: break-all; }
+.how-file { background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px; margin: 8px 0; }
+.how-file .actions { margin-top: 8px; }
+.warnbox { background: rgba(255,190,56,.1); border: 1px solid rgba(255,190,56,.35); border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 12px; }
+.kv { color: var(--muted); } .kv b { color: var(--text); font-weight: 600; }
+
+.finding-detail { font-size: 12px; color: var(--muted); white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, Consolas, monospace; }
+.fps-warning { background: rgba(164,107,255,0.1); padding: 6px 8px; border-radius: 6px; font-size: 11px; color: var(--purple); margin-top: 6px; display: inline-block; }
+.row { padding: 8px 10px; background: rgba(0,0,0,0.2); border-radius: 6px; margin-bottom: 6px; font-size: 12px; font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
+.row.usb { font-size: 11px; }
+.tabs { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; }
+.tabs { flex-wrap: wrap; }
+.tab-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 600; padding: 8px 12px; border-bottom: 2px solid transparent; }
+.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 13px; }
+.empty-icon { font-size: 44px; margin-bottom: 12px; }
+.err-box { margin: 16px; padding: 14px; border-radius: 10px; background: rgba(255,77,90,.08); border: 1px solid rgba(255,77,90,.3); color: var(--red); font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+.err-box .btn { margin-top: 10px; margin-right: 8px; color: var(--text); }
+.bigcode { font-family: ui-monospace, Consolas, monospace; font-size: 38px; font-weight: 800; letter-spacing: 2px; text-align: center; padding: 22px 10px; background: rgba(0,0,0,.3); border: 1px dashed rgba(108,143,255,.5); border-radius: 12px; margin: 14px 0; word-break: break-all; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+pre.raw { background: rgba(0,0,0,.3); padding: 14px; border-radius: 8px; font-size: 11px; overflow: auto; max-height: 520px; color: var(--muted); }
+
+/* GUIA / MODAL / TOAST */
+.guide-panel { background: linear-gradient(135deg, rgba(108,143,255,0.08), rgba(164,107,255,0.05)); border: 1px solid rgba(108,143,255,0.2); border-radius: 12px; padding: 20px; margin-bottom: 18px; }
+.guide-panel h3 { color: var(--blue); margin-bottom: 12px; font-size: 14px; }
+.guide-panel p { font-size: 12px; line-height: 1.7; color: var(--muted); margin-bottom: 6px; }
+.guide-panel code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, Consolas, monospace; color: var(--blue); }
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; z-index: 5000; }
+.modal { background: #0f111a; border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 92%; max-width: 460px; }
+.modal h2 { font-size: 18px; margin-bottom: 6px; }
+.modal p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.modal input { width: 100%; padding: 12px 14px; margin: 14px 0 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: #151827; border: 1px solid var(--border); padding: 10px 18px; border-radius: 10px; font-size: 13px; z-index: 6000; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+.toast.err { border-color: rgba(255,77,90,.5); color: var(--red); }
+.logo-img { height: 1.15em; width: 1.15em; vertical-align: -0.2em; margin-right: 8px; image-rendering: auto; }
+
+/* ===== v3.7 · tema profesional ===== */
+:root{--bg:#07080d;--panel:#0f121b;--panel2:#151927;--border:#212739;--muted:#8a93aa}
+body{background:radial-gradient(1100px 520px at 8% -8%,rgba(108,143,255,.11),transparent 60%),radial-gradient(900px 480px at 100% 0,rgba(164,107,255,.08),transparent 55%),var(--bg);background-attachment:fixed}
+.wrap{max-width:1440px;padding:20px}
+header{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 18px;box-shadow:0 8px 28px rgba(0,0,0,.3)}
+header h1{font-size:20px;letter-spacing:-.2px}
+.panel{background:var(--panel);box-shadow:0 10px 30px rgba(0,0,0,.35);border-radius:14px}
+.grid{grid-template-columns:390px 1fr;align-items:start}
+@media(min-width:901px){.grid>.panel:first-child{position:sticky;top:14px}.list{max-height:calc(100vh - 290px)}}
+.list::-webkit-scrollbar{width:8px}.list::-webkit-scrollbar-thumb{background:#262c40;border-radius:8px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer;transition:.15s;border-top:3px solid var(--muted)}
+.stat:hover{transform:translateY(-1px);border-color:#2f3750}.stat.active{background:var(--panel2);box-shadow:0 0 0 1px var(--blue) inset}
+.stat b{display:block;font-size:24px;line-height:1.1}.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600}
+.stat.s-red{border-top-color:var(--red)}.stat.s-red b{color:var(--red)}.stat.s-yellow{border-top-color:var(--yellow)}.stat.s-yellow b{color:var(--yellow)}
+.stat.s-green{border-top-color:var(--green)}.stat.s-green b{color:var(--green)}.stat.s-pending{border-top-color:var(--blue)}.stat.s-pending b{color:var(--blue)}
+.toolbar .search{background:var(--panel);height:42px}.btn{background:var(--panel);height:42px}
+.chip{background:var(--panel)}
+.grp{position:sticky;top:0;z-index:2;padding:7px 16px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);background:#0c0f17;border-bottom:1px solid var(--border)}
+.item{display:flex;gap:12px;align-items:center;border-left:3px solid transparent;padding:11px 14px}
+.item.v-red{border-left-color:var(--red)}.item.v-yellow{border-left-color:var(--yellow)}.item.v-green{border-left-color:var(--green)}.item.v-pending{border-left-color:var(--blue)}
+.item.active{background:rgba(108,143,255,.13)}
+.head{width:42px;height:42px;border-radius:9px;flex:none;image-rendering:pixelated;background:#0b0d14;border:1px solid var(--border);object-fit:cover}
+.head.lg{width:68px;height:68px;border-radius:12px}
+.head.ph{display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;font-size:18px}
+.ibody{min-width:0;flex:1}.irow{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.inick{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .code{font-size:11px;color:var(--muted);font-weight:600}.when{font-size:10px;color:var(--muted);white-space:nowrap}
+.imeta{font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.imeta .badge{margin:0}.b-plat{margin-left:0!important}
+.profile{display:flex;gap:16px;align-items:center;margin-bottom:16px}
+.pname{font-size:24px;font-weight:800;letter-spacing:-.3px}.psub{color:var(--muted);font-size:12px;margin-top:4px}
+.verdict{font-size:20px;padding:14px;letter-spacing:.5px}
+.detail{padding:22px}
+.tabs{position:sticky;top:0;background:var(--panel);z-index:3;padding-top:6px}
+.info-item{background:var(--panel2);border-radius:10px}
+.devgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.devc{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:12px}.devc b{font-size:24px;display:block}.devc span{font-size:11px;color:var(--muted)}
+.devc.warn{border-color:rgba(255,190,56,.55);background:rgba(255,190,56,.08)}.devc.warn b{color:var(--yellow)}
+header{position:sticky;top:0;z-index:50;background:rgba(7,8,13,.9);backdrop-filter:blur(10px);margin:-24px -24px 18px;padding:14px 24px;border-bottom:1px solid var(--border)}
+
+/* ===== TEMA NEGRO + MORADO ===== */
+:root{--bg:#050408;--panel:#0f0b18;--panel2:#171126;--border:rgba(190,150,255,.11);--text:#f3eefc;--muted:#9b91b4;
+ --blue:#b085ff;--purple:#8a4dff;--red:#ff5c7a;--yellow:#ffc857;--green:#3ddc97;--glow:rgba(138,77,255,.28)}
+body{background:radial-gradient(900px 480px at 8% -10%,rgba(138,77,255,.22),transparent 60%),radial-gradient(700px 420px at 100% 0%,rgba(176,133,255,.09),transparent 60%),var(--bg);letter-spacing:.1px}
+.wrap{max-width:1500px}
+header{background:rgba(8,5,14,.88);border-bottom:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+header h1{font-size:22px;display:flex;align-items:center;gap:10px}
+.logo-img{filter:drop-shadow(0 0 8px var(--glow))}
+.panel,.login-box,.modal{background:linear-gradient(180deg,rgba(23,17,38,.92),rgba(12,8,20,.96));border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.btn,.search,.toolbar select,.chip,.fbar input,.login-box input,.modal input{background:rgba(23,17,38,.9);border:1px solid var(--border);border-radius:12px;color:var(--text)}
+.btn:hover,.chip:hover{border-color:rgba(176,133,255,.5);box-shadow:0 0 0 3px rgba(138,77,255,.12)}
+.btn-gen,.btn-primary{background:linear-gradient(135deg,#9d6bff,#6a2de0);box-shadow:0 6px 20px var(--glow);color:#fff;border:none}
+.btn-danger{background:rgba(255,92,122,.1)}
+.chip.active,.fchip.active{background:rgba(138,77,255,.22);border-color:var(--blue);color:#fff}
+.search:focus,.login-box input:focus,.modal input:focus,.fbar input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(138,77,255,.18)}
+/* tarjetas de resumen */
+.stat{background:linear-gradient(180deg,#171126,#0f0b18);border-radius:14px;padding:14px 16px}
+.stat b{font-size:28px}.stat.active{box-shadow:0 0 0 1px var(--blue) inset,0 8px 24px var(--glow)}
+/* lista */
+.list-hd{background:rgba(138,77,255,.07);color:var(--blue);letter-spacing:.8px}
+.grp{background:#0b0713;color:var(--blue)}
+.item{border-bottom:1px solid var(--border);padding:12px 16px;transition:.15s}
+.item:hover{background:rgba(138,77,255,.08)}
+.item.active{background:linear-gradient(90deg,rgba(138,77,255,.26),rgba(138,77,255,.06));box-shadow:inset 0 0 0 1px rgba(176,133,255,.25)}
+.item.v-pending{border-left-color:var(--purple)}
+.head{border-radius:10px;border:1px solid rgba(176,133,255,.25);background:#0b0713}
+.inick{font-size:15px}
+.list::-webkit-scrollbar-thumb,pre.raw::-webkit-scrollbar-thumb{background:#3a2a66;border-radius:8px}
+/* detalle */
+.detail{padding:24px}
+.profile{padding:16px;background:rgba(138,77,255,.08);border:1px solid var(--border);border-radius:14px}
+.pname{font-size:26px}
+.verdict{border-radius:14px;font-size:22px;letter-spacing:1px}
+.verdict.pending{background:rgba(138,77,255,.14);color:var(--blue)}
+.info-item{background:rgba(23,17,38,.8);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:12px}
+.tabs{background:rgba(15,11,24,.96);backdrop-filter:blur(8px);gap:4px;border-bottom:1px solid var(--border)}
+.tab-btn{border-radius:10px 10px 0 0;padding:9px 14px}.tab-btn:hover{color:#fff;background:rgba(138,77,255,.1)}
+.tab-btn.active{color:#fff;background:rgba(138,77,255,.16);border-bottom-color:var(--blue)}
+.section-title{color:var(--blue);letter-spacing:.8px}
+.finding,.row,details.mod,.devc{background:rgba(23,17,38,.7);border-radius:12px}
+details.mod{border:1px solid var(--border)}details.mod>summary:hover{background:rgba(138,77,255,.08)}
+details.how{border-color:rgba(176,133,255,.45);background:rgba(138,77,255,.07)}
+.evidence{border-radius:14px}
+.badge.info,.b-pending,.b-plat{background:rgba(138,77,255,.2);color:var(--blue)}
+.guide-panel{background:linear-gradient(135deg,rgba(138,77,255,.13),rgba(23,17,38,.6));border-color:var(--border);border-radius:14px}
+.bigcode{border-color:rgba(176,133,255,.55);background:rgba(138,77,255,.08);color:#fff;text-shadow:0 0 18px var(--glow)}
+.toast{background:#171126;border-color:rgba(176,133,255,.4)}
+.login-screen{background:radial-gradient(800px 500px at 50% 0%,rgba(138,77,255,.25),transparent 65%),var(--bg)}
+.login-box h1{font-size:24px}
+@media(max-width:900px){.wrap{padding:14px}header{margin:-14px -14px 14px;padding:12px 14px}.list{max-height:60vh}}
+
+.pbar{height:12px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin:12px 0}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#8a4dff,#c7a6ff);border-radius:99px;transition:width .8s}
+@keyframes pulse{50%{opacity:.55}}.verdict.run{background:rgba(138,77,255,.16);color:var(--blue);animation:pulse 1.6s infinite}
+.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:14px}
+.fx-card{background:rgba(23,17,38,.78);border:1px solid var(--border);border-radius:14px;padding:14px;font-size:13px;line-height:1.55;transition:transform .2s,box-shadow .2s;animation:fxIn .5s ease both}
+.fx-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(138,77,255,.25)}
+.fx-card.red{border-left:4px solid var(--red)}.fx-card.yellow{border-left:4px solid var(--yellow)}.fx-card.green{border-left:4px solid var(--green)}
+.fx-card ul,.fx-card ol{margin:6px 0 0 18px}.fx-card li{margin-bottom:4px}
+.fx-h{font-weight:800;font-size:14px;margin-bottom:6px}
+.fx-tip{margin-top:10px;padding:8px 10px;border-radius:10px;background:rgba(138,77,255,.12);font-size:12px}
+.fx{animation:fxIn .5s ease both}
+.verdict{animation:fxIn .6s ease both}
+@keyframes fxIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== v4.6 · más aire, jerarquía clara (mismos tonos negro + morado) ===== */
+html{scroll-behavior:smooth}
+::selection{background:rgba(138,77,255,.45);color:#fff}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+body{line-height:1.6}
+.detail{padding:30px 32px 40px}
+.detail > *{margin-bottom:0}
+@media(max-width:700px){.detail{padding:18px 14px 30px}}
+
+/* perfil + veredicto */
+.profile{gap:18px;padding:20px 22px;margin-bottom:22px;background:linear-gradient(120deg,rgba(138,77,255,.16),rgba(23,17,38,.55));box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.pname{font-size:28px;line-height:1.15}
+.psub{font-size:12.5px;margin-top:6px}
+.verdict{padding:22px 18px;margin-bottom:20px;font-size:23px;line-height:1.3;border:1px solid transparent;box-shadow:0 10px 34px rgba(0,0,0,.35)}
+.verdict.red{border-color:rgba(255,92,122,.45);box-shadow:0 10px 34px rgba(255,92,122,.16)}
+.verdict.yellow{border-color:rgba(255,200,87,.4);box-shadow:0 10px 34px rgba(255,200,87,.12)}
+.verdict.green{border-color:rgba(61,220,151,.4);box-shadow:0 10px 34px rgba(61,220,151,.12)}
+.actions{margin:14px 0 26px}
+
+/* datos del jugador: 3 bloques con título */
+.ig-group{margin-bottom:26px}
+.ig-title{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.4px;color:#fff;margin:0 0 12px}
+.ig-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(176,133,255,.4),transparent)}
+.info-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:0}
+.info-item{padding:14px 16px;transition:transform .15s,border-color .15s}
+.info-item:hover{transform:translateY(-2px);border-color:rgba(176,133,255,.4)}
+.info-item .label{font-size:10.5px;letter-spacing:.7px;color:var(--muted);font-weight:600}
+.info-item .value{font-size:14px;line-height:1.45;margin-top:6px}
+
+/* pestañas agrupadas */
+.tabs{display:flex;flex-wrap:nowrap;gap:22px;overflow-x:auto;padding:12px 14px 12px;margin:8px -4px 26px;border:1px solid var(--border);border-radius:16px;background:rgba(15,11,24,.97);scrollbar-width:thin;scrollbar-color:#3a2a66 transparent}
+.tg{flex:none;display:flex;flex-direction:column;gap:7px}
+.tg + .tg{padding-left:22px;border-left:1px solid var(--border)}
+.tg-l{font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue);opacity:.85;padding-left:4px}
+.tg-b{display:flex;gap:6px}
+.tab-btn{border:1px solid transparent;border-radius:999px;padding:8px 14px;font-size:12.5px;white-space:nowrap;transition:all .15s}
+.tab-btn:hover{background:rgba(138,77,255,.14);color:#fff}
+.tab-btn.active{background:linear-gradient(135deg,rgba(157,107,255,.35),rgba(106,45,224,.3));border-color:rgba(176,133,255,.55);color:#fff;box-shadow:0 4px 16px var(--glow)}
+.tab-content.active{animation:fxIn .35s ease both}
+
+/* títulos de sección */
+.section-title{display:flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.9px;margin:30px 0 14px;padding:0 0 10px}
+.section-title::before{content:"";width:4px;height:16px;border-radius:4px;background:linear-gradient(180deg,#b085ff,#6a2de0)}
+.tab-content > .section-title:first-child,.tab-content > div > .section-title:first-child{margin-top:4px}
+
+/* plan de revisión */
+.plan{padding:20px 22px;margin-bottom:26px;border-radius:16px;background:linear-gradient(135deg,rgba(138,77,255,.16),rgba(23,17,38,.7));border:1px solid rgba(176,133,255,.4);font-size:13px;line-height:1.6}
+.plan .how-title{font-size:15px;margin-bottom:10px}
+.plan label{padding:10px 12px;border-radius:12px;transition:background .15s;display:block;margin:6px -4px!important}
+.plan label:hover{background:rgba(138,77,255,.1)}
+.plan input[type=checkbox]{accent-color:#9d6bff;width:16px;height:16px;vertical-align:-3px;margin-right:6px}
+.plan .kv{font-size:12px}
+
+/* hallazgos legibles */
+.evidence{padding:18px 20px;margin-bottom:24px}
+.ev-item{padding:14px;gap:14px;margin-bottom:10px;line-height:1.55}
+.ev-n{width:28px;height:28px}
+.fbar{margin-bottom:18px;gap:10px}
+.fbar input{padding:11px 14px;font-size:13px}
+.fchip{padding:6px 13px;font-size:11.5px}
+details.mod{margin-bottom:14px;border-radius:14px}
+details.mod > summary{padding:14px 16px;font-size:14px;gap:10px}
+details.mod .mod-body{padding:2px 16px 12px}
+.finding{padding:16px 18px;margin-bottom:14px;border-left-width:4px;border-radius:12px}
+.finding-title{font-size:14px;line-height:1.5;margin-bottom:8px;color:#fff}
+.finding-detail{font-size:12px;line-height:1.7;color:#bfb6d6;padding:10px 12px;background:rgba(0,0,0,.28);border-radius:10px;margin-top:8px}
+.fps-warning{margin-top:10px;padding:7px 10px;font-size:11.5px}
+details.how{margin-top:12px;border-radius:12px}
+details.how > summary{padding:10px 14px;font-size:12.5px}
+.how-body{padding:6px 16px 16px;font-size:13px;line-height:1.7}
+.how-body li{margin-bottom:9px}
+.how-file{padding:12px 14px;margin:12px 0;border-radius:12px}
+.row{padding:11px 14px;margin-bottom:9px;line-height:1.6;border-radius:12px}
+.warnbox{padding:14px 16px;margin-bottom:16px;line-height:1.65;border-radius:14px}
+.devgrid{gap:12px;margin-bottom:18px}
+.devc{padding:16px}
+.empty{padding:48px 20px}
+
+/* lista lateral */
+.item{padding:14px 18px;gap:14px}
+.inick{font-size:15px}
+.imeta{margin-top:6px;gap:6px}
+.list-hd{padding:14px 18px}
+
+/* celular */
+@media(max-width:900px){.tabs{margin:6px -2px 20px}.ig-group{margin-bottom:20px}.pname{font-size:23px}.verdict{font-size:19px}}
+/* pestañas: se acomodan en filas en escritorio, deslizan en celular */
+.tabs{position:static!important;flex-wrap:wrap;overflow:visible;gap:14px 28px}
+.tg + .tg{padding-left:0;border-left:none}
+@media(max-width:700px){.tabs{flex-wrap:nowrap;overflow-x:auto;gap:20px}.tg + .tg{padding-left:20px;border-left:1px solid var(--border)}}
+html,body{overflow-x:hidden;max-width:100vw}
+@media(max-width:700px){.wrap{padding:12px}.detail{padding:16px 12px 28px}.toolbar .search{min-width:0}.grid>.panel{min-width:0}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <form class="login-box" id="loginForm" autocomplete="off">
+    <h1><img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAIT0lEQVR42u1bS28kVxX+zrm3qt12+5VRNKPRZERChLJACCligUBKIqEgEYlfgCDrRIIVigCxYQGskQhs5ycgFBawYBZoBGhGbFjxyDwizTiasT3d7na7q+ueL4uqsqvL1W1Pu2fa4/hIJbmquu7jO+d859xzr4FzOZdz+TyLTHin+TULsfyqEz/D+QQAPFfrCS1AAdjFRuNNqL5J0khOZQkiYiKiMLv+6WBwvWg775dXrlxpDh89+qGRTREhSZmyH0r27bVPB4PbpX6OFD8OAALf8SI/tqyHqRFWEaTAIoDr1YF1Op1mE/i1Uy1mMr0mRZCa3QBw+wjXPqb/iXSNTI1MT+Cn2bci3XGaI/mQwHruu9MiYAKoAsmTfjh2YiQVIn4GROWPcCGfXycCILcumQYAV3nmAFABVanhVBGI1L4ASYCsuADAbHCuaLvggBCCm1WYEQGEI/2M6HMcJ/g8dFRDCXpkX4OB5P5UBQIywNK03t+9h4ii+EIACAVG9vN2R/rqdl9/jOgGT+L7I0xu1q3rZ6IFXGw03qpA5dopwleajddWIoehMRueADTCNRpYuPDCIU1DBHubWwiDASRXOwGJVNAZhtduBXlr1cNJNjhJAS7G/1z+kl+MRAXk9PZPQJwAD5Pwjf8kyeIS9vsprO1OHh0Oma5cXFgYeeBEsJ0GvH/pAt679AK20wAnAojAkgStqy/hlXfegQ2TA9YmoVGMjz/6CN17n0DjGCARSKx7hw83tvDbjU2se4dAQgCkJFa9w7VXX8Kqd0jz59MSwKIKfnT7AW7s9NBS3bd3FcHQ7FePBoOf5hafjhJUxTcKNBJSekbZNcJJhp0ZoWlAdzCADYejABixmwbsWvZ3AUBsREISuc2w1A8B7Bo1Mp4YAGSgGkttA0gJeBUZTCJBHedXWpMPqwg0t4iy7xbPy7/nATXLOIYu93ESJsi/17rmJyVYsyLh51b80bGlcuUmP0KCNeFvnDWxcn9qAaAZbDiEpSGL+zkJ0gwaR6OpKwmNotpUVgAMSfTMEJuOkGBsnPvSzdfl1JamWHv1i3j5ja9ja7cPL5nuxDkknR38/w9/hKg7oBoCooLB5hbE+31rUBH0jHh7bRlfXlyAFznIggg4zdjbTkCAT8UCSEO8soKlq1eRdHvwqpmWGzF2bt/Fzt17mcYrZi/e51nigfZTElfiCC834kO5LgHsmc3VCsa7QAhgksCSBJYDwPy5i2NIBYBMq6x1gYTEwOozHT21JFjk/CXyK+5JQirExyNSVRGcShkPAAmaZVf5nmer4jQWAPUe0mzCBzvggDiGi+OzD4A6h+79B3j4939ge2+QrQWALAq0OxDVswsASYg6dO/fx8agi8fFYqjwZ9XaCHAmXcA3m/AVAECeKR44HgmeVgqfEQCcVGhgbfFrvsKae054JSKcBMDYZaoXgRcZcQGCsDl6gORFm2o9wIsUy+6yRDmvufEAkNs1WufQ2GynYaGTBmjWOIis1rSoOpf0tUit+8FGalsEMMzWFF0Cw3z9TwCBgIPI7tg2V1dX18sPFkNwu91uWFtqfhCJfhDIVAAvAHpm+NrSIn5x9SL6xmeaxhqAJVXc7PXx83sbaKqUATAF1Izf3er3/7a0vKw9VQPAVUCk3e7fBfZqLaDdbo9YQLuoDQbuOgRYsbID0DVDL0cfc7SAdhoyjVd5SaTdBrbbOzuH5vMkHOABpI50vlxczP3MzZkBpcRNVQBIFvNxOFwa53GjwH5dsa6IeRoygAlj4ZMO1Y9fDIohKyGnVZIMpAs8XM0pyHJWPl9OuAxAIJEXkULNz3Ua/UxKhFqqWuzb7VdtYxGse4e4QoIZSZ6svF1WY1MFDXH7u0wGYFkdWk5FIF4roTDnh3gWAFje4J8CuVucDyAgRrKdhi98uLH1gySLNXJQ9wPeXmvhShwhOQEIBLCgglvdPm71+lhQhWXWxoaIPErTO0ZeC0axXOPF+QAF/nuM8sTJkrooil73kJsls4Pm2v/dK5fxzeUl7JhNHSKL3aTfPNjE7zceoeU9QuYKAaAj8Oe94fDbT38tcLhy7QCEF1XXUUmEFEBs3C96YkYu0PIea/l2WqEtA+ON4bDY0Knu+D7xGSF/BA9ZZVwhAAEVAmSuuVlGiIL0iusAADAn5mMfg5kWgEkKCgVRVwatRkh1s1FkvK9ZHerZznK1/TDmk2cLAIFIK4cQio2/pgpaTkEbPQkxJGuJUfL0tvw8JdFyilhEy23nyxCAbM0LgKw2avbQnPsrSyQoAIzEx3uDrwqx3s8jRJG6Xo4jXI6jkRBZvLvZ20Ww7MfM2uGyc7KZprcB3iFQsH2QDNd/PSnTzzQKTJLlOP6LAt8iJABw2VmDFO9fuoD3L13YP2vAPJ19nAa8+79P8DgNZQJNRcQH2s+6SfLL+VWEJoMmNRHDmqq+tGEGJ4JEFdGY6FC4TaIyEkFUBMGk0c2XINVsdJY8MC0J1s3HCLDMXFLHlGNCTfV3dnCwyWZNfFXNfa7Fz7i9ssakHAktu/YrOSW11kbCSXW80wsAuSRZ+NIyw8YiWMp9vUyCQxVIdpSwTCpxHlUazxMAWYh07j2GsFaK6c5Mwo1O791/9/e+PzQGARwBikBo3EmU3yOwU6rj0UhxwJ1KAvT8SiuOf7LSaHA5joetOGYrjq0Vx2xF0Sbwhj9LHFA97OUBpEsiTecUVq2nk4LWrbVuF9s4fIiRT5P9nyYJVkN9MMCE9bNxzhVHW2UeFbdnYn415bVimZCetTB4rPJaycZfnPa/RJ4XAGrLa8W/x6hIf2Vlpd/pdHAuc5JnZX6TDoam52o4l3M5l3nJZ61ZVLpi82Q6AAAAAElFTkSuQmCC" alt="">SS Menú</h1>
+    <p class="subtitle">Conecta con el repositorio donde se guardan los escaneos</p>
+    <label for="inRepo">Repositorio (dueño/nombre)</label>
+    <input id="inRepo" type="text" value="kaspercito/ss-datos" spellcheck="false">
+    <label for="inToken">Token de GitHub</label>
+    <input id="inToken" type="password" placeholder="github_pat_..." spellcheck="false">
+    <div class="login-err hidden" id="loginErr"></div>
+    <button class="btn-primary" id="loginBtn" type="submit">Ingresar</button>
+    <p class="hint">El token se guarda solo en este navegador y nunca está escrito en el código de la página.
+    Usa un token <b>fine-grained</b> limitado a este repositorio con permiso <b>Contents: Read and write</b>.</p>
+  </form>
+</div>
+
+<!-- APP -->
+<div class="wrap hidden" id="mainApp">
+  <header>
+    <div>
+      <h1><img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAIT0lEQVR42u1bS28kVxX+zrm3qt12+5VRNKPRZERChLJACCligUBKIqEgEYlfgCDrRIIVigCxYQGskQhs5ycgFBawYBZoBGhGbFjxyDwizTiasT3d7na7q+ueL4uqsqvL1W1Pu2fa4/hIJbmquu7jO+d859xzr4FzOZdz+TyLTHin+TULsfyqEz/D+QQAPFfrCS1AAdjFRuNNqL5J0khOZQkiYiKiMLv+6WBwvWg775dXrlxpDh89+qGRTREhSZmyH0r27bVPB4PbpX6OFD8OAALf8SI/tqyHqRFWEaTAIoDr1YF1Op1mE/i1Uy1mMr0mRZCa3QBw+wjXPqb/iXSNTI1MT+Cn2bci3XGaI/mQwHruu9MiYAKoAsmTfjh2YiQVIn4GROWPcCGfXycCILcumQYAV3nmAFABVanhVBGI1L4ASYCsuADAbHCuaLvggBCCm1WYEQGEI/2M6HMcJ/g8dFRDCXpkX4OB5P5UBQIywNK03t+9h4ii+EIACAVG9vN2R/rqdl9/jOgGT+L7I0xu1q3rZ6IFXGw03qpA5dopwleajddWIoehMRueADTCNRpYuPDCIU1DBHubWwiDASRXOwGJVNAZhtduBXlr1cNJNjhJAS7G/1z+kl+MRAXk9PZPQJwAD5Pwjf8kyeIS9vsprO1OHh0Oma5cXFgYeeBEsJ0GvH/pAt679AK20wAnAojAkgStqy/hlXfegQ2TA9YmoVGMjz/6CN17n0DjGCARSKx7hw83tvDbjU2se4dAQgCkJFa9w7VXX8Kqd0jz59MSwKIKfnT7AW7s9NBS3bd3FcHQ7FePBoOf5hafjhJUxTcKNBJSekbZNcJJhp0ZoWlAdzCADYejABixmwbsWvZ3AUBsREISuc2w1A8B7Bo1Mp4YAGSgGkttA0gJeBUZTCJBHedXWpMPqwg0t4iy7xbPy7/nATXLOIYu93ESJsi/17rmJyVYsyLh51b80bGlcuUmP0KCNeFvnDWxcn9qAaAZbDiEpSGL+zkJ0gwaR6OpKwmNotpUVgAMSfTMEJuOkGBsnPvSzdfl1JamWHv1i3j5ja9ja7cPL5nuxDkknR38/w9/hKg7oBoCooLB5hbE+31rUBH0jHh7bRlfXlyAFznIggg4zdjbTkCAT8UCSEO8soKlq1eRdHvwqpmWGzF2bt/Fzt17mcYrZi/e51nigfZTElfiCC834kO5LgHsmc3VCsa7QAhgksCSBJYDwPy5i2NIBYBMq6x1gYTEwOozHT21JFjk/CXyK+5JQirExyNSVRGcShkPAAmaZVf5nmer4jQWAPUe0mzCBzvggDiGi+OzD4A6h+79B3j4939ge2+QrQWALAq0OxDVswsASYg6dO/fx8agi8fFYqjwZ9XaCHAmXcA3m/AVAECeKR44HgmeVgqfEQCcVGhgbfFrvsKae054JSKcBMDYZaoXgRcZcQGCsDl6gORFm2o9wIsUy+6yRDmvufEAkNs1WufQ2GynYaGTBmjWOIis1rSoOpf0tUit+8FGalsEMMzWFF0Cw3z9TwCBgIPI7tg2V1dX18sPFkNwu91uWFtqfhCJfhDIVAAvAHpm+NrSIn5x9SL6xmeaxhqAJVXc7PXx83sbaKqUATAF1Izf3er3/7a0vKw9VQPAVUCk3e7fBfZqLaDdbo9YQLuoDQbuOgRYsbID0DVDL0cfc7SAdhoyjVd5SaTdBrbbOzuH5vMkHOABpI50vlxczP3MzZkBpcRNVQBIFvNxOFwa53GjwH5dsa6IeRoygAlj4ZMO1Y9fDIohKyGnVZIMpAs8XM0pyHJWPl9OuAxAIJEXkULNz3Ua/UxKhFqqWuzb7VdtYxGse4e4QoIZSZ6svF1WY1MFDXH7u0wGYFkdWk5FIF4roTDnh3gWAFje4J8CuVucDyAgRrKdhi98uLH1gySLNXJQ9wPeXmvhShwhOQEIBLCgglvdPm71+lhQhWXWxoaIPErTO0ZeC0axXOPF+QAF/nuM8sTJkrooil73kJsls4Pm2v/dK5fxzeUl7JhNHSKL3aTfPNjE7zceoeU9QuYKAaAj8Oe94fDbT38tcLhy7QCEF1XXUUmEFEBs3C96YkYu0PIea/l2WqEtA+ON4bDY0Knu+D7xGSF/BA9ZZVwhAAEVAmSuuVlGiIL0iusAADAn5mMfg5kWgEkKCgVRVwatRkh1s1FkvK9ZHerZznK1/TDmk2cLAIFIK4cQio2/pgpaTkEbPQkxJGuJUfL0tvw8JdFyilhEy23nyxCAbM0LgKw2avbQnPsrSyQoAIzEx3uDrwqx3s8jRJG6Xo4jXI6jkRBZvLvZ20Ww7MfM2uGyc7KZprcB3iFQsH2QDNd/PSnTzzQKTJLlOP6LAt8iJABw2VmDFO9fuoD3L13YP2vAPJ19nAa8+79P8DgNZQJNRcQH2s+6SfLL+VWEJoMmNRHDmqq+tGEGJ4JEFdGY6FC4TaIyEkFUBMGk0c2XINVsdJY8MC0J1s3HCLDMXFLHlGNCTfV3dnCwyWZNfFXNfa7Fz7i9ssakHAktu/YrOSW11kbCSXW80wsAuSRZ+NIyw8YiWMp9vUyCQxVIdpSwTCpxHlUazxMAWYh07j2GsFaK6c5Mwo1O791/9/e+PzQGARwBikBo3EmU3yOwU6rj0UhxwJ1KAvT8SiuOf7LSaHA5joetOGYrjq0Vx2xF0Sbwhj9LHFA97OUBpEsiTecUVq2nk4LWrbVuF9s4fIiRT5P9nyYJVkN9MMCE9bNxzhVHW2UeFbdnYn415bVimZCetTB4rPJaycZfnPa/RJ4XAGrLa8W/x6hIf2Vlpd/pdHAuc5JnZX6TDoam52o4l3M5l3nJZ61ZVLpi82Q6AAAAAElFTkSuQmCC" alt="">SS Dashboard v4.1</h1>
+      <p class="sub">Gestor de escaneos Minecraft · <span id="repoLabel"></span></p>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btnGuide">📖 Guía</button>
+      <button class="btn btn-red" id="btnLogout">Salir</button>
+    </div>
+  </header>
+
+  <div id="guidePanel" class="guide-panel hidden">
+    <h3>📖 Cómo se usa</h3>
+    <p><b>1.</b> Pulsa <b>➕ Generar código</b>, elige la <b>plataforma</b> (Java, Bedrock o Móvil) y, si quieres, una nota (por ejemplo el nick).</p>
+    <p><b>2.</b> Por AnyDesk, ejecuta en su PC el <code>SSHelper.exe</code> (Java/Bedrock en PC) o la app SSHelper (móvil) con el código. La 1.ª letra del código indica la plataforma: <code>SS-J…</code> Java, <code>SS-B…</code> Bedrock, <code>SS-M…</code> móvil. Un código de móvil no funciona en el exe de PC y viceversa.</p>
+    <p><b>3.</b> Ábrelo tú como administrador en su PC (el jugador está frozeado), escribe el código y espera el escaneo.</p>
+    <p><b>4.</b> El resultado aparece aquí solo (se actualiza cada 30 s). El código pasa de ⏳ Pendiente a un veredicto.</p>
+    <p style="margin-top:10px"><b>Veredictos:</b> 🔴 evidencia fuerte · 🟡 señales sospechosas, confírmalas tú en su PC · 🟢 sin coincidencias con las firmas conocidas.
+    Los hallazgos con <i>probable falso positivo</i> no cuentan para el veredicto, pero revísalos.</p>
+    <p><b>Si el envío falla</b> el programa guarda un .json local: usa <b>📥 Importar</b> para verlo aquí.</p>
+    <div style="margin-top:16px;padding:14px;border-radius:12px;background:rgba(138,77,255,.1);border:1px solid rgba(176,133,255,.3)"><p style="font-size:14px;font-weight:800;color:#f3eefc">🕵️ Cómo encontrar trampas (muy fácil)</p><p>1️⃣ <b>Abre el escaneo</b> y mira primero el veredicto de arriba (🟢 limpio, 🟡 preguntar, 🔴 grave).</p><p>2️⃣ <b>Lee la frase de explicación</b> justo debajo. Te dice qué pasó en una sola línea.</p><p>3️⃣ <b>Mira las señales</b>: 🔴 son las importantes, 🟡 son para preguntar.</p><p>4️⃣ <b>Haz la prueba tú</b> por AnyDesk (pestaña Macros). Lo que ves en vivo vale más que el reporte.</p><p>5️⃣ <b>Pregunta antes de sancionar.</b> Si lo que ves se repite y no tiene explicación, ahí sí hay base.</p><p style="margin-top:8px">⚖️ El reporte no decide si algo es legal: lo decide la regla de tu servidor.</p></div><p><b>Firmas propias:</b> sube <code>config/signatures.json</code> al repo con listas <code>strong</code>, <code>weak</code>, <code>ambiguous</code>, <code>tools</code>, <code>evasion</code>; el exe las lee sin recompilar.</p>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" class="search" id="searchBox" placeholder="Buscar por código, nick, país, nota, PC...">
+    <button class="btn btn-gen" id="btnGen">➕ Generar código</button>
+    <button class="btn" id="btnRefresh">🔄 Actualizar</button>
+    <button class="btn" id="btnImport">📥 Importar</button>
+    <button class="btn btn-danger" id="btnDelete">🗑 Borrar</button>
+    <input type="file" id="fileImport" accept=".json,application/json" class="hidden">
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="chips" id="chips"></div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="list-hd"><span>ESCANEOS</span><span id="countLabel"></span></div>
+      <div class="list" id="scanList"></div>
+    </div>
+    <div class="panel">
+      <div class="detail" id="detail"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+"use strict";
+// ── CONFIG ───────────────────────────────────────────────────────
+const DEFAULT_BRANCH = "main";
+const POLL_MS = 30000;
+const LEVELS = ["red", "yellow", "green"];
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sin 0/O/1/I
+
+// ── UTILIDADES ───────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
+function b64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = ""; bytes.forEach((b) => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+function toast(msg, isErr) {
+  const t = document.createElement("div");
+  t.className = "toast" + (isErr ? " err" : "");
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), isErr ? 5000 : 2600);
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); toast("Copiado ✓"); }
+  catch {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast("Copiado ✓"); } catch { toast("No se pudo copiar", true); }
+    ta.remove();
+  }
+}
+// Plataformas: la 1.ª letra del código la indica (SS-Jxxx = Java, SS-Bxxx = Bedrock, SS-Mxxx = móvil)
+const PLATFORMS = {
+  java:    { label: "Java PC",    ch: "J", icon: "☕", tool: "SSHelper.exe" },
+  bedrock: { label: "Bedrock PC", ch: "B", icon: "🧱", tool: "SSHelper.exe" },
+  mobile:  { label: "Móvil",      ch: "M", icon: "📱", tool: "la app SSHelper (APK)" },
+};
+const PLAT_BY_CHAR = { J: "java", B: "bedrock", M: "mobile" };
+function platOf(d) {
+  const p = String((d && d.platform) || "").toLowerCase();
+  if (PLATFORMS[p]) return p;
+  return PLAT_BY_CHAR[String((d && d.code) || "").charAt(3)] || "java";
+}
+const OS_BADGE = { windows: "🪟 Windows", linux: "🐧 Linux", mac: "🍎 macOS" };
+const platBadge = (d) => { const x = PLATFORMS[platOf(d)]; const o = d && OS_BADGE[d.os_family]; return `<span class="badge b-plat">${x.icon} ${x.label}</span>` + (o ? ` <span class="badge b-plat">${o}</span>` : ""); };
+function genCode(platform) {
+  const r = new Uint32Array(8); crypto.getRandomValues(r);
+  const s = Array.from(r, (n) => CODE_ALPHABET[n % CODE_ALPHABET.length]);
+  s[0] = (PLATFORMS[platform] || PLATFORMS.java).ch;
+  const t = s.join("");
+  return `SS-${t.slice(0, 4)}-${t.slice(4)}`;
+}
+
+// ── ESTADO ───────────────────────────────────────────────────────
+let cfg = null;                 // { repo, token, branch }
+let scanCache = new Map();      // name -> { sha, data }
+let codeCache = new Map();      // name -> { sha, data }
+let entries = [];               // lista unificada
+let localEntries = [];          // importados desde archivo
+let selectedKey = null;
+let filter = "all";
+let loading = false;
+let lastLoad = null;
+let loadError = null;
+let pollTimer = null;
+
+// ── API GITHUB ───────────────────────────────────────────────────
+function explain(status, data) {
+  const msg = (data && data.message) ? ` — GitHub dice: "${data.message}"` : "";
+  if (status === 0) return "Sin conexión con GitHub (revisa tu internet o un bloqueador)." + msg;
+  if (status === 401) return "Token inválido, vencido o revocado (HTTP 401)." + msg + "\nGenera uno nuevo en GitHub → Settings → Developer settings → Fine-grained tokens.";
+  if (status === 403) return "El token no tiene permiso para este repositorio, o se superó el límite de GitHub (HTTP 403)." + msg;
+  if (status === 404) return "No se encontró el repositorio, o el token no tiene acceso a él (HTTP 404)." + msg;
+  if (status === 409) return "Conflicto al guardar: alguien modificó el archivo. Actualiza e intenta otra vez (HTTP 409).";
+  return `Error HTTP ${status}.` + msg;
+}
+async function api(method, path, body, raw) {
+  const headers = {
+    "Authorization": `Bearer ${cfg.token}`,
+    "Accept": raw ? "application/vnd.github.raw+json" : "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+  if (body) headers["Content-Type"] = "application/json";
+  try {
+    const res = await fetch(`https://api.github.com/repos/${cfg.repo}${path ? "/" + path : ""}`, {
+      method, headers, body: body ? JSON.stringify(body) : undefined, cache: "no-store",
+    });
+    if (raw && res.ok) return { status: res.status, text: await res.text() };
+    let data = null; try { data = await res.json(); } catch {}
+    return { status: res.status, data };
+  } catch (e) {
+    return { status: 0, data: { message: String(e) } };
+  }
+}
+const refQ = () => `?ref=${encodeURIComponent(cfg.branch)}`;
+
+// ── LOGIN ────────────────────────────────────────────────────────
+function showLoginError(msg) { const e = $("loginErr"); e.textContent = msg; e.classList.toggle("hidden", !msg); }
+
+$("loginForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const repo = $("inRepo").value.trim().replace(/^https?:\/\/github\.com\//, "").replace(/\.git$/, "").replace(/\/$/, "");
+  const token = $("inToken").value.trim();
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) return showLoginError("El repositorio debe tener el formato dueño/nombre.");
+  if (!token) return showLoginError("Pega tu token de GitHub.");
+  $("loginBtn").disabled = true; showLoginError("");
+  cfg = { repo, token, branch: DEFAULT_BRANCH };
+  const r = await api("GET", "");
+  $("loginBtn").disabled = false;
+  if (r.status !== 200) { cfg = null; return showLoginError(explain(r.status, r.data)); }
+  if (r.data && r.data.default_branch) cfg.branch = r.data.default_branch;
+  store.set("ss.cfg", JSON.stringify(cfg));
+  if (r.data && r.data.permissions && r.data.permissions.push === false) toast("⚠ Este token solo puede leer: no podrás generar ni borrar.", true);
+  startApp();
+});
+
+function logout() { store.del("ss.cfg"); cfg = null; location.reload(); }
+let _deepCode = decodeURIComponent(location.hash.replace(/^#/, "")).toUpperCase();
+function openDeepLink() {      // enlace desde Discord: https://…/#SS-XXXX-XXXX abre ese escaneo
+  if (!/^SS-/.test(_deepCode)) return;
+  const same = entries.filter((x) => x.data && String(x.data.code).toUpperCase() === _deepCode);
+  const e = same.find((x) => x.kind !== "pending") || same[0];
+  if (!e) return;                 // aún no está en el repo: se reintenta en la siguiente actualización
+  selectedKey = e.key; activeTab = "0"; _deepCode = ""; filter = "all";
+  setTimeout(() => { const a = document.querySelector(".item.active"); if (a) a.scrollIntoView({ block: "center" }); }, 80);
+}
+const liveCache = new Map();
+function liveState(e) {
+  const L = e && e.live; if (!L) return null;
+  const age = Date.now() - (Date.parse(L.beat) || 0), pct = L.total ? Math.round(L.step / L.total * 100) : 0;
+  if (L.status === "aborted") return { kind: "aborted", badge: "🛑 Cerró el programa", cls: "b-red", pct, L, age };
+  if (age > 60000) return { kind: "lost", badge: "⚠ Sin señal", cls: "b-yellow", pct, L, age };
+  return { kind: "running", badge: `🔄 Escaneando ${pct}%`, cls: "b-pending", pct, L, age };
+}
+function hasLive() { return entries.some((e) => { const s = liveState(e); return s && s.kind === "running"; }); }
+function liveInner(e) {
+  const s = liveState(e);
+  if (!s) return `<div class="verdict pending">⏳ PENDIENTE</div><p style="color:var(--muted);font-size:13px">El jugador todavía no ha ejecutado el programa con este código.</p>`;
+  const L = s.L, mins = Math.max(0, Math.round(s.age / 60000)), t = (x) => new Date(x).toLocaleTimeString();
+  const info = `<p style="color:var(--muted);font-size:13px;margin:10px 0">PC: <b>${esc(L.host || "?")}</b> · Empezó: <b>${esc(t(L.started))}</b> · Ahora: <b>${esc(L.label || "?")}</b>${L.total ? ` (${L.step}/${L.total})` : ""} · Señal hace <b>${Math.max(0, Math.round(s.age / 1000))} s</b></p>`;
+  const c = L.click ? `<div class="warnbox" style="border-color:rgba(138,77,255,.5);background:rgba(138,77,255,.1)">🖱️ <b>Prueba de clics en vivo</b> · fase ${esc(L.click.phase)}/3 · <b>${esc(L.click.clicks)}</b> clics · <b>${esc(L.click.cps)}</b> CPS ahora · ${esc(L.click.left_s)} s restantes</div>` : "";
+  const P = L.partial || null;
+  const lvIcon = (l) => (l === "red" ? "🔴" : "🟡");
+  const part = P ? `<div style="margin:10px 0"><div style="font-weight:700;margin-bottom:6px">Hallazgos hasta ahora: 🔴 ${P.red || 0} · 🟡 ${P.yellow || 0}</div>${(P.items || []).length ? (P.items || []).slice().reverse().map((x) => `<div class="row usb">${lvIcon(x.l)} <b>${esc(x.m)}</b>: ${esc(x.t)}</div>`).join("") : `<div style="color:var(--muted);font-size:13px">Todavía nada raro.</div>`}</div>` : "";
+  if (s.kind === "running") return `<div class="verdict run">🔄 ${L.click ? "PRUEBA DE CLICS…" : "ESCANEANDO… " + s.pct + "%"}</div><div class="pbar"><i style="width:${s.pct}%"></i></div>${info}${c}${part}`;
+  if (s.kind === "aborted") return `<div class="verdict red">🛑 EL JUGADOR CERRÓ EL PROGRAMA</div>${info}<div class="warnbox">Cerró SSHelper a las <b>${esc(t(L.beat))}</b> sin terminar el escaneo.${L.reason ? " Motivo: " + esc(L.reason) + "." : ""} Pregúntale por qué; si fue a propósito, puedes considerarlo para la sanción. El código sigue vigente por si lo vuelve a intentar.</div>${part}`;
+  return `<div class="verdict yellow">⚠ SIN SEÑAL HACE ${mins} MIN</div>${info}<div class="warnbox">El programa dejó de avisar a las <b>${esc(t(L.beat))}</b>. Pudo cerrarlo a la fuerza, apagarse el PC o perder internet. Pídele que te muestre la pantalla.</div>${part}`;
+}
+function liveBlock(e) { return `<div id="liveBox">${liveInner(e)}</div>`; }
+// ── EN VIVO: consulta solo la carpeta live/ (rápido y barato) mientras haya un escaneo en curso o códigos pendientes ──
+let _liveBusy = false, liveTimer = null, _liveListSig = "";
+const hasPending = () => entries.some((e) => e.kind === "pending");
+async function refreshLive() {
+  if (_liveBusy || loading || !cfg) return;
+  _liveBusy = true;
+  try {
+    const before = new Set(liveCache.keys());
+    const lv = await listDir("live");
+    if (!lv.ok) return;
+    await loadJsonFiles("live", lv.files, liveCache);
+    for (const e of entries) if (e.kind === "pending") e.live = (liveCache.get(String(e.data.code) + ".json") || {}).data;
+    const gone = [...before].some((k) => !liveCache.has(k));     // terminó: el reporte ya debería estar en el repo
+    checkLive();
+    const sig = entries.filter((e) => e.kind === "pending").map((e) => { const s = liveState(e); return e.data.code + (s ? s.kind + s.pct : ""); }).join("|");
+    if (sig !== _liveListSig) { _liveListSig = sig; renderList(); renderChips(); }
+    const ce = current();
+    if (ce && ce.kind === "pending") { const bx = $("liveBox"); if (bx) bx.innerHTML = liveInner(ce); else renderDetail(); }
+    if (gone) setTimeout(() => loadAll(true), 1500);
+  } catch {} finally { _liveBusy = false; }
+}
+function liveLoop() {
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(async () => {
+    if (!document.hidden && cfg && (hasLive() || hasPending())) await refreshLive();
+    liveLoop();
+  }, hasLive() ? 4000 : 10000);
+}
+const _liveSeen = new Map(); let _liveInit = false;
+function checkLive() {
+  for (const e of entries) {
+    const s = liveState(e); if (!s) continue;
+    const code = e.data.code, prev = _liveSeen.get(code); _liveSeen.set(code, s.kind);
+    if (!_liveInit || prev === s.kind) continue;
+    const msg = s.kind === "running" ? `🔄 ${code} empezó el escaneo` : s.kind === "aborted" ? `🛑 ${code}: el jugador cerró el programa en pleno escaneo` : `⚠ ${code}: sin señal del PC del jugador`;
+    toast(msg, s.kind !== "running");
+    try { if (window.Notification && Notification.permission === "granted") new Notification("SS Menú", { body: msg }); } catch {}
+  }
+  _liveInit = true;
+}
+function startApp() {
+  try { if (window.Notification && Notification.permission === "default") Notification.requestPermission(); } catch {}
+  $("loginScreen").classList.add("hidden");
+  $("mainApp").classList.remove("hidden");
+  $("repoLabel").textContent = cfg.repo;
+  renderChips(); renderDetail();
+  loadAll();
+  clearInterval(pollTimer);
+  let _tick = 0; pollTimer = setInterval(() => { _tick++; if (!document.hidden && !loading && _tick % 3 === 0) loadAll(true); }, 10000);
+  liveLoop();
+}
+function boot() {
+  try { const saved = JSON.parse(store.get("ss.cfg") || "null"); if (saved && saved.token && saved.repo) { cfg = saved; startApp(); return; } } catch {}
+  $("loginScreen").classList.remove("hidden");
+}
+
+// ── CARGA DE DATOS ───────────────────────────────────────────────
+async function listDir(dir) {
+  const r = await api("GET", `contents/${dir}${refQ()}`);
+  if (r.status === 404) return { ok: true, files: [] };        // carpeta aún no existe: no es un error
+  if (r.status !== 200 || !Array.isArray(r.data)) return { ok: false, status: r.status, data: r.data };
+  return { ok: true, files: r.data.filter((f) => f.type === "file" && f.name.endsWith(".json")) };
+}
+async function loadJsonFiles(dir, files, cache) {
+  const names = new Set(files.map((f) => f.name));
+  for (const k of [...cache.keys()]) if (!names.has(k)) cache.delete(k);
+  const todo = files.filter((f) => !cache.has(f.name) || cache.get(f.name).sha !== f.sha);
+  let i = 0;
+  async function worker() {
+    while (i < todo.length) {
+      const f = todo[i++];
+      const r = await api("GET", `contents/${dir}/${encodeURIComponent(f.name)}${refQ()}`, null, true);
+      let data = null;
+      if (r.status === 200) { try { data = JSON.parse(r.text); } catch { data = { _broken: true }; } }
+      else data = { _broken: true, _status: r.status };
+      cache.set(f.name, { sha: f.sha, data });
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(6, todo.length) }, worker));
+}
+
+async function loadAll(silent) {
+  if (loading || !cfg) return;
+  loading = true; loadError = null;
+  if (!silent) renderList();
+  try {
+    const [d, c, lv] = await Promise.all([listDir("data"), listDir("codes"), listDir("live")]);
+    if (!d.ok || !c.ok) {
+      const bad = !d.ok ? d : c;
+      loadError = explain(bad.status, bad.data);
+    } else {
+      await Promise.all([loadJsonFiles("data", d.files, scanCache), loadJsonFiles("codes", c.files, codeCache), loadJsonFiles("live", lv.ok ? lv.files : [], liveCache)]);
+      lastLoad = new Date();
+    }
+  } catch (e) {
+    loadError = "Error inesperado: " + e;
+  }
+  loading = false;
+  buildEntries(); checkLive(); openDeepLink();
+  renderChips(); renderList();
+  if (selectedKey) {
+    const ce = current();
+    const sig = ce ? [ce.key, ce.sha || "", ce.data && ce.data.verdict, ce.data && ce.data.timestamp, ce.live && ce.live.status + ce.live.step + (liveState(ce) || {}).kind].join("|") : "";
+    if (sig !== _detailSig) renderDetail();      // no tocar la vista si no cambió nada (evita que salte de pestaña)
+  }
+}
+
+// Hora del escaneo. v3.9+ trae timestamp_utc. Los escaneos viejos solo traen la hora del PC del jugador (sin zona):
+// se corrige con la zona típica de su país para que no salgan "en el futuro" y se ordenen bien.
+const TZ_MIN = { uruguay: -180, argentina: -180, chile: -180, brazil: -180, brasil: -180, paraguay: -180, ecuador: -300, colombia: -300, peru: -300,
+  panama: -300, bolivia: -240, venezuela: -240, "dominican republic": -240, "republica dominicana": -240, "puerto rico": -240, cuba: -240,
+  mexico: -360, guatemala: -360, honduras: -360, "el salvador": -360, nicaragua: -360, "costa rica": -360, spain: 120, espana: 120 };
+const normC = (c) => String(c || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+function scanTs(d) {
+  const u = Date.parse(d.timestamp_utc || "");
+  if (u) return { ts: u, approx: false };
+  const m = /^(\d{4})-(\d\d)-(\d\d)[ T](\d\d):(\d\d):(\d\d)/.exec(String(d.timestamp || ""));
+  if (!m) return { ts: 0, approx: true };
+  const [Y, Mo, D, h, mi, sec] = m.slice(1).map(Number);
+  const off = TZ_MIN[normC(d.pc && d.pc.country)];
+  let ts = off != null ? Date.UTC(Y, Mo - 1, D, h, mi, sec) - off * 60000 : new Date(Y, Mo - 1, D, h, mi, sec).getTime();
+  if (ts > Date.now() + 120000) ts = Date.now();       // nunca "en el futuro"
+  return { ts, approx: true };
+}
+
+function buildEntries() {
+  const list = [];
+  const doneCodes = new Set();
+  for (const [name, v] of scanCache) {
+    const d = v.data;
+    if (!d || d._broken) continue;
+    const code = String(d.code || "");
+    doneCodes.add(code);
+    const st = scanTs(d);
+    list.push({ key: "scan:" + name, kind: "scan", name, sha: v.sha, data: d, ts: st.ts, approx: st.approx, validCode: codeCache.has(code + ".json") });
+  }
+  for (const [name, v] of codeCache) {
+    const d = v.data;
+    if (!d || d._broken) continue;
+    if (d.status === "done" || doneCodes.has(String(d.code))) continue;
+    list.push({ key: "code:" + name, kind: "pending", name, sha: v.sha, data: d, ts: Date.parse(d.created) || 0, live: (liveCache.get(String(d.code) + ".json") || {}).data });
+  }
+  for (const l of localEntries) list.push(l);
+  list.sort((a, b) => b.ts - a.ts);
+  entries = list;
+}
+
+
+function headImg(nick, lg) {
+  const n = String(nick || "").trim(), c = lg ? "head lg" : "head";
+  if (!/^[A-Za-z0-9_.]{2,16}$/.test(n)) return `<span class="${c} ph">?</span>`;
+  return `<img class="${c}" loading="lazy" alt="" src="https://mc-heads.net/avatar/${encodeURIComponent(n)}/${lg ? 136 : 84}" onerror="this.outerHTML='<span class=&quot;${c} ph&quot;>?</span>'">`;
+}
+function agoStr(ts) {
+  if (!ts) return ""; const m = Math.floor((Date.now() - ts) / 60000);
+  return m < 2 ? "ahora" : m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${Math.floor(m / 60)} h` : `hace ${Math.floor(m / 1440)} d`;
+}
+function dayLabel(ts) {
+  const d = new Date(ts), t = new Date(), y = new Date(Date.now() - 864e5);
+  return d.toDateString() === t.toDateString() ? "Hoy" : d.toDateString() === y.toDateString() ? "Ayer" : d.toLocaleDateString("es", { weekday: "long", day: "numeric", month: "long" });
+}
+
+// ── LISTA ────────────────────────────────────────────────────────
+function entryLevel(e) { return e.kind === "pending" ? "pending" : (LEVELS.includes(e.data.verdict) ? e.data.verdict : "green"); }
+function matches(e, q) {
+  if (!q) return true;
+  const d = e.data;
+  const hay = [d.code, d.label, PLATFORMS[platOf(d)].label, d.minecraft && d.minecraft.nick, d.pc && d.pc.country, d.pc && d.pc.hostname, d.pc && d.pc.user, e.name]
+    .filter(Boolean).join(" ").toLowerCase();
+  return hay.includes(q);
+}
+function renderChips() {
+  const hit = (e, f) => f === "all" ? true : f.startsWith("p:") ? platOf(e.data) === f.slice(2) : entryLevel(e) === f;
+  const count = (f) => entries.filter((e) => hit(e, f)).length;
+  const defs = [["all", "Todos"], ["red", "🔴 Cheating"], ["yellow", "🟡 Sospechoso"], ["green", "🟢 Limpio"], ["pending", "⏳ Pendientes"],
+    ["p:java", "☕ Java"], ["p:bedrock", "🧱 Bedrock"], ["p:mobile", "📱 Móvil"]];
+  $("stats").innerHTML = [["all", "Total", ""], ["red", "Cheating", "s-red"], ["yellow", "Sospechosos", "s-yellow"], ["green", "Limpios", "s-green"], ["pending", "Pendientes", "s-pending"]]
+    .map(([k, t, c]) => `<div class="stat ${c} ${filter === k ? "active" : ""}" data-f="${k}"><b>${count(k)}</b><span>${t}</span></div>`).join("");
+  $("chips").innerHTML = defs.map(([k, t]) => `<button class="chip ${filter === k ? "active" : ""}" data-f="${k}">${t} (${count(k)})</button>`).join("")
+    + `<span class="stamp">${loading ? "Actualizando…" : lastLoad ? "Actualizado " + lastLoad.toLocaleTimeString() : ""}</span>`;
+}
+function renderList() {
+  const box = $("scanList");
+  const q = $("searchBox").value.trim().toLowerCase();
+  const shown = entries.filter((e) => (filter === "all" || (filter.startsWith("p:") ? platOf(e.data) === filter.slice(2) : entryLevel(e) === filter)) && matches(e, q));
+  $("countLabel").textContent = shown.length;
+  let html = "";
+  if (loadError) {
+    html += `<div class="err-box">❌ No se pudieron cargar los escaneos\n\n${esc(loadError)}<br>
+      <button class="btn" data-act="retry">Reintentar</button><button class="btn" data-act="relogin">Cambiar token</button></div>`;
+  }
+  if (!shown.length && !loadError) {
+    html += `<div class="empty"><p>${loading ? "Cargando…" : entries.length ? "Sin resultados" : "Aún no hay escaneos.<br>Genera un código para empezar."}</p></div>`;
+  }
+  let lastDay = "";
+  html += shown.map((e) => {
+    const d = e.data, lvl = entryLevel(e), pend = e.kind === "pending";
+    const dl = e.ts ? dayLabel(e.ts) : "Sin fecha";
+    const grp = dl !== lastDay ? `<div class="grp">${esc(dl)}</div>` : ""; lastDay = dl;
+    const nick = pend ? (d.label || "Esperando al jugador…") : (d.minecraft && d.minecraft.nick || "?");
+    const av = pend ? `<span class="head ph">${PLATFORMS[platOf(d)].icon}</span>` : headImg(d.minecraft && d.minecraft.nick);
+    const ls = pend ? liveState(e) : null;
+    const text = pend ? (ls ? ls.badge : "⏳ Pendiente") : lvl === "red" ? "🔴 Cheating" : lvl === "yellow" ? "🟡 Sospechoso" : "🟢 Limpio";
+    const dv = !pend && Array.isArray(d.input_devices) ? d.input_devices.filter((x) => x.kind === "mouse" && x.bus !== "Integrado/otro").length : 0;
+    const sw = !pend && Array.isArray(d.macro_software) ? d.macro_software.filter((x) => x.running) : [];
+    const warnTags = (dv > 1 ? `<span class="badge b-yellow">🖱 ${dv} mouses</span>` : "") + (sw.length ? `<span class="badge b-yellow" title="${esc(sw.map((x) => x.name).join(", "))}">⚠ software macros</span>` : "");
+    const local = e.kind === "local" ? `<span class="badge b-local">local</span>` : "";
+    return grp + `<div class="item v-${ls ? (ls.kind === "aborted" ? "red" : ls.kind === "lost" ? "yellow" : "pending") : lvl} ${selectedKey === e.key ? "active" : ""}" data-key="${esc(e.key)}">${av}
+      <div class="ibody"><div class="irow"><span class="code">${esc(d.code)}</span><span class="when">${agoStr(e.ts)}</span></div>
+      <div class="inick">${esc(nick)}</div>
+      <div class="imeta"><span class="badge ${pend ? (ls ? ls.cls : "b-pending") : "b-" + lvl}">${text}</span>${platBadge(d)}${warnTags}${local}${!pend && d.pc && d.pc.country ? `<span>📍 ${esc(d.pc.country)}</span>` : ""}</div></div></div>`;
+  }).join("");
+  box.innerHTML = html;
+}
+
+// ── DETALLE ──────────────────────────────────────────────────────
+const current = () => entries.find((e) => e.key === selectedKey);
+
+function instructionsText(code, platform) {
+  const pl = platform || PLAT_BY_CHAR[code.charAt(3)] || "java";
+  if (pl === "mobile") return `SS de Minecraft (móvil) — 1) Deja Minecraft ABIERTO en el celular (dentro de un mundo/servidor) y desactiva el ahorro de batería. 2) Instala y abre la app SSHelper, escribe este código: ${code}. Si usas PojavLauncher, cuando la app lo pida elige la carpeta games/PojavLauncher. No desinstales apps ni borres archivos antes del escaneo.`;
+  const ed = pl === "bedrock" ? "Minecraft Bedrock (Windows)" : "Minecraft Java";
+  return `SS de Minecraft (${PLATFORMS[pl].label}) — 1) Deja ${ed} ABIERTO (dentro de un mundo/servidor). 2) Abre SSHelper.exe, acepta administrador y escribe este código: ${code}. No cierres programas ni borres archivos antes del escaneo.`;
+}
+
+function renderDetail() {
+  _fl = "all";
+  const box = $("detail");
+  const e = current();
+  _detailSig = e ? [e.key, e.sha || "", e.data && e.data.verdict, e.data && e.data.timestamp, e.live && e.live.status + e.live.step + (liveState(e) || {}).kind].join("|") : "";
+  if (!e) { box.innerHTML = `<div class="empty"><div class="empty-icon">👈</div><p>Selecciona un escaneo para ver detalles</p></div>`; return; }
+  const d = e.data;
+  const isBen = (f) => /lwjgl|natives|\.minecraft\\(versions|libraries|assets)/i.test(String(f || ""));
+  if (e.kind === "pending") {
+    box.innerHTML = `
+      ${liveBlock(e)}
+      <div class="bigcode">${esc(d.code)}</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Plataforma</div><div class="value">${esc(PLATFORMS[platOf(d)].icon + " " + PLATFORMS[platOf(d)].label)}</div></div>
+        <div class="info-item"><div class="label">Nota</div><div class="value">${esc(d.label || "—")}</div></div>
+        <div class="info-item"><div class="label">Creado</div><div class="value">${esc(d.created ? new Date(d.created).toLocaleString() : "?")}</div></div>
+      </div>
+      <div class="actions">
+        <button class="btn" data-act="copy" data-text="${esc(d.code)}">📋 Copiar código</button>
+        <button class="btn" data-act="copy" data-text="${esc(instructionsText(d.code, platOf(d)))}">💬 Copiar instrucciones</button>
+      </div>`;
+    return;
+  }
+  const f = Array.isArray(d.findings) ? d.findings : [];
+  const real = f.filter((x) => !x.probable_fp && x.level !== "info");
+  const reds = real.filter((x) => x.level === "red").length;
+  const yellows = real.filter((x) => x.level === "yellow").length;
+  const fps = f.filter((x) => x.probable_fp).length;
+  const infos = f.filter((x) => x.level === "info" && !x.probable_fp).length;
+  const lvl = entryLevel(e);
+  const vt = lvl === "red" ? "🔴 CHEATING" : lvl === "yellow" ? "🟡 SOSPECHOSO" : "🟢 LIMPIO";
+  const pc = d.pc || {}, mc = d.minecraft || {};
+  const item = (l, v, small) => `<div class="info-item"><div class="label">${l}</div><div class="value"${small ? ' style="font-size:11px"' : ""}>${esc(v)}</div></div>`;
+  const codeNote = e.kind === "scan" ? (e.validCode ? "" : " (⚠ sin código previo en el repo)") : "";
+
+  const order = { red: 0, yellow: 1, info: 2 };
+  const kindOf = (x) => (x.probable_fp ? "fp" : (["red", "yellow", "info"].includes(x.level) ? x.level : "info"));
+  const kindLabel = { red: "GRAVE", yellow: "ALERTA", info: "INFO", fp: "POSIBLE FP" };
+  const sorted = [...f].sort((a, b) => (a.probable_fp ? 1 : 0) - (b.probable_fp ? 1 : 0) || (order[a.level] ?? 3) - (order[b.level] ?? 3));
+  const keyEvid = real.filter((x) => x.level === "red");
+  const evHtml = keyEvid.length
+    ? `<div class="evidence"><div class="ev-head"><b>🚨 PRUEBAS CLAVE PARA SANCIONAR (${keyEvid.length})</b>
+        <button class="btn" data-act="copySummary">📋 Copiar resumen para sanción</button></div>` +
+      keyEvid.map((x, i) => `<div class="ev-item"><span class="ev-n">${i + 1}</span><div><div class="finding-title">${esc(x.module)}: ${esc(x.title)}</div><div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div></div>`).join("") + `</div>`
+    : (yellows
+      ? `<div class="evidence yellow"><div class="ev-head"><b>🟡 Sin pruebas graves: ${yellows} alerta(s) para revisar tú en su PC por AnyDesk</b>
+          <button class="btn" data-act="copySummary">📋 Copiar resumen</button></div></div>`
+      : `<div class="evidence green"><div class="ev-head"><b>🟢 Sin pruebas ni alertas</b></div></div>`);
+  const byMod = {};
+  sorted.forEach((x) => { (byMod[x.module || "Otros"] = byMod[x.module || "Otros"] || []).push(x); });
+  const modRank = (arr) => Math.min(...arr.map((x) => (x.probable_fp ? 3 : (order[x.level] ?? 3))));
+  const findingsHtml = sorted.length
+    ? Object.entries(byMod).sort((a, b) => modRank(a[1]) - modRank(b[1]) || b[1].length - a[1].length).map(([m, arr]) => {
+        const rr = arr.filter((x) => kindOf(x) === "red").length, yy = arr.filter((x) => kindOf(x) === "yellow").length;
+        return `<details class="mod" ${modRank(arr) <= 1 ? "open" : ""}><summary>${esc(m)}
+          ${rr ? `<span class="badge red">${rr} grave(s)</span>` : ""}${yy ? `<span class="badge yellow">${yy} alerta(s)</span>` : ""}
+          <span class="badge info">${arr.length} total</span></summary><div class="mod-body">` +
+          arr.map((x) => { const k = kindOf(x);
+            return `<div class="finding ${k}" data-kind="${k}" data-q="${esc((x.module + " " + x.title + " " + (x.detail || "")).toLowerCase())}">
+              <button class="copy1" data-act="copyFinding" data-text="${esc(`[${x.module}] ${x.title}\\n${x.detail || ""}`)}">copiar</button>
+              <div class="finding-title"><span class="badge ${k}">${kindLabel[k]}</span> ${esc(x.title)}</div>
+              <div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div>`; }).join("") + `</div></details>`;
+      }).join("")
+    : `<div class="empty"><p>Sin hallazgos</p></div>`;
+  const filterBar = `<div class="fbar"><input id="fSearch" placeholder="Buscar en hallazgos (ej: killaura, .jar, javaw)…">
+      <button class="fchip active" data-fl="all">Todos (${f.length})</button>
+      <button class="fchip" data-fl="red">Graves (${reds})</button>
+      <button class="fchip" data-fl="yellow">Alertas (${yellows})</button>
+      <button class="fchip" data-fl="info">Info (${infos})</button>
+      <button class="fchip" data-fl="fp">Posibles FP (${fps})</button></div>`;
+
+  const recent = (d.system && d.system.recent_files) || [];
+  const prio = ["Microcontrolador", "Mouse", "Mando", "Teclado", "Almacenamiento USB", "Teléfono / cámara", "Bluetooth", "Cámara", "RGB / iluminación"];
+  const usbRaw = Array.isArray(d.usb_events) ? d.usb_events : [];
+  const usbG = new Map();
+  usbRaw.forEach((u) => {
+    const nm = u.m || "";
+    const k0 = (/\b(led|rgb|aura|lighting|rainbow)\b/i.test(nm) && u.k === "Mando") ? "RGB / iluminación" : u.k;
+    const key = [u.vp || nm, u.e, String(u.t).slice(0, 16)].join("|");
+    const g = usbG.get(key) || { ...u, k: k0, _kinds: new Set() };
+    g._kinds.add(k0); usbG.set(key, g);
+  });
+  const usb = [...usbG.values()].map((g) => {
+    if (g._kinds.size > 1) { g.k = prio.find((k) => g._kinds.has(k)) || g.k; if (g._kinds.has("Mouse") && g._kinds.has("Teclado")) g.i = "mouse + interfaz de teclado (normal en mouse gamer)"; }
+    return g;
+  });
+  const VND = { "046D": "Logitech", "1532": "Razer", "09DA": "A4Tech / Bloody", "1038": "SteelSeries", "1B1C": "Corsair", "258A": "Glorious / Sinowealth", "0951": "HyperX", "045E": "Microsoft", "093A": "Pixart (genérico)", "04D9": "Holtek (genérico)", "3554": "Genérico (Attack Shark u otro)", "413C": "Dell" };
+  const MDL = { "046D:C092": "G102 / G203 LIGHTSYNC", "046D:C08B": "G502 HERO", "046D:C332": "G502 Proteus Spectrum", "046D:C07E": "G402 Hyperion Fury", "046D:C077": "M105 / M90", "046D:C539": "receptor LIGHTSPEED", "046D:C547": "receptor LIGHTSPEED" };
+  const devLabel = (x) => {            // "Logitech G203 LIGHTSYNC Gaming Mouse" en vez de "Mouse compatible con HID"
+    const brand = x.vendor || (x.vp ? VND[x.vp.slice(0, 4)] : "") || "";
+    const real = x.product || "", guess = real ? "" : (x.model || MDL[x.vp] || "");
+    const model = real || guess;
+    const main = brand ? (model && !model.toLowerCase().startsWith(brand.toLowerCase().split(" ")[0]) ? brand + " " + model : (model || brand)) : (model || x.name || (x.kind === "mouse" ? "Mouse" : "Teclado"));
+    return { main, probable: !!guess, generic: !!brand && !model };
+  };
+  const inDev = Array.isArray(d.input_devices) ? d.input_devices : null;
+  const ext = (inDev || []).filter((x) => x.kind === "mouse" && x.bus !== "Integrado/otro");
+  const nKb = (inDev || []).filter((x) => x.kind === "keyboard" && x.bus !== "Integrado/otro").length;
+  const inHtml = inDev ? `<div class="section-title">🔌 CONECTADOS AHORA</div><div class="devgrid">
+      <div class="devc ${ext.length > 1 ? "warn" : ""}"><b>🖱 ${ext.length}</b><span>mouse(s) externos${ext.length > 1 ? " · REVISAR" : ""}</span></div>
+      <div class="devc"><b>⌨️ ${nKb}</b><span>teclado(s) externos</span></div></div>`
+    + inDev.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">${x.kind === "mouse" ? "🖱" : "⌨️"}</span>${(() => { const l = devLabel(x); return `<b>${esc(l.main)}</b>${l.probable ? `<span class="kv">(modelo probable por su ID)</span>` : ""}${l.generic ? `<span class="kv">(modelo no informado por Windows)</span>` : ""}${x.name && x.name !== l.main ? `<span class="kv">Windows lo llama: ${esc(x.name)}</span>` : ""}`; })()}<span class="badge info">${esc(x.bus)}</span>${x.interfaces > 1 ? `<span class="kv">${x.interfaces} interfaces${x.combo ? " (mouse + teclado de macros: normal)" : ""}</span>` : ""}${x.vp ? `<span class="kv">${esc(x.vp)}</span>` : ""}</div>`).join("")
+    + ((d.macro_software || []).length ? `<div class="section-title" style="margin-top:18px">🎮 SOFTWARE DE PERIFÉRICOS / MACROS</div>` + d.macro_software.map((x) => `<div class="row usb">${x.running ? "🟡 En ejecución" : "⚪ Instalado"} · <b>${esc(x.name)}</b></div>`).join("") : "")
+    + `<div class="section-title" style="margin-top:18px">🕰️ HISTORIAL DE CONEXIONES</div>`
+    : `<div class="warnbox">Este escaneo no incluye los dispositivos conectados ahora (es de una versión anterior a la v3.7).</div>`;
+  const emptyBox = (t) => `<div class="empty"><p>${t}</p></div>`;
+  const ck = d.click_test || null, mf = d.macro_forensics || null, hm = Array.isArray(d.hiding_map) ? d.hiding_map : [];
+  const ckHtml = ck
+    ? (ck.skipped ? `<div class="warnbox">⚠️ Se omitió la prueba de clics. Hazla tú por AnyDesk con su mouse.</div>`
+      : `<div class="devgrid">
+        <div class="devc ${(ck.flags || []).some((f) => f.level === "red") ? "warn" : ""}"><b>${ck.n}</b><span>clics</span></div>
+        <div class="devc"><b>${ck.cps_avg != null ? ck.cps_avg : "—"}</b><span>CPS medios</span></div>
+        <div class="devc ${ck.cps_max >= 22 ? "warn" : ""}"><b>${ck.cps_max != null ? ck.cps_max : "—"}</b><span>pico CPS</span></div>
+        <div class="devc ${ck.cv != null && ck.cv < 0.06 ? "warn" : ""}"><b>${ck.cv != null ? (ck.cv * 100).toFixed(1) + "%" : "—"}</b><span>variación entre clics</span></div></div>`
+      + (ck.flags || []).map((f) => `<div class="row usb">${f.level === "red" ? "🔴" : "🟡"} ${esc(f.text)}</div>`).join("")
+      + (ck.mean_ms != null ? `<div class="row usb"><span class="kv">${ck.mean_ms} ms ± ${ck.sd_ms} · saltos ≤3 ms: ${ck.flat_pct}% · intervalo repetido: ${ck.top_pct}% · múltiplos de 15,6 ms: ${ck.q_pct}%</span></div>` : "")
+      + `<div class="row usb"><span class="kv">Una persona varía entre clics (≈15–35%). Macros y autoclickers (incluidos los guardados en la memoria del mouse) suelen ser muy regulares. Es un indicio, no una prueba: contrástalo en vivo.</span></div>`)
+    : `<div class="warnbox">Este escaneo no incluye prueba de clics (es de una versión anterior a la v3.8 o se lanzó con --no-clicks).</div>`;
+  const indHtml = mf
+    ? ((mf.indicators || []).length
+      ? mf.indicators.map((i) => `<div class="row usb">🟡 <b>${esc(i.t)}</b><br><span class="kv">${esc((i.items || []).join(" · "))}</span></div>`).join("")
+      : `<div class="empty"><p>Sin indicios de macros borrados u ocultos. Un macro guardado solo en la memoria del mouse no deja rastro en el PC: usa la prueba de clics.</p></div>`)
+    : `<div class="warnbox">Este escaneo no incluye el análisis de macros (versión anterior a la v3.8).</div>`;
+  const gh = mf && mf.ghub ? `<div class="row usb">G HUB · base de perfiles modificada <b>${esc(mf.ghub.modified)}</b> · ${esc(mf.ghub.names_in_file != null ? mf.ghub.names_in_file : "?")} nombres en el archivo · ${esc(mf.ghub.names_active != null ? mf.ghub.names_active : "?")} activos · <b>${esc(mf.ghub.remnants != null ? mf.ghub.remnants : "?")}</b> que ya no existen</div>` : "";
+  const mh = mf && (mf.mouse_history || []).length ? mf.mouse_history.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">🖱</span><b>${esc(x.name)}</b><span class="kv">${esc(x.vp)}</span><span class="badge info">${esc(x.vendor)}</span><span class="kv">${x.present ? "conectado ahora" : "último uso " + esc(x.last)}</span></div>`).join("") : emptyBox("Sin historial de mouses (requiere administrador)");
+  const hmHtml = hm.length ? hm.map((r) => `<div class="row usb" style="${isBen(r.folder) ? 'opacity:.6' : ''}"><b>${esc(r.folder || "(sin carpeta)")}</b> ${isBen(r.folder) ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(53,212,140,.16);color:#3dd68c">🟢 probablemente normal (librería de Minecraft)</span>' : ""} ${r.red ? `<span class="badge b-red">${r.red} grave(s)</span>` : ""}${r.yellow ? `<span class="badge b-yellow">${r.yellow} alerta(s)</span>` : ""}${r.hidden ? `<span class="badge b-yellow">oculto</span>` : ""}${(r.reasons || []).map((x) => `<span class="badge info">${esc(x)}</span>`).join("")}<br><span class="kv">${esc((r.files || []).join(" · "))}</span></div>`).join("") : emptyBox("Sin carpetas con hallazgos");
+  // ── VEREDICTO en lenguaje simple (lo calcula el scanner) ──
+  const vd = d.veredicto || null;
+  const vdColor = vd ? (vd.nivel === "red" ? "#ff5c7a" : vd.nivel === "yellow" ? "#ffc857" : "#5be3a6") : "#8a93aa";
+  const vdHtml = vd
+    ? `<div class="panel" style="padding:16px 18px;margin-bottom:14px;border-left:5px solid ${vdColor}">
+        <div style="font-size:19px;font-weight:800;margin-bottom:8px">${esc(vd.titulo)}</div>
+        <div class="kv" style="font-size:13px;line-height:1.7">${esc(vd.explicacion)}</div>
+        ${vd.rojos && vd.rojos.length ? `<div class="row usb" style="margin-top:12px">🔴 <b>Señales fuertes:</b><br>${vd.rojos.map((x) => "• " + esc(x)).join("<br>")}</div>` : ""}
+        ${vd.amarillos && vd.amarillos.length ? `<div class="row usb">🟡 <b>A revisar:</b><br>${vd.amarillos.map((x) => "• " + esc(x)).join("<br>")}</div>` : ""}
+        ${vd.lectura_prueba && vd.lectura_prueba.length ? `<div class="row usb">🧪 <b>Lectura de la prueba de clics:</b><br>${vd.lectura_prueba.map((x) => (x[0] === "red" ? "🔴 " : x[0] === "yellow" ? "🟡 " : "🟢 ") + esc(x[1])).join("<br>")}</div>` : ""}
+      </div>`
+    : `<div class="warnbox">⚠️ Este escaneo no trae veredicto (versión anterior a la v4.0). Revisa los hallazgos a mano.</div>`;
+
+  // ── v4.0: gancho de mouse (clics físicos vs. de programa + botones laterales) ──
+  const hk = ck && !ck.skipped && ck.hook ? ck.hook : null;
+  const hkB = hk && Array.isArray(hk.bursts) ? hk.bursts : [];
+  const hookFlagsRed = hk && (hk.left_inj > 0 || hk.side_inj > 0);
+  const hookHtml = !ck || ck.skipped
+    ? `<div class="empty"><p>La prueba de clics se omitió: no hay datos del gancho de mouse.</p></div>`
+    : hk
+      ? `<div class="devgrid">
+          <div class="devc"><b>${hk.left_phys}</b><span>🖱️ clics FÍSICOS</span></div>
+          <div class="devc ${hookFlagsRed ? "warn" : ""}"><b>${hk.left_inj}</b><span>🤖 clics de PROGRAMA</span></div>
+          <div class="devc"><b>${hk.side}</b><span>🔘 pulsaciones laterales</span></div>
+          <div class="devc ${hkB.length >= 4 && Math.min(...hkB) >= 3 && Math.max(...hkB) - Math.min(...hkB) <= 1 ? "warn" : ""}"><b>${hkB.length ? esc(hkB.join(" · ")) : "—"}</b><span>clics izquierdos tras cada lateral</span></div>
+        </div>
+        <div class="row usb"><span class="kv">
+          📖 <b>Cómo leerlo:</b><br>
+          🤖 <b>Clics de PROGRAMA</b> (rojo) = el clic no vino del mouse: macro, autoclicker o alguien controlando el PC.<br>
+          🔘 <b>Tras cada lateral</b>: si siempre sale la misma cantidad (ej. 4 · 4 · 4 · 4), hay un macro atado a ese botón. Si salen números distintos, es uso normal.
+        </span></div>`
+      : `<div class="warnbox">⚠️ No hay datos del gancho de mouse: el escaneo es de una versión anterior a la v4.0, o Windows no dejó instalarlo.</div>`;
+
+  // ── v4.0: AnyDesk ──
+  const ad = d.anydesk || null;
+  const adS = ad && Array.isArray(ad.sessions) ? ad.sessions : [];
+  const adF = ad && Array.isArray(ad.files) ? ad.files : [];
+  const staffIds = (store.get("ss.staffIds") || "").split(/[,\s]+/).map((v) => v.replace(/\D/g, "")).filter(Boolean);
+  const normId = (v) => String(v || "").replace(/\D/g, "");
+  // La sesión activa (o la más reciente si hay una activa) es la tuya; sus mismos IDs también cuentan como staff
+  const mine = new Set(staffIds);
+  if (ad && ad.active && adS[0]) (adS[0].ids || []).forEach((i) => mine.add(normId(i)));
+  const isMine = (x) => (x.ids || []).length > 0 && (x.ids || []).every((i) => mine.has(normId(i)));
+  const adR = adS.filter((x) => !isMine(x) && Date.now() - new Date(String(x.t).replace(" ", "T")).getTime() < 86400000);
+  const prog = d.program || null;
+  const anyHtml = `<div class="section-title">🖥️ ANYDESK (control remoto)</div>` + (!ad
+    ? `<div class="warnbox">⚠️ Este escaneo no incluye datos de AnyDesk (versión anterior a la v4.0).</div>`
+    : `<div class="devgrid">
+        <div class="devc"><b>${ad.active ? "🔗 Sí (eres tú)" : "⚪ No"}</b><span>sesión activa ahora</span></div>
+        <div class="devc"><b>${ad.installed ? "✅ Sí" : "❌ No"}</b><span>AnyDesk instalado</span></div>
+        <div class="devc ${adR.length ? "warn" : ""}"><b>${adR.length}</b><span>entradas de OTRO ID (24 h)</span></div>
+        <div class="devc"><b>${adS.length}</b><span>sesiones totales (30 días)</span></div>
+      </div>
+      <div class="row usb"><span class="kv">
+        Tú entras por AnyDesk para hacer el SS, así que tu sesión activa es normal y no cuenta como sospecha.<br>
+        🟡 Lo que importa: <b>entradas de otro ID</b> justo antes del SS (alguien le configuró algo y se fue).
+        Pon aquí tus ID de staff para que no salgan como sospechosas:
+        <input id="staffIds" value="${esc(staffIds.join(", "))}" placeholder="123456789, 987654321" style="width:230px;margin:0 6px">
+        <button class="btn" data-act="saveStaffIds">Guardar</button>
+      </span></div>
+      <div class="section-title" style="margin-top:18px">🕒 SESIONES ENTRANTES (la más reciente primero)</div>
+      ${adS.length ? adS.map((x) => `<div class="row usb">${isMine(x) ? "✅ staff" : adR.includes(x) ? "🟡" : "⚪"} <b>${esc(x.t)}</b> · 🆔 ID remoto: <b>${esc((x.ids || []).join(", ") || "desconocido")}</b> · 📄 ${esc(x.file)}<br><span class="kv">${esc(x.line)}</span></div>`).join("") : `<div class="empty"><p>✅ Sin sesiones entrantes registradas en los últimos 30 días.</p></div>`}
+      <div class="section-title" style="margin-top:18px">📂 ARCHIVOS DE LOG LEÍDOS</div>
+      ${adF.length ? adF.map((f) => `<div class="row usb">📄 ${esc(f)}</div>`).join("") : `<div class="empty"><p>⚠️ No se encontraron logs de AnyDesk. Pudieron borrarse, o no se usa AnyDesk.</p></div>`}
+      <div class="warnbox" style="margin-top:12px">⚠️ El formato de los logs cambia según la versión de AnyDesk. Lee la línea original de cada sesión antes de sancionar.</div>`)
+    + `<div class="section-title" style="margin-top:22px">🧾 VERIFICACIÓN DEL PROGRAMA</div>`
+    + (prog
+      ? `<div class="row usb">🔢 Versión del SSHelper: <b>${esc(prog.version || "?")}</b></div>
+         <div class="row usb">🔐 SHA-256 del .exe que corrió: <span class="kv">${esc(prog.sha256 || "no disponible")}</span></div>
+         ${(() => { let off = ""; try { off = String(store.get("ss.officialSha", "") || "").trim().toLowerCase(); } catch (e) {}
+           const mine = String(prog.sha256 || "").toLowerCase();
+           const st = !off ? `<span class="kv">⚪ Sin hash oficial guardado: pega abajo el SHA-256 de tu SSHelper.exe compilado.</span>`
+             : mine === off ? `<b style="color:var(--ok,#2e9e5b)">✅ COINCIDE con tu .exe oficial</b>`
+             : `<b style="color:#e5484d">🔴 NO COINCIDE: no es tu .exe oficial (modificado, otra versión o recompilado). No confíes en este reporte.</b>`;
+           const fr = prog.frozen === false ? `<div class="warnbox">🔴 Se ejecutó desde el código fuente (.py), no desde el .exe: se puede editar para saltarse pasos.</div>` : "";
+           return fr + `<div class="row usb">${st}<br><input id="officialSha" value="${esc(off)}" placeholder="SHA-256 oficial" style="width:340px;margin-top:6px"> <button class="btn" data-act="saveOfficialSha">Guardar</button></div>`; })()}
+         <div class="row usb"><span class="kv">Sirve para confirmar que el programa que se ejecutó es el tuyo y no uno modificado.</span></div>`
+      : `<div class="empty"><p>Sin datos de verificación (versión anterior a la v4.0).</p></div>`);
+
+  // ── Pestaña Macros: mi lectura (¿legit o chiteado?) + detalle plegado ──
+  const hkR = ck && !ck.skipped && ck.hook ? ck.hook : null;
+  const ckRed = !!(ck && !ck.skipped && ((ck.flags || []).some((f) => f.level === "red") || (hkR && (hkR.left_inj > 0 || hkR.side_inj > 0))));
+  const ckYel = !!(ck && !ck.skipped && (ck.flags || []).some((f) => f.level === "yellow"));
+  const burstMacro = !!(hkR && (hkR.bursts || []).length >= 4 && Math.min(...hkR.bursts) >= 3 && Math.max(...hkR.bursts) - Math.min(...hkR.bursts) <= 1);
+  const nMouse = (d.input_devices || []).filter((x) => x.kind === "mouse" && x.bus !== "Integrado/otro").length;
+  const hmReal = hm.filter((r) => !isBen(r.folder));
+  // [clave, nivel, texto corto, paso para ti]
+  const R = [
+    ["Prueba de clics", !ck || ck.skipped ? "🟡" : ckRed ? "🔴" : ckYel ? "🟡" : "🟢",
+      !ck ? "No hay prueba de clics en este escaneo." : ck.skipped ? "Se omitió la prueba de clics." : ckRed ? "Hay clics que no vinieron del mouse físico o un patrón de macro." : ckYel ? "El ritmo de clics tiene algo raro." : "Clics de persona normal.",
+      "Abre Minecraft en un mundo, haz clic izquierdo rápido 30 s (3 fases) con su mouse y mira si el ritmo es parejo como máquina."],
+    ["Botones laterales", !hkR ? "⚪" : burstMacro ? "🔴" : hkR.side === 0 ? "🟡" : "🟢",
+      !hkR ? "Sin datos de botones laterales." : burstMacro ? "Cada botón lateral dispara siempre la misma ráfaga: macro atado al botón." : hkR.side === 0 ? "No se pulsaron los laterales." : "Laterales usados sin ráfagas repetidas.",
+      "Pulsa tú los laterales 10 veces con un clic después de cada uno; luego uno solo sin clic: si algo se activa, hay un bind."],
+    ["Mouses", nMouse > 1 ? "🟡" : "🟢", nMouse > 1 ? `${nMouse} mouses externos conectados.` : "Un solo mouse externo.",
+      "Administrador de dispositivos → Ratones: confirma cuál usa y por qué tiene el otro."],
+    ["Macros borrados", mf && (mf.indicators || []).length ? "🟡" : "🟢", mf && (mf.indicators || []).length ? "Rastros de macros borrados u ocultos." : "Sin rastros de macros borrados.",
+      "Abre el programa del mouse (G HUB / Synapse / Bloody) y mira perfiles y botones; revisa Papelera y Programas instalados por algo retirado hace poco."],
+    ["Carpetas escondidas", hmReal.some((r) => r.red) ? "🔴" : hmReal.length ? "🟡" : "🟢",
+      hmReal.some((r) => r.red) ? "Archivos sospechosos en carpetas raras." : hmReal.length ? "Archivos en carpetas poco comunes." : "Sin carpetas sospechosas.",
+      "Abre las carpetas del mapa de ocultamiento con 'Elementos ocultos' activado y mira qué hay."],
+  ];
+  const nRed = R.filter((r) => r[1] === "🔴").length, nYel = R.filter((r) => r[1] === "🟡").length;
+  const otherReds = nRed ? 0 : reds;
+  const opinion = nRed
+    ? ["🔴", "Parece CHITEADO", "El programa vio algo que un mouse normal no hace. Confírmalo tú en vivo; si se repite, ya tienes la prueba."]
+    : nYel >= 2 ? ["🟡", "DUDOSO", "Hay varias cosas raras. Ninguna alcanza sola, pero juntas piden que lo compruebes tú."]
+    : nYel === 1 ? ["🟡", "Probablemente LEGIT", "Solo hay un punto por confirmar. Compruébalo antes de decidir."]
+    : ["🟢", "Parece LEGIT en macros", "No hay rastros. Ojo: un macro guardado dentro del mouse puede no dejar nada, así que haz igual la prueba de clics tú."];
+  const bad = R.filter((r) => r[1] === "🔴" || r[1] === "🟡");
+  const okNames = R.filter((r) => r[1] === "🟢" || r[1] === "⚪").map((r) => r[0]);
+  const resHtml = `<div class="panel" style="padding:16px 18px;margin-bottom:14px;border-left:5px solid ${opinion[0] === "🔴" ? "#ff5c7a" : opinion[0] === "🟡" ? "#ffc857" : "#5be3a6"}">
+      <div style="font-size:18px;font-weight:800;margin-bottom:6px">${opinion[0]} ${opinion[1]}</div>
+      <div class="kv" style="font-size:13px;line-height:1.6">${esc(opinion[2])}</div>
+      ${bad.map((r) => `<div class="row usb" style="margin-top:8px">${r[1]} <b>${esc(r[0])}:</b> ${esc(r[2])}<br><span class="kv">👉 ${esc(r[3])}</span></div>`).join("")}
+      ${otherReds ? `<div class="warnbox" style="margin-top:10px">🚨 Ojo: hay ${otherReds} prueba(s) grave(s) en la pestaña Hallazgos. Esta pestaña sola no es todo el caso.</div>` : ""}
+      ${okNames.length ? `<div class="kv" style="margin-top:10px;font-size:12px">✅ Sin problema: ${esc(okNames.join(", "))}.</div>` : ""}
+      <div class="kv" style="margin-top:6px;font-size:12px">⚖️ Que sea permitido o no lo decide la regla de tu servidor; aquí solo ves indicios.</div>
+    </div>`;
+  const sec = (title, lv, html) => `<details class="mod" ${lv === "🔴" || lv === "🟡" ? "open" : ""}><summary>${title} <span class="badge ${lv === "🔴" ? "red" : lv === "🟡" ? "yellow" : "info"}">${lv === "🔴" ? "grave" : lv === "🟡" ? "revisar" : "ok"}</span></summary><div class="mod-body">${html}</div></details>`;
+  const macroTabHtml = `
+    ${resHtml}
+    <div class="section-title" style="margin-top:14px">DETALLE</div>
+    ${sec("🧪 Prueba de clics (30 s)", R[0][1], ckHtml)}
+    ${sec("🔘 Botones laterales y clics de programa", R[1][1], hookHtml)}
+    ${sec("🗑️ Macros borrados / escondidos", R[3][1], gh + indHtml)}
+    ${sec("🖱️ Mouses usados en 30 días", R[2][1], mh)}
+    ${sec("📂 Dónde se concentran los hallazgos", R[4][1], hmHtml)}`;
+  // ── v4.2: ACTIVIDAD RECIENTE (abrió / cerró / ocultó / borró) ──
+  const herr = Array.isArray(d.herramientas) ? d.herramientas : [];
+  const herrHtml = herr.length ? `<div class="section-title">🧰 HERRAMIENTAS DE TRAMPA: CUÁNDO SE USARON Y CUÁNDO SE CERRARON</div>` + herr.map((h) => {
+      const c = h.nivel === "red" ? "red" : h.nivel === "yellow" ? "yellow" : "";
+      return `<div class="finding ${c}" style="padding:12px 14px;margin:8px 0">
+        <div class="finding-title"><span class="badge ${h.nivel === "red" ? "red" : h.nivel === "yellow" ? "yellow" : "info"}">${esc(h.tipo)}</span> <b>${esc(h.n)}</b>
+          ${h.abierto ? `<span class="badge red">🟢 ABIERTO AHORA</span>` : `<span class="badge info">⏹ CERRADO</span>`}</div>
+        <div class="finding-detail">${h.primera ? `Primera vez: <b>${esc(h.primera)}</b><br>` : ""}${h.ultima ? `Última vez: <b>${esc(h.ultima)}</b><br>` : ""}${esc(h.cierre || "")}</div>
+        ${(h.uso || []).length ? `<div class="row usb">⏱️ <b>Uso:</b><br>${h.uso.map((u) => "• " + esc(u)).join("<br>")}</div>` : ""}
+        ${h.vs_staff ? `<div class="warnbox" style="margin-top:6px">${esc(h.vs_staff)}</div>` : ""}
+        ${(h.notas || []).length ? `<div class="kv" style="margin-top:6px">${h.notas.map((n) => "• " + esc(n)).join("<br>")}</div>` : ""}
+        <details class="how"><summary>🔎 De dónde sale</summary><div class="how-body">${(h.fuentes || []).map((f2) => "• " + esc(f2)).join("<br>")}</div></details>
+      </div>`; }).join("") : "";
+  const actAll = Array.isArray(d.actividad) ? d.actividad : [];
+  const scanSec = e.ts ? (e.ts > 1e12 ? e.ts / 1000 : e.ts) : (actAll[0] ? actAll[0].ts : 0);
+  const ICON = { "Abrió": "🟢 Abrió", "Cerró": "⏹ Cerró", "Ocultó": "🙈 Ocultó", "Borró": "🗑️ Borró", "Cambió": "📝 Cambió", "Minecraft": "⛏️ Minecraft", "USB": "🔌 USB", "Defender": "🛡️ Defender", "Sistema": "⚙️ Sistema" };
+  const before = (ts) => { const m = Math.max(0, Math.round((scanSec - ts) / 60)); return m < 1 ? "justo antes del SS" : m < 60 ? `${m} min antes` : `${Math.floor(m / 60)} h ${m % 60} min antes`; };
+  const actRow = (x) => `<div class="arow finding ${x.l === "red" ? "red" : x.l === "yellow" ? "yellow" : ""}" data-k="${esc(x.k)}" data-l="${esc(x.l || "")}" style="padding:8px 12px;margin:6px 0">
+      <b>${esc(ICON[x.k] || x.k)}</b> <span class="kv">${esc(x.t)} · ${esc(scanSec ? before(x.ts) : "")}</span><br>${esc(x.e)}</div>`;
+  const actBad = actAll.filter((x) => x.l);
+  const actClosed = actAll.filter((x) => x.k === "Cerró" && scanSec - x.ts < 10800);
+  const actHid = actAll.filter((x) => x.k === "Ocultó");
+  const actDel = actAll.filter((x) => x.k === "Borró");
+  const bucket = (lo, hi) => actAll.filter((x) => !x.l && scanSec - x.ts >= lo * 60 && scanSec - x.ts < hi * 60);
+  const bk = (title, arr, open) => arr.length ? `<details class="mod" ${open ? "open" : ""}><summary>${title} <span class="badge info">${arr.length}</span></summary><div class="mod-body">${arr.map(actRow).join("")}</div></details>` : "";
+  const actHtml = herrHtml + (!actAll.length
+    ? `<div class="warnbox">⚠️ Este escaneo no trae actividad reciente (necesita SSHelper v4.2 o más nuevo) o no se encontró nada en las últimas 24 h.</div>`
+    : `<div class="panel" style="padding:14px 16px;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:800;margin-bottom:8px">⏱️ Lo que pasó antes del SS (últimas 24 h)</div>
+        <div class="devgrid">
+          <div class="devc ${actBad.length ? "warn" : ""}"><b>${actBad.length}</b><span>sospechoso(s)</span></div>
+          <div class="devc ${actClosed.length ? "warn" : ""}"><b>${actClosed.length}</b><span>cerrado(s) hace &lt; 3 h</span></div>
+          <div class="devc ${actHid.length ? "warn" : ""}"><b>${actHid.length}</b><span>ocultado(s)</span></div>
+          <div class="devc"><b>${actDel.length}</b><span>borrado(s)</span></div>
+        </div>
+        <div class="kv" style="font-size:12px;margin-top:8px">Un programa "cerrado hace poco" no es culpable por sí solo: mira si está en una carpeta rara, si su archivo ya no existe o si coincide con una firma.</div>
+      </div>
+      ${actBad.length ? `<div class="section-title">🚨 SOSPECHOSO (${actBad.length})</div>${actBad.map(actRow).join("")}` : `<div class="evidence green"><div class="ev-head"><b>🟢 Nada sospechoso en la actividad reciente</b></div></div>`}
+      ${bk("🕐 Últimos 30 min antes del SS", bucket(0, 30), true)}
+      ${bk("🕑 Entre 30 min y 3 h antes", bucket(30, 180), false)}
+      ${bk("🕒 Entre 3 h y 24 h antes", bucket(180, 1440), false)}`);
+  const tline = Array.isArray(d.timeline) ? d.timeline : [];
+  const sessions = mc.sessions || [];
+  const executed = (d.system && d.system.executed) || [];
+  const empty = (t) => `<div class="empty"><p>${t}</p></div>`;
+  const tlHtml = tline.length ? tline.map((x) => `<div class="row usb"><b>${esc(x.t)}</b> · <span style="color:var(--blue)">${esc(x.src)}</span> — ${esc(x.e)}</div>`).join("") : empty("Sin eventos");
+  const usbIcon = { "Mouse": "🖱️", "Teclado": "⌨️", "Almacenamiento USB": "💾", "Mando": "🎮", "Teléfono / cámara": "📱", "Bluetooth": "📶", "Cámara": "📷", "Microcontrolador": "🔧", "RGB / iluminación": "💡" };
+  const usbAgo = (t) => { const ms = Date.now() - new Date(String(t).replace(" ", "T")).getTime(); if (isNaN(ms)) return ""; const m = Math.floor(ms / 60000); return m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${(m / 60).toFixed(1)} h` : `hace ${(m / 1440).toFixed(1)} d`; };
+  const usbCounts = usb.reduce((a, u) => { const k = u.k || "USB"; a[k] = (a[k] || 0) + 1; return a; }, {});
+  const usbHtml = usb.length
+    ? `<div class="row usb" style="color:var(--muted)">${Object.entries(usbCounts).map(([k, n]) => `${usbIcon[k] || "🔌"} ${esc(k)}: ${n}`).join(" &nbsp;·&nbsp; ")}</div>` +
+      usb.slice(0, 90).map((u) => { const on = u.e === "CONECTADO"; return `<div class="row usb" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="font-size:16px">${usbIcon[u.k] || "🔌"}</span><b style="min-width:145px">${esc(u.t)}</b><span style="padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;background:${on ? "rgba(60,200,120,.16)" : "rgba(255,77,90,.16)"};color:${on ? "#3cc878" : "var(--red)"}">${on ? "CONECTADO" : "DESCONECTADO"}</span><span style="font-weight:600">${esc(u.m)}</span><span style="color:var(--muted)">${esc(u.k || "")}${u.i ? " (" + esc(u.i) + ")" : ""}${u.vp ? " · " + esc(u.vp) : ""} · ${usbAgo(u.t)}</span></div>`; }).join("")
+    : empty("Sin eventos (o requiere administrador)");
+  const sessHtml = (pc.boots && pc.boots.length ? `<div class="row usb">Arranques del sistema: ${pc.boots.map(esc).join(" · ")}</div>` : "")
+    + (sessions.length ? sessions.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : empty("Sin sesiones en los logs (¿logs borrados o launcher no reconocido?)"))
+    + `<div class="section-title" style="margin-top:18px">📁 CARPETAS DE LOGS REVISADAS</div>`
+    + ((mc.log_sources || []).length ? mc.log_sources.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : empty("No se encontró ninguna carpeta de logs"));
+
+  const wu = Array.isArray(d.windows_users) ? d.windows_users : [];
+  const wuHtml = wu.length ? wu.map((u) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:16px">👤</span><b style="min-width:120px">${esc(u.name)}</b>
+      ${u.current ? '<span class="badge info">usuario actual</span>' : '<span class="badge yellow">otro usuario</span>'}
+      ${u.enabled === false ? '<span class="badge fp">deshabilitado</span>' : ""}
+      <span style="color:var(--muted)">Último uso del perfil: <b style="color:var(--text)">${esc(u.last_use || "?")}</b> · Último inicio de sesión: <b style="color:var(--text)">${esc(u.last_logon || "?")}</b></span></div>`).join("")
+    : empty("Sin datos de usuarios de Windows (puede requerir administrador)");
+  const accs = Array.isArray(mc.accounts) ? mc.accounts : [];
+  const accHtml = accs.length ? accs.map((a) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:16px">⛏️</span><b style="min-width:140px">${esc(a.nick)}</b>
+      ${a.nick === mc.nick ? '<span class="badge info">principal</span>' : '<span class="badge yellow">alterna</span>'}
+      <span style="color:var(--muted)">Última vez visto en logs: <b style="color:var(--text)">${esc(a.last_seen || "?")}</b> · fuente: ${esc(a.source || "?")}</span></div>`).join("")
+    : (mc.alts && mc.alts.length ? [mc.nick, ...mc.alts].map((n) => `<div class="row usb">⛏️ <b>${esc(n)}</b></div>`).join("") : empty("Sin cuentas de Minecraft registradas"));
+
+  const lg = d.logs || {};
+  const lgDirs = Array.isArray(lg.dirs) ? lg.dirs : [], lgFiles = Array.isArray(lg.files) ? lg.files : [];
+  const lgHtml = (lgDirs.length || lgFiles.length)
+    ? `<div class="section-title">📁 CARPETAS DE LOGS Y SUS ARCHIVOS</div>` + lgDirs.map((dd) => `<details class="mod"><summary>${esc(dd.dir)} <span class="badge info">${dd.count} archivo(s)</span></summary><div class="mod-body">
+        ${(dd.files || []).map((f2) => `<div class="row usb" style="display:flex;gap:12px;flex-wrap:wrap"><b style="min-width:200px">${esc(f2.n)}</b><span class="kv">modificado <b>${esc(f2.m)}</b></span><span class="kv">${f2.kb} KB</span></div>`).join("")}</div></details>`).join("")
+      + `<div class="section-title" style="margin-top:18px">🔑 LÍNEAS CLAVE POR LOG (el chat nunca se envía)</div>` + (lgFiles.length ? lgFiles.map((f2) => {
+        const groups = {}; (f2.key || []).forEach((k) => { (groups[k.c] = groups[k.c] || []).push(k.l); });
+        const sus = (groups["Firma de cheat"] || []).length + (groups["Agente / inyección"] || []).length + (groups["Módulos / cliente"] || []).length;
+        return `<details class="mod" ${sus ? "open" : ""}><summary>${esc(f2.name)} ${sus ? `<span class="badge red">${sus} línea(s) a revisar</span>` : ""}
+          <span class="kv">modificado <b>${esc(f2.modified)}</b> · ${f2.lines} líneas · ${esc(f2.first || "?")} → ${esc(f2.last || "?")}</span></summary><div class="mod-body">
+          <div class="kv" style="margin:0 0 8px">Carpeta: ${esc(f2.dir)}</div>
+          ${Object.keys(groups).length ? Object.entries(groups).map(([c, ls]) => `<div class="section-title" style="margin-top:8px">${esc(c)}</div>` + ls.map((l) => `<div class="row usb">${esc(l)}</div>`).join("")).join("") : `<div class="empty"><p>Sin líneas relevantes</p></div>`}
+          </div></details>`; }).join("") : `<div class="empty"><p>Sin contenido de logs</p></div>`)
+    : `<div class="empty"><p>${parseFloat(d.version) < 3.2 ? "Este escaneo es de una versión anterior: no incluía el contenido de los logs. Usa la v3.3." : "No se encontraron logs de Minecraft en este PC (pudieron borrarse)."}</p></div>`
+      + ((mc.log_sources || []).length ? `<div class="section-title" style="margin-top:14px">📁 CARPETAS REVISADAS</div>` + mc.log_sources.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : "");
+  const lgHtmlFull = lgHtml + (((lgDirs.length || lgFiles.length) && (mc.log_sources || []).length)
+    ? `<div class="section-title" style="margin-top:18px">📁 CARPETAS REVISADAS (incluye las que no existen)</div>` + mc.log_sources.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : "");
+  const shot = d.screenshot || null;
+  const shotHtml = shot && shot.file
+    ? `<div class="info-grid" style="margin-bottom:12px">
+         ${item("Hora de la captura", shot.taken_at || "?")}
+         ${item("Ventana al frente", (shot.proc || "?") + " · " + (shot.title || "sin título"), true)}
+         ${item("Resolución", shot.w ? shot.w + "×" + shot.h : "?")}
+       </div>
+       <div id="shotBox" class="empty"><p>Cargando captura…</p></div>`
+    : `<div class="empty"><p>${shot && shot.error ? "No se pudo tomar la captura en el PC del jugador. Motivo: " + esc(shot.error)
+        : shot ? "La captura se tomó pero no se pudo subir al repo" + (shot.upload_err ? " (" + esc(shot.upload_err) + ")" : "") + ". Revisa que el token tenga permiso de escritura."
+        : (parseFloat(d.version) < 3.3 ? `Este escaneo lo hizo SSHelper v${esc(d.version || "?")}: la captura existe desde la v3.2. Recompila con build.bat y pásale al jugador el nuevo SSHelper.exe.`
+        : "Este escaneo se hizo sin captura (--no-shot) o no se pudo tomar la captura en el PC del jugador.")}</p></div>`;
+
+  // ── Tarjeta compacta del veredicto (debajo de la etiqueta grande) ──
+  const vdCompact = !vd
+    ? `<div class="warnbox">⚠️ Este escaneo no trae explicación del veredicto (versión anterior a la v4.0).</div>`
+    : `<div class="panel" style="padding:14px 16px;margin:0 0 16px;border-left:4px solid ${vdColor}">
+        <div style="font-size:14px;line-height:1.6">${esc(vd.explicacion)}</div>
+        ${vd.rojos && vd.rojos.length ? `<div class="row usb" style="margin-top:10px">🔴 ${vd.rojos.slice(0, 2).map((x) => esc(x)).join(" · ")}${vd.rojos.length > 2 ? " · y " + (vd.rojos.length - 2) + " más" : ""}</div>` : ""}
+        ${vd.amarillos && vd.amarillos.length ? `<div class="row usb">🟡 ${vd.amarillos.slice(0, 2).map((x) => esc(x)).join(" · ")}${vd.amarillos.length > 2 ? " · y " + (vd.amarillos.length - 2) + " más" : ""}</div>` : ""}
+        <details class="how" style="margin-top:8px"><summary>🔍 Ver el detalle completo del veredicto</summary><div class="how-body">
+          ${vd.rojos && vd.rojos.length ? `<div class="how-title">🔴 Señales fuertes</div>${vd.rojos.map((x) => "• " + esc(x)).join("<br>")}<br><br>` : ""}
+          ${vd.amarillos && vd.amarillos.length ? `<div class="how-title">🟡 A revisar</div>${vd.amarillos.map((x) => "• " + esc(x)).join("<br>")}<br><br>` : ""}
+          ${vd.lectura_prueba && vd.lectura_prueba.length ? `<div class="how-title">🧪 Lectura de la prueba de clics</div>${vd.lectura_prueba.map((x) => (x[0] === "red" ? "🔴 " : x[0] === "yellow" ? "🟡 " : "🟢 ") + esc(x[1])).join("<br>")}` : ""}
+        </div></details>
+      </div>`;
+  const isMob = platOf(d) === "mobile";
+  box.innerHTML = `
+    <div class="profile">${headImg(mc.nick, true)}<div><div class="pname">${esc(mc.nick && mc.nick !== "?" ? mc.nick : (isMob ? "Sin nick (móvil)" : "?"))}</div>
+      <div class="psub">${esc(d.code || "")} · ${esc(PLATFORMS[platOf(d)].icon + " " + PLATFORMS[platOf(d)].label)} · ${esc(d.timestamp || "")} (${agoStr(e.ts)}${e.approx && e.ts ? " aprox." : ""})</div></div></div>
+    <div class="verdict ${lvl}">${vt}</div>
+    ${vdCompact}
+    <div class="actions" style="margin:-6px 0 16px"><button class="btn btn-gen" data-act="share">🎫 Compartir resultado (ticket)</button></div>
+    <div class="ig-group"><div class="ig-title">👤 El jugador</div><div class="info-grid">
+      ${item("Código", (d.code || "?") + codeNote)}
+      ${item("Plataforma", PLATFORMS[platOf(d)].icon + " " + PLATFORMS[platOf(d)].label)}
+      ${item("Fecha", (d.timestamp || "?") + (isMob ? " (hora del celular)" : " (hora del PC del jugador)"))}
+      ${item("Nick Minecraft", (mc.nick && mc.nick !== "?") ? mc.nick : (isMob ? "No lo escribió: pídelo en la llamada" : "?"))}
+      ${isMob ? "" : item("Otras cuentas", (mc.alts && mc.alts.length) ? mc.alts.join(", ") : "Ninguna")}
+      ${item("País", pc.country || "?")}
+      ${item("Dispositivo", pc.hostname || "?")}
+      ${item(platOf(d) === "mobile" ? "Usuario" : "Usuario Windows", pc.user || "?")}
+    </div></div>
+    <div class="ig-group"><div class="ig-title">💻 Su computadora</div><div class="info-grid">
+      ${item("Máquina virtual / emulador", pc.vm || "No comprobado (versión antigua)", true)}
+      ${item("VPN", pc.vpn || "No comprobado (versión antigua)", true)}
+      ${isMob ? "" : item("Mouses conectados", inDev ? (ext.length ? ext.map((x) => devLabel(x).main).join(" + ") : "Ninguno externo") + (ext.length > 1 ? " ⚠ revisar" : "") : "No comprobado", true)}
+      ${item("Sistema", pc.os || "?", true)}
+      ${isMob ? "" : item("Windows instalado", pc.install_date || "?", true)}
+      ${item(isMob ? "Celular encendido desde" : "PC encendido desde", pc.boot_time ? `${pc.boot_time} (${pc.uptime || "?"})` : "?", true)}
+      ${isMob ? "" : item("SO personalizado", (pc.custom_os && pc.custom_os.length) ? pc.custom_os.join(", ") : "Estándar")}
+      ${isMob ? "" : item("Papelera", (d.system && d.system.recycle_bin) || "?", true)}
+      ${item("Administrador", platOf(d) === "mobile" ? "No aplica (móvil)" : (d.admin ? "✓ Sí" : "✗ No (escaneo parcial)"))}
+    </div></div>
+    <div class="ig-group"><div class="ig-title">⛏️ Minecraft y escaneo</div><div class="info-grid">
+      ${isMob ? "" : item("Minecraft abierto desde", mc.start || mc.runtime || "No estaba abierto", true)}
+      ${isMob ? "" : item("Minecraft", mc.runtime || "?", true)}
+      ${item("Versión de Minecraft", d.mc_version && d.mc_version.game ? d.mc_version.game + (d.mc_version.tipo ? " · TIPO: " + d.mc_version.tipo : (d.mc_version.loader ? " · " + d.mc_version.loader : "")) + (d.mc_version.raw && d.mc_version.raw !== d.mc_version.game ? "  [nombre interno: " + d.mc_version.raw + "]" : "") + (d.mc_version.source ? "  (fuente: " + d.mc_version.source + ")" : "") : (d.mc_version && d.mc_version.bedrock ? "Bedrock " + d.mc_version.bedrock + (d.mc_version.tipo ? " · TIPO: " + d.mc_version.tipo : "") : "No detectada"), true)}
+      ${item("Duración / archivos", `${d.duration ?? "?"}s · ${(d.stats && d.stats.files_scanned) ?? "?"} archivos · v${d.version || "?"}`, true)}
+    </div></div>
+    <div class="tabs">
+      <div class="tg"><span class="tg-l">Lo importante</span><div class="tg-b"><button class="tab-btn active" data-tab="0">🚨 Hallazgos</button><button class="tab-btn" data-tab="12">⏱️ Actividad</button><button class="tab-btn" data-tab="7">📸 Captura</button></div></div>
+      <div class="tg"><span class="tg-l">Evidencia</span><div class="tg-b"><button class="tab-btn" data-tab="1">🕒 Línea de tiempo</button><button class="tab-btn" data-tab="3">⚙️ Ejecutados</button><button class="tab-btn" data-tab="4">📂 Recientes</button><button class="tab-btn" data-tab="9">📄 Logs</button></div></div>
+      <div class="tg"><span class="tg-l">Equipo y juego</span><div class="tg-b"><button class="tab-btn" data-tab="2">⛏️ Minecraft</button><button class="tab-btn" data-tab="8">👤 Cuentas</button><button class="tab-btn" data-tab="5">🔌 USB</button><button class="tab-btn" data-tab="10">🖱️ Macros</button></div></div>
+      <div class="tg"><span class="tg-l">Programa</span><div class="tg-b"><button class="tab-btn" data-tab="11">🖥️ AnyDesk y programa</button><button class="tab-btn" data-tab="6">🧾 JSON</button></div></div>
+    </div>
+    <div class="tab-content active" id="tab0">
+      ${(() => {
+        const F = (d.findings || []).filter((f) => !f.probable_fp && f.level !== "info");
+        const top = F.sort((a, b) => (a.level === "red" ? 0 : 1) - (b.level === "red" ? 0 : 1)).slice(0, 4);
+        let saved = []; try { saved = JSON.parse(store.get("ss.chk." + (d.code || "")) || "[]"); } catch (e) {}
+        const STEPS = [
+          ["Mira lo que dice el reporte primero", "Empieza por los 🔴 y 🟡 de abajo. Los marcados 'probable falso positivo' casi nunca importan solos."],
+          ["Haz la prueba tú, en vivo, por AnyDesk", "Administrador de tareas → Detalles → clic derecho a javaw → Abrir ubicación. Nada se puede esconder de lo que TÚ ves."],
+          ["Revisa la carpeta de mods y el launcher", "Minecraft: Win+R → %appdata%\\.minecraft\\mods. Lunar: %userprofile%\\.lunarclient. Busca .jar raros o recientes."],
+          ["Mira Papelera y Descargas por fecha", "Ordena por fecha de modificación. Algo borrado o descargado justo antes del SS es la pista más clara."],
+          ["Haz la prueba de clics y pregunta", "Si algo no cuadra, pídele que lo explique. La respuesta cuenta tanto como el archivo."]];
+        return `<div class="warnbox plan">
+          <div class="how-title">🧭 Plan de revisión (5 pasos, ~10 min)</div>
+          ${top.length ? `<div style="margin:6px 0"><b>👉 Mira esto primero:</b><br>${top.map((f) => (f.level === "red" ? "🔴 " : "🟡 ") + "<b>" + esc(f.module) + ":</b> " + esc(f.title)).join("<br>")}</div>` : `<div style="margin:6px 0">🟢 El escaneo no marcó nada fuerte, pero igual haz los pasos 2 a 5: un cheat por hardware no deja rastro en el PC.</div>`}
+          ${STEPS.map((x, i) => `<label style="display:block;margin:6px 0;cursor:pointer"><input type="checkbox" data-act="chk" data-code="${esc(d.code || "")}" data-i="${i}" ${saved.includes(i) ? "checked" : ""}> <b>${i + 1}. ${x[0]}</b><br><span class="kv" style="margin-left:22px;display:block">${x[1]}</span></label>`).join("")}
+          <div class="kv" style="margin-top:8px">🔴 = señal fuerte, confírmala · 🟡 = pregunta y revisa · gris = normalmente no importa. Un amarillo solo nunca sanciona.</div>
+        </div>`; })()}
+      ${evHtml}<div class="section-title">🚨 TODOS LOS HALLAZGOS POR MÓDULO</div>${filterBar}${findingsHtml}
+    </div>
+    <div class="tab-content" id="tab12">${actHtml}</div>
+    <div class="tab-content" id="tab1"><div class="section-title">🕒 LÍNEA DE TIEMPO (más reciente primero)</div>${tlHtml}</div>
+    <div class="tab-content" id="tab2"><div class="section-title">⛏️ SESIONES DE MINECRAFT Y ARRANQUES</div>${sessHtml}</div>
+    <div class="tab-content" id="tab3"><div class="section-title">⚙️ PROGRAMAS EJECUTADOS (BAM / UserAssist)</div>
+      ${executed.length ? executed.map((r) => `<div class="row usb">${esc(r)}</div>`).join("") : empty("Sin datos (requiere administrador)")}</div>
+    <div class="tab-content" id="tab4"><div class="section-title">📂 ARCHIVOS ABIERTOS RECIENTEMENTE</div>
+      ${(d.system && d.system.recent_note) ? `<div class="warnbox">⚠️ ${esc(d.system.recent_note)}</div>` : ""}
+      ${recent.length ? recent.map((r) => `<div class="row">${esc(r)}</div>`).join("") : `<div class="empty"><p>${parseFloat(d.version) < 3.3 ? "Sin datos: este escaneo es de una versión anterior que no explicaba por qué. Con la v3.3 verás el motivo." : "Sin archivos recientes (mira el aviso de arriba si existe)."}</p></div>`}</div>
+    <div class="tab-content" id="tab5"><div class="section-title">🔌 DISPOSITIVOS USB (mouse, teclado, almacenamiento, mandos…)</div>
+      ${inHtml}${usbHtml}</div>
+    <div class="tab-content" id="tab10">${macroTabHtml}</div>
+    <div class="tab-content" id="tab11">${anyHtml}</div>
+    <div class="tab-content" id="tab9">${lgHtmlFull}</div>
+    <div class="tab-content" id="tab7"><div class="section-title">📸 CAPTURA DE PANTALLA AL MOMENTO DEL SCAN</div>${shotHtml}</div>
+    <div class="tab-content" id="tab8"><div class="section-title">👤 USUARIOS DE WINDOWS (último uso)</div>${wuHtml}
+      <div class="section-title" style="margin-top:18px">⛏️ CUENTAS DE MINECRAFT (último uso según logs)</div>${accHtml}</div>
+    <div class="tab-content" id="tab6"><div class="section-title">🧾 REPORTE COMPLETO</div>
+      <div class="actions" style="margin:0 0 12px"><button class="btn" data-act="download">⬇ Descargar JSON</button></div>
+      <pre class="raw">${esc(JSON.stringify(d, null, 2))}</pre></div>`;
+  if (activeTab !== "0" && $("tab" + activeTab)) {
+    document.querySelectorAll(".tab-content").forEach((x) => x.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach((x) => x.classList.toggle("active", x.dataset.tab === activeTab));
+    $("tab" + activeTab).classList.add("active");
+    if (activeTab === "7") loadShot();
+  }
+}
+
+// ── CAPTURA: se descarga con el token (repo privado) ────────────
+const _shotCache = new Map();
+async function loadShot() {
+  const e = current(); const box = $("shotBox");
+  if (!e || !box || !e.data || !e.data.screenshot || !e.data.screenshot.file) return;
+  const file = e.data.screenshot.file;
+  try {
+    if (!_shotCache.has(file)) {
+      const res = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${file.split("/").map(encodeURIComponent).join("/")}${refQ()}`, {
+        headers: { "Authorization": `Bearer ${cfg.token}`, "Accept": "application/vnd.github.raw+json", "X-GitHub-Api-Version": "2022-11-28" }, cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      _shotCache.set(file, URL.createObjectURL(new Blob([await res.arrayBuffer()], { type: "image/jpeg" })));
+    }
+    const url = _shotCache.get(file);
+    const b = $("shotBox"); if (!b) return;
+    b.className = "";
+    b.innerHTML = `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Captura del jugador" style="width:100%;border-radius:10px;border:1px solid var(--border)"></a>
+      <div class="actions"><a class="btn" href="${url}" download="${esc((e.data.code || "captura") + ".jpg")}">⬇ Descargar captura</a>
+      <a class="btn" href="${url}" target="_blank" rel="noopener">🔍 Abrir en grande</a></div>`;
+  } catch (err) {
+    const b = $("shotBox"); if (b) { b.className = "empty"; b.innerHTML = `<p>No se pudo cargar la captura (${esc(String(err.message || err))}).</p>`; }
+  }
+}
+
+// ── ACCIONES ─────────────────────────────────────────────────────
+function openModal(html) {
+  $("modalRoot").innerHTML = `<div class="modal-bg" data-act="closeModal"><div class="modal">${html}</div></div>`;
+}
+const closeModal = () => { $("modalRoot").innerHTML = ""; };
+
+function openGenerate() {
+  openModal(`
+    <h2>➕ Generar código</h2>
+    <p>Crea un código de un solo uso. El jugador lo escribe en el programa y su reporte aparecerá aquí.</p>
+    <select id="genPlat" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:var(--panel2,#1d1d28);color:inherit;border:1px solid var(--border,#2b2b3a)">
+      <option value="java">☕ Java Edition (PC)</option>
+      <option value="bedrock">🧱 Bedrock Edition (Windows)</option>
+      <option value="mobile">📱 Móvil (Bedrock / PojavLauncher)</option>
+    </select>
+    <input id="genLabel" type="text" maxlength="60" placeholder="Nota opcional (ej: nick del jugador)" autocomplete="off">
+    <div class="actions"><button class="btn-primary" id="genGo" style="width:auto;padding:11px 22px">Generar</button>
+    <button class="btn" data-act="closeModal">Cancelar</button></div>
+    <div class="login-err" id="genErr" style="margin-top:12px"></div>`);
+  $("genLabel").focus();
+  const go = async () => {
+    $("genGo").disabled = true; $("genErr").textContent = "";
+    const label = $("genLabel").value.trim();
+    const platform = $("genPlat").value;
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const code = genCode(platform);
+      const info = { code, label, platform, status: "pending", created: new Date().toISOString(), created_by: "dashboard" };
+      const r = await api("PUT", `contents/codes/${code}.json`, {
+        message: `SS: código ${code}`, content: b64(JSON.stringify(info, null, 2)), branch: cfg.branch,
+      });
+      if (r.status === 201 || r.status === 200) {
+        codeCache.set(`${code}.json`, { sha: r.data && r.data.content && r.data.content.sha, data: info });
+        buildEntries(); selectedKey = `code:${code}.json`;
+        renderChips(); renderList(); renderDetail();
+        openModal(`
+          <h2>✅ Código listo</h2>
+          <div class="bigcode">${esc(code)}</div>
+          <p>Plataforma: <b>${esc(PLATFORMS[platform].icon + " " + PLATFORMS[platform].label)}</b>. Ejecuta <b>${esc(PLATFORMS[platform].tool)}</b> en su PC por AnyDesk y escribe este código. Cuando termine, el resultado aparece en la lista.</p>
+          <div class="actions">
+            <button class="btn btn-gen" data-act="copy" data-text="${esc(code)}">📋 Copiar código</button>
+            <button class="btn" data-act="copy" data-text="${esc(instructionsText(code, platform))}">💬 Copiar instrucciones</button>
+            <button class="btn" data-act="closeModal">Cerrar</button></div>`);
+        return;
+      }
+      if (r.status !== 422) { $("genErr").textContent = explain(r.status, r.data) + (r.status === 403 || r.status === 404 ? "\nPara generar códigos el token necesita permiso Contents: Read and write." : ""); $("genGo").disabled = false; return; }
+    }
+    $("genErr").textContent = "No se pudo crear un código único. Intenta de nuevo."; $("genGo").disabled = false;
+  };
+  $("genGo").onclick = go;
+  $("genLabel").addEventListener("keydown", (ev) => { if (ev.key === "Enter") go(); });
+}
+
+async function deleteSelected() {
+  const e = current();
+  if (!e) return toast("Selecciona un escaneo primero", true);
+  if (e.kind === "local") { localEntries = localEntries.filter((x) => x.key !== e.key); selectedKey = null; buildEntries(); renderChips(); renderList(); renderDetail(); return; }
+  if (!confirm(e.kind === "pending" ? `¿Anular el código ${e.data.code}?` : `¿Borrar el escaneo ${e.data.code}?`)) return;
+  const dir = e.kind === "pending" ? "codes" : "data";
+  const r = await api("DELETE", `contents/${dir}/${encodeURIComponent(e.name)}`, {
+    message: `SS: borrado ${e.name}`, sha: e.sha, branch: cfg.branch,
+  });
+  if (r.status !== 200) return toast(explain(r.status, r.data), true);
+  const shotFile = e.kind === "scan" && e.data && e.data.screenshot && e.data.screenshot.file;
+  if (shotFile) {      // borrar también la captura asociada
+    const q = shotFile.split("/").map(encodeURIComponent).join("/");
+    const g = await api("GET", `contents/${q}${refQ()}`);
+    if (g.status === 200 && g.data && g.data.sha) await api("DELETE", `contents/${q}`, { message: `SS: borrada captura de ${e.name}`, sha: g.data.sha, branch: cfg.branch });
+  }
+  if (e.kind === "pending" && e.live) { const lc = liveCache.get(e.name); if (lc) { await api("DELETE", `contents/live/${encodeURIComponent(e.name)}`, { message: "SS: borrado live", sha: lc.sha, branch: cfg.branch }); liveCache.delete(e.name); } }
+  (e.kind === "pending" ? codeCache : scanCache).delete(e.name);
+  selectedKey = null; buildEntries(); renderChips(); renderList(); renderDetail();
+  toast("Borrado ✓");
+}
+
+function importFile(file) {
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const d = JSON.parse(rd.result);
+      if (!d || typeof d !== "object" || !d.verdict) throw new Error("no parece un reporte de SSHelper");
+      const key = "local:" + file.name + ":" + Date.now();
+      localEntries.push({ key, kind: "local", name: file.name, data: d, ts: scanTs(d).ts || Date.now(), approx: scanTs(d).approx });
+      buildEntries(); selectedKey = key; renderChips(); renderList(); renderDetail();
+      toast("Importado (solo visible aquí, no se sube al repo)");
+    } catch (err) { toast("Archivo inválido: " + err.message, true); }
+  };
+  rd.readAsText(file);
+}
+
+function downloadCurrent() {
+  const e = current(); if (!e) return;
+  const blob = new Blob([JSON.stringify(e.data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = e.name.endsWith(".json") ? e.name : e.name + ".json";
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+
+
+// ── GUÍAS: CÓMO COMPROBAR CADA HALLAZGO ─────────────────────────
+const GUIDES = {
+  generic: { t: "🔎 Cómo revisar esto, paso a paso", intro: "Imagina que revisas algo en la casa de alguien que aceptó dejarte mirar. Vas despacio y con calma.",
+    steps: [
+      "📍 Copia la ruta (el botón de abajo). Es la dirección exacta del archivo en su computadora.",
+      "🖥 Ábrela tú en el Explorador por AnyDesk (activa 'Elementos ocultos').",
+      "🕒 Mira la fecha. Si el archivo apareció justo antes de jugar, es sospechoso.",
+      "🛡 Copia el SHA-256 (el código largo) y pégalo en virustotal.com. Si muchos lo marcaron como peligroso, es una gran pista.",
+      "🗣 Pregunta: ¿qué es este archivo y cómo llegó aquí? Su respuesta cuenta tanto como lo que ves."] },
+  dll: { t: "🧩 Pieza (DLL) cargada dentro del juego", intro: "Una DLL es una pieza que un programa carga para usar. No se abre con doble clic. Nunca la ejecutes: solo se mira.",
+    steps: [
+      "🖥 Por AnyDesk abre el Administrador de tareas (Ctrl + Shift + Esc) y busca 'javaw'. Ese es Minecraft.",
+      "📁 Revisa la ruta. Si está en Descargas, Escritorio o una carpeta temporal, es raro. Las piezas normales están en carpetas de Minecraft o del launcher.",
+      "✍️ Clic derecho en el archivo → Propiedades → pestaña Detalles. Un archivo serio tiene nombre de empresa y de producto. Si está vacío y tiene nombre raro, sospecha.",
+      "🛡 Copia su SHA-256 y búscalo en virustotal.com.",
+      "📸 Toma captura de lo que veas, con la hora."] },
+  exe: { t: "💾 Programa (.exe) sospechoso", intro: "Un programa es como un juguete con instrucciones. Aquí no lo vas a jugar: solo lo vas a examinar.",
+    steps: [
+      "🖱 Clic derecho → Propiedades → pestaña Detalles: mira quién lo hizo y cómo se llama por dentro.",
+      "✍️ Pestaña Firmas digitales: si dice 'Válida', viene de una empresa conocida (normal). Si no tiene firma, es más raro.",
+      "🛡 Copia el SHA-256 (comando de abajo) y búscalo en virustotal.com.",
+      "🌐 Mira 'Descargado desde' en el reporte: te dice de qué página se bajó.",
+      "🗣 Pregunta de dónde lo sacó y para qué lo usaba. Compara su respuesta con las fechas."] },
+  disguised: { t: "🎭 Archivo disfrazado", intro: "Algunos le cambian el nombre a un programa para que parezca otra cosa, como poner etiqueta de 'foto' a una caja de herramientas.",
+    steps: [
+      "🚫 No lo abras ni lo ejecutes.",
+      "🔍 Si el reporte dice que es un programa con otra extensión (por ejemplo una 'imagen' que en realidad es un programa), ya es sospechoso.",
+      "🛡 Busca su SHA-256 en virustotal.com.",
+      "🗣 Pregunta: ¿por qué un archivo de imagen o de texto pesa y funciona como un programa?"] },
+  folder: { t: "📁 Carpeta con nombre raro", intro: "Una carpeta puede esconder cosas. Mira qué tiene dentro, con calma.",
+    steps: [
+      "📂 Abre la carpeta con la ruta de abajo y mira los archivos que tiene.",
+      "⚙️ Los archivos de configuración (config, profiles) suelen guardar qué funciones estaban activadas.",
+      "📅 Compara la fecha de los archivos con las horas en que jugó."] },
+  jar: { t: "📦 Mod de Minecraft (.jar) sospechoso", intro: "Un .jar es como una caja de regalo: por dentro hay archivos. Lo abrimos como si fuera un ZIP, sin ejecutarlo.",
+    steps: [
+      "📂 Copia el .jar a otra carpeta. Cámbiale el nombre a .zip y ábrelo con 7-Zip o con el Explorador.",
+      "👀 Mira los nombres de adentro. Si ves KillAura, Reach, Velocity, AimAssist o Scaffold, eso es un cheat.",
+      "📄 Abre fabric.mod.json o mcmod.info: ahí dice el nombre y el autor del mod. Si no tiene nombre, sospecha.",
+      "🛡 Busca su SHA-256 en virustotal.com.",
+      "🗣 Pregunta: ¿de dónde lo bajó y para qué lo usa?"] },
+  mem: { t: "🧠 Texto de cheat en la memoria del juego", intro: "Cuando Minecraft está abierto, guarda cosas en su memoria, como una libreta sobre la mesa. Si ahí aparece el nombre de un cheat, el juego lo tuvo cargado.",
+    steps: [
+      "🎮 No cierres Minecraft mientras lo revisas.",
+      "🛠 Esta revisión la hace un programa especial (System Informer). Lo abres tú por AnyDesk.",
+      "📸 Haz captura del resultado con la hora. Es una prueba fuerte.",
+      "⚠️ Ojo: algunos mods legítimos tienen nombres parecidos. Mira el contexto antes de sancionar."] },
+  exec: { t: "⚙️ Programa que se ejecutó", intro: "Windows anota qué programas se abrieron y a qué hora, aunque después los borren.",
+    steps: [
+      "🕒 Compara la hora de ejecución con la hora en que se abrió Minecraft.",
+      "🗑 Si el programa ya no existe, busca su nombre en la Papelera y en la Línea de tiempo.",
+      "🗣 Pregunta: ¿qué es ese programa y para qué lo abriste?"] },
+  usn: { t: "🗑 Archivo borrado o renombrado", intro: "Windows lleva un diario de cambios en el disco. Ahí quedan los archivos que se crearon, borraron o renombraron.",
+    steps: [
+      "🔍 Busca el nombre del archivo en el reporte: la hora y la acción aparecen juntas.",
+      "🕒 Si se creó y se borró cerca de la hora del escaneo, es muy sospechoso.",
+      "🗣 Pregunta por qué lo borró."] },
+  recycle: { t: "🗑 Papelera de reciclaje", intro: "Lo borrado normalmente queda en la Papelera hasta que la vacían.",
+    steps: [
+      "🗂 Abre la Papelera y ordena por 'Fecha de eliminación'.",
+      "📁 Mira la 'Ubicación original': te dice de qué carpeta venía.",
+      "🕒 Si la vaciaron hace poco, pregunta por qué."] },
+  usb: { t: "🔌 Dispositivo USB", intro: "Un USB puede ser un mouse, un teclado o un aparato que hace trampa por su cuenta.",
+    steps: [
+      "🔌 Mira la lista de dispositivos del reporte: qué mouse y qué teclado hay conectados.",
+      "🎮 Si el mouse tiene programa de macros (G HUB, Synapse, Bloody), pide que lo abra y muestre sus perfiles.",
+      "🧩 Un aparato tipo Arduino o Raspberry Pi que se hace pasar por mouse es sospechoso: pregunta para qué lo usa.",
+      "🕒 Compara la hora en que se conectó con la hora del escaneo."] },
+  macros: { t: "🖱 Macros (el mouse hace trampa solo)", intro: "Un macro hace varios clics con una sola pulsación. En un duelo eso no es justo.",
+    steps: [
+      "🎯 Haz la prueba de clics en vivo (la de 3 fases de la pestaña Macros). Es la forma más clara de ver si hay macro.",
+      "🔘 Fase 1: clics izquierdos rápidos. Fase 2: botón lateral + 3 clics. Fase 3: solo lateral, sin clic izquierdo.",
+      "🚨 Si en la fase 3 aparecen clics izquierdos sin tocar el botón izquierdo, el botón lateral hace trampa.",
+      "🖥 Abre tú el programa de su mouse (Logitech G HUB, Razer Synapse...) y mira qué botones tienen macros.",
+      "🗣 Pregunta: ¿tienes macros? ¿Cuáles y desde cuándo?"] },
+  hidden: { t: "🙈 Archivo o carpeta escondida", intro: "Los cheats se esconden en lugares que casi nadie mira.",
+    steps: [
+      "👀 En el Explorador activa 'Mostrar elementos ocultos' (pestaña Ver).",
+      "📅 Mira la fecha de creación y compárala con la última vez que jugó.",
+      "🗣 Pregunta: ¿qué es esta carpeta y por qué está escondida?"] },
+  defender: { t: "🛡 Antivirus de Windows (Defender)", intro: "El antivirus puede tener excepciones: carpetas que dejó de revisar a propósito.",
+    steps: [
+      "🛡 Seguridad de Windows → Protección contra virus → Administrar configuración → Exclusiones.",
+      "📁 Mira si excluyó .minecraft, Descargas o el Escritorio.",
+      "📜 En Historial de protección mira qué detectó y cuándo."] },
+  events: { t: "📜 Registros de Windows borrados", intro: "Borrar los registros es una forma de esconder rastros, como arrancar las hojas de un cuaderno.",
+    steps: [
+      "📜 En el reporte, un registro borrado aparece con su hora.",
+      "🕒 Si se borró justo antes del escaneo, anótalo.",
+      "🗣 Pregunta por qué lo borró."] },
+  proc: { t: "⚙️ Java con argumentos raros", intro: "Java puede arrancar con 'extras' que cargan programas escondidos. Los más comunes son -javaagent.",
+    steps: [
+      "📋 En el reporte, mira los argumentos del proceso javaw.",
+      "🟢 Lunar, Badlion, Feather y Essential son normales.",
+      "🔴 Si ves un -javaagent de un archivo raro, abre ese archivo con la guía de .jar."] },
+  windows: { t: "🪟 Ventana oculta / overlay", intro: "Algunos cheats dibujan un menú o ESP que tú NO ves por AnyDesk pero el jugador sí. Es como un letrero invisible solo para él.",
+    steps: [
+      "🔴 Si el dueño de la ventana es javaw (Minecraft), trátalo como muy grave: Minecraft no necesita ocultarse de la captura.",
+      "🖥 Abre el Administrador de tareas → pestaña Detalles → busca el programa del reporte y mira su ruta (clic derecho → Abrir ubicación).",
+      "🙈 Pídele (por el chat del server o voz) que describa lo que ve encima del juego. Si menciona un menú o letras que tú no ves, ya tienes la prueba.",
+      "📸 Haz captura de lo que ves y compáralo con lo que el jugador dice ver.",
+      "✅ Normal: gestores de contraseñas y apps bancarias a veces se ocultan de la captura. Sospecha si el programa es desconocido o está en Descargas/AppData."] },
+  shim: { t: "📜 Programa registrado por Windows (aunque lo borró)", intro: "Windows apunta en una libreta (ShimCache) cada programa que tocó. Borrar el archivo no borra la anotación.",
+    steps: [
+      "🗑 Mira si el reporte dice YA NO EXISTE: el archivo fue borrado antes del SS.",
+      "🗂 Busca ese nombre en la Papelera, en Descargas y en la Línea de tiempo.",
+      "🕒 Compara la fecha con la última vez que jugó.",
+      "🗣 Pregunta: ¿qué era ese programa y por qué lo borraste?"] },
+  integrity: { t: "🧷 Alguien tocó el escaneo o el reloj", intro: "Estos avisos indican que el jugador pudo alterar el PC o el programa para que el escaneo viera menos.",
+    steps: [
+      "🧾 Revisa en 'AnyDesk y programa' si el hash coincide con tu .exe oficial. Si no coincide, repite el SS con un .exe nuevo.",
+      "⏰ Si el reloj está desfasado: corrige la hora (Configuración → Hora) y vuelve a correr el escaneo.",
+      "🗣 Pregunta por qué cambió la hora, usa proxy o bloqueó GitHub.",
+      "⚠️ No lo sancionas solo por esto, pero deja de confiar en las fechas del reporte."] },
+  cleanup: { t: "🧹 Señales de limpieza de rastros", intro: "Una sola señal puede ser normal. Varias juntas indican que alguien borró evidencias antes del SS.",
+    steps: [
+      "📋 Lee la lista de señales combinadas: cuenta cuántas distintas hay.",
+      "🗑 Mira la Papelera, Descargas y 'Programas instalados' ordenados por fecha: ¿falta algo reciente?",
+      "🕒 Si PC se encendió hace poco y todo está vacío, pregunta por qué reinició/limpió justo antes.",
+      "🗣 Un jugador limpio no tiene problema en explicar qué hizo."] },
+  masq: { t: "🎭 Cheat con nombre prestado (Spotify, Discord, svchost…)", intro: "Es como un ladrón con uniforme de repartidor: usa el nombre de algo conocido para pasar desapercibido. Lo que no puede copiar es la firma digital.",
+    steps: [
+      "✍️ Clic derecho al archivo → Propiedades → Firmas digitales. Spotify real dice 'Spotify AB', Discord real 'Discord Inc.'. Sin pestaña de firmas o con otro nombre = es un disfraz.",
+      "📍 Mira DÓNDE está. Un archivo 'de Windows' en Descargas, Temp, ProgramData o en un pendrive es falso. Los de verdad están en C:\\Windows\\System32.",
+      "👁 Activa 'Elementos ocultos' en el Explorador: muchos están ocultos (atributo +h +s).",
+      "🛡 Copia el SHA-256 (botón del reporte) y pégalo en virustotal.com.",
+      "🎮 Si dice 'cargada dentro de Minecraft', abre System Informer → javaw → Modules y confirma que esa DLL está ahí. Esa es la prueba más fuerte."] },
+  usbgone: { t: "🔌 Pendrive o disco que ya no está", intro: "Windows recuerda cada pendrive que conectaron, aunque lo saquen. El cheat se va con el pendrive, pero el rastro queda.",
+    steps: [
+      "📋 Mira la lista del reporte: qué programas se ejecutaron desde esa letra (E:, F:…) y a qué hora.",
+      "🕒 Compara esa hora con la de Minecraft: si se ejecutó justo antes de jugar, es la pista clave.",
+      "🔌 Pestaña USB: busca el 'Almacenamiento USB' desconectado hace poco y su nombre/modelo.",
+      "🗣 Pide que lo vuelva a conectar para revisarlo. Si se niega o 'no lo encuentra', anótalo.",
+      "📂 Si está conectado: ábrelo con 'Elementos ocultos' activado y mira carpetas raras o archivos con nombre de música/imagen que pesan mucho."] },
+  system: { t: "💻 Sistema del PC", intro: "Algunas cosas del sistema dificultan revisar el PC.",
+    steps: [
+      "📅 Si Windows se instaló hace poco, justo antes del escaneo, pregunta por qué.",
+      "🧩 Un Windows 'personalizado' puede apagar cosas útiles para revisar.",
+      "🗣 Pregunta: ¿reinstalaste Windows o cambiaste algo antes de jugar?"] },
+  drivers: { t: "🔧 Driver sospechoso", intro: "Un driver es un programa que habla directamente con el hardware. Los cheats avanzados a veces usan uno sin firma.",
+    steps: [
+      "🔍 Mira el driver en el reporte: si no tiene firma o está en una carpeta temporal, es raro.",
+      "🗣 Pregunta de dónde salió y cuándo se instaló."] },
+  logs: { t: "📄 Registros (logs) de Minecraft", intro: "Minecraft escribe un diario de lo que hace. Ahí se ven los nombres de los mods y los errores.",
+    steps: [
+      "📄 Abre la pestaña Logs del reporte: muestra las líneas importantes de cada archivo.",
+      "🔍 Si faltan registros de días en que jugó, pudieron borrarlos.",
+      "🗣 Pregunta por qué no hay registros de esos días."] },
+  recent: { t: "📂 Archivos recientes", intro: "Windows recuerda los últimos archivos que abriste.",
+    steps: [
+      "📂 Mira la lista del reporte: si está vacía y Windows la tiene activa, alguien la borró.",
+      "🗣 Pregunta qué archivos abrió recientemente."] },
+  users: { t: "👤 Otro usuario de Windows", intro: "Un cheat puede estar en otra cuenta de la misma computadora.",
+    steps: [
+      "👤 Mira en el reporte si hay otro usuario y cuándo entró por última vez.",
+      "🗣 Pregunta si alguien más usa esa computadora."] },
+  shot: { t: "📸 Captura de pantalla", intro: "La captura muestra qué estaba abierto en ese momento.",
+    steps: [
+      "👀 Mira qué ventanas hay abiertas y si Minecraft estaba al frente.",
+      "🗣 Si algo raro está abierto, pregunta qué es."] },
+  anydesk: { t: "🖥 AnyDesk (alguien controla tu PC)", intro: "AnyDesk sirve para ayudar a alguien desde lejos. También puede servir para hacer trampa escondida.",
+    steps: [
+      "🔴 Si dice 'sesión activa AHORA', alguien controla el PC en este momento. Si eres tú (staff), es normal; si es otro ID, anótalo.",
+      "🕒 Si hay sesiones de las últimas 24 horas, pregunta: '¿Alguien entró a tu PC? ¿Te ayudaron con algo?'.",
+      "📅 Si son de hace semanas, probablemente fue soporte normal. Anótalo y sigue.",
+      "⚠️ Si no hay registros de AnyDesk, pudieron borrarlos. Pregunta por qué."] },
+};
+function guideFor(x) {
+  const m = x.module || "", t = ((x.title || "") + " " + (x.detail || "")).toLowerCase();
+  if (m === "Inyección") return GUIDES.dll;
+  if (m === "Memoria") return GUIDES.mem;
+  if (m === "Archivos") {
+    if (/disfrazad/.test(t)) return GUIDES.disguised;
+    if (/carpeta sospechosa/.test(t)) return GUIDES.folder;
+    if (/\.jar\b|mod /.test((x.file && x.file.path) || t)) return GUIDES.jar;
+    return GUIDES.exe;
+  }
+  if (m === "Ejecutados" || m === "Prefetch") return GUIDES.exec;
+  if (m === "USN") return GUIDES.usn;
+  if (m === "Papelera") return GUIDES.recycle;
+  if (m === "USB") return GUIDES.usb;
+  if (m === "Macros" || m === "Clics") return GUIDES.macros;
+  if (m === "Ocultos") return GUIDES.hidden;
+  if (m === "Defender") return GUIDES.defender;
+  if (m === "Eventos") return GUIDES.events;
+  if (m === "Procesos" || m === "Java") return GUIDES.proc;
+  if (m === "Sistema") return GUIDES.system;
+  if (m === "Drivers") return GUIDES.drivers;
+  if (m === "Logs" || m === "Minecraft") return GUIDES.logs;
+  if (m === "Recientes") return GUIDES.recent;
+  if (m === "Usuarios") return GUIDES.users;
+  if (m === "Captura") return GUIDES.shot;
+  if (m === "Ventanas") return GUIDES.windows;
+  if (m === "Disfraz") return GUIDES.masq;
+  if (m === "Pendrive") return GUIDES.usbgone;
+  if (m === "ShimCache") return GUIDES.shim;
+  if (m === "Integridad") return GUIDES.integrity;
+  if (m === "Anti-limpieza") return GUIDES.cleanup;
+  if (m === "AnyDesk") return GUIDES.anydesk;
+  return GUIDES.generic;
+}
+function howHtml(x) {
+  const g = guideFor(x), f = x.file || null;
+  const pm = !f && (x.detail || "").match(/[A-Za-z]:\\[^\r\n"<>|?*]+?\.(?:jar|dll|exe|dat|txt|png|zip|tmp|bin|sys|bat|cmd|ps1|rar|7z)/i);
+  const path = f ? f.path : (pm ? pm[0] : "");
+  let fileBlock = "";
+  if (path) {
+    const hashCmd = `Get-FileHash -Algorithm SHA256 -LiteralPath "${path}"`;
+    const openCmd = `explorer.exe /select,"${path}"`;
+    fileBlock = `<div class="how-file"><div class="kv">Ruta: <span class="how-path">${esc(path)}</span></div>
+      ${f ? `<div class="kv" style="margin-top:6px">Tamaño: <b>${Math.round((f.size || 0) / 1024)} KB</b> · Creado: <b>${esc(f.created || "?")}</b> · Modificado: <b>${esc(f.modified || "?")}</b></div>
+      ${f.sha256 ? `<div class="kv" style="margin-top:4px">SHA-256: <span class="how-path">${esc(f.sha256)}</span></div>` : ""}
+      <div class="kv" style="margin-top:4px">Descargado desde: <b>${esc(f.hosturl || "sin marca de descarga")}</b>${f.referrerurl ? " · Página: <b>" + esc(f.referrerurl) + "</b>" : ""}</div>` : ""}
+      <div class="actions">
+        <button class="btn" data-act="copy" data-text="${esc(path)}">📋 Copiar ruta</button>
+        <button class="btn" data-act="copy" data-text="${esc(openCmd)}">📂 Copiar comando "abrir carpeta"</button>
+        <button class="btn" data-act="copy" data-text="${esc(hashCmd)}">#️⃣ Copiar comando de hash</button>
+        ${f && f.sha256 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/file/${esc(f.sha256)}">🛡 Buscar en VirusTotal</a>` : ""}
+      </div></div>`;
+  }
+  return `<details class="how"><summary>🔎 Cómo comprobarlo y dónde encontrarlo</summary><div class="how-body">
+    <div class="how-title">${g.t}</div><div>${g.intro}</div>${fileBlock}<ol>${g.steps.map((t) => `<li>${t}</li>`).join("")}</ol></div></details>`;
+}
+
+// ── RESUMEN PARA SANCIÓN + FILTROS ───────────────────────────────
+let _fl = "all";
+let activeTab = "0", _detailSig = "";
+function sanctionText(d) {
+  const f = Array.isArray(d.findings) ? d.findings : [];
+  const real = f.filter((x) => !x.probable_fp && x.level !== "info");
+  const reds = real.filter((x) => x.level === "red"), yel = real.filter((x) => x.level === "yellow");
+  const pc = d.pc || {}, mc = d.minecraft || {};
+  const cut = (t, n) => { t = String(t || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n) + "…" : t; };
+  const L = [];
+  L.push(`REPORTE SS ${d.code || "?"} — ${d.verdict === "red" ? "CHEATING" : d.verdict === "yellow" ? "SOSPECHOSO" : "LIMPIO"}`);
+  L.push(`Jugador (nick): ${mc.nick || "?"}${mc.alts && mc.alts.length ? " | Otras cuentas: " + mc.alts.join(", ") : ""}`);
+  L.push(`Fecha del escaneo: ${d.timestamp || "?"} | PC: ${pc.hostname || "?"} / ${pc.user || "?"} | País: ${pc.country || "?"}`);
+  L.push(`PC encendido desde: ${pc.boot_time || "?"} (${pc.uptime || "?"}) | Minecraft abierto desde: ${mc.start || "no estaba abierto"}`);
+  L.push(`Administrador: ${d.admin ? "sí" : "NO (escaneo parcial)"}`);
+  L.push("");
+  if (reds.length) { L.push(`PRUEBAS GRAVES (${reds.length}):`); reds.forEach((x, i) => L.push(`${i + 1}. [${x.module}] ${x.title}\n   ${cut(x.detail, 350)}`)); L.push(""); }
+  if (yel.length) { L.push(`ALERTAS A REVISAR (${yel.length}):`); yel.slice(0, 15).forEach((x, i) => L.push(`${i + 1}. [${x.module}] ${x.title}`)); if (yel.length > 15) L.push(`… y ${yel.length - 15} más`); L.push(""); }
+  (Array.isArray(d.herramientas) ? d.herramientas.filter((h) => h.nivel !== "info") : []).forEach((h) => {
+    L.push(`Herramienta: ${h.n} (${h.tipo}) — ${h.abierto ? "ABIERTA al escanear" : "cerrada"}${h.ultima ? " · última vez " + h.ultima : ""}${h.vs_staff ? " · " + h.vs_staff.replace("🚨 ", "") : ""}`);
+  });
+  L.push("Nota: las detecciones por firmas son indicios; confirmar tú por AnyDesk antes de sancionar.");
+  return L.join("\n");
+}
+function applyFindingFilter() {
+  const q = (($("fSearch") || {}).value || "").toLowerCase().trim();
+  document.querySelectorAll("#tab0 .finding").forEach((el) => {
+    const okKind = _fl === "all" || el.dataset.kind === _fl;
+    const okQ = !q || el.dataset.q.includes(q);
+    el.classList.toggle("hide", !(okKind && okQ));
+  });
+  document.querySelectorAll("#tab0 details.mod").forEach((m) => {
+    const vis = m.querySelectorAll(".finding:not(.hide)").length;
+    m.classList.toggle("hide", vis === 0);
+    if ((q || _fl !== "all") && vis) m.open = true;
+  });
+}
+document.addEventListener("input", (ev) => { if (ev.target.id === "fSearch") applyFindingFilter(); });
+document.addEventListener("click", (ev) => {
+  const c = ev.target.closest("[data-fl]");
+  if (!c) return;
+  _fl = c.dataset.fl;
+  document.querySelectorAll(".fchip").forEach((x) => x.classList.toggle("active", x === c));
+  applyFindingFilter();
+});
+
+// ── COMPARTIR RESULTADO (ticket): solo veredicto + motivos, sin datos del PC ──
+const VERDICT_TXT = { red: ["CHEATING", "🔴", "#ff5c7a"], yellow: ["SOSPECHOSO", "🟡", "#ffc857"], green: ["LIMPIO", "🟢", "#3ddc97"] };
+function redactTxt(t) {
+  return String(t || "")
+    .replace(/([A-Za-z]:\\Users\\)[^\\\/"'<>|]{1,30}/gi, "$1…")      // usuario de Windows en rutas
+    .replace(/\s+/g, " ").trim();
+}
+function shareItems(d) {
+  const f = Array.isArray(d.findings) ? d.findings : [];
+  return f.filter((x) => !x.probable_fp && (x.level === "red" || x.level === "yellow"))
+    .sort((a, b) => (a.level === "red" ? 0 : 1) - (b.level === "red" ? 0 : 1))
+    .map((x, i) => ({ i, level: x.level, module: x.module || "", title: redactTxt(x.title), detail: redactTxt(x.detail) }));
+}
+let _share = null;
+function openShare() {
+  const e = current();
+  if (!e || !e.data || e.kind === "pending") return toast("Selecciona un escaneo terminado", true);
+  const d = e.data, lvl = entryLevel(e);
+  const items = shareItems(d);
+  _share = { d, lvl, items };
+  openModal(`
+    <h2>🎫 Compartir resultado</h2>
+    <p>Genera una versión simple para el ticket: <b>solo</b> nick, código, fecha, veredicto y los motivos que marques. No incluye datos del PC, usuario de Windows, país, capturas ni el resto del reporte.</p>
+    <div class="section-title" style="margin-top:14px">📝 MOTIVOS A MOSTRAR</div>
+    <div id="shList" style="max-height:230px;overflow:auto">${items.length ? items.map((x) => `
+      <label style="display:flex;gap:8px;align-items:flex-start;padding:6px 2px;font-size:12px;cursor:pointer">
+        <input type="checkbox" data-sh="${x.i}" ${x.level === "red" ? "checked" : ""} style="width:auto;margin:2px 0 0">
+        <span><span class="badge ${x.level}">${x.level === "red" ? "GRAVE" : "ALERTA"}</span> <b>${esc(x.module)}</b>: ${esc(x.title)}</span></label>`).join("")
+      : `<p style="padding:8px 0">No hay hallazgos graves ni alertas: el resultado sale solo con el veredicto.</p>`}</div>
+    <label style="display:flex;gap:8px;align-items:center;font-size:12px;margin:10px 0 0;cursor:pointer"><input type="checkbox" id="shDet" checked style="width:auto;margin:0"> Incluir una explicación corta de cada motivo</label>
+    <input id="shNote" type="text" maxlength="200" placeholder="Nota del staff (opcional)" autocomplete="off" style="margin-top:10px">
+    <div class="actions">
+      <button class="btn btn-gen" data-act="shCopy">📋 Copiar texto</button>
+      <button class="btn" data-act="shPng">🖼 Descargar imagen</button>
+      <button class="btn" data-act="shHtml">🌐 Descargar página</button>
+      <button class="btn" data-act="closeModal">Cerrar</button></div>`);
+}
+function shareModel() {
+  const { d, lvl, items } = _share;
+  const sel = new Set([...document.querySelectorAll("#shList input[data-sh]:checked")].map((c) => +c.dataset.sh));
+  const det = !!($("shDet") && $("shDet").checked);
+  const cut = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
+  return {
+    verdict: VERDICT_TXT[lvl] || VERDICT_TXT.green, lvl,
+    nick: (d.minecraft && d.minecraft.nick) || "?", code: d.code || "?", date: d.timestamp || "",
+    plat: PLATFORMS[platOf(d)].label, note: ($("shNote") ? $("shNote").value.trim() : ""),
+    reasons: items.filter((x) => sel.has(x.i)).map((x) => ({ level: x.level, text: `${x.module ? x.module + ": " : ""}${x.title}`, detail: det ? cut(x.detail, 230) : "" })),
+  };
+}
+function shareText(m) {
+  const L = [`**RESULTADO DE SCREENSHARE — ${m.verdict[1]} ${m.verdict[0]}**`, `**Jugador:** ${m.nick}  ·  **Código:** ${m.code}  ·  **Fecha:** ${m.date}`];
+  if (m.reasons.length) {
+    L.push("", "**Motivos:**");
+    m.reasons.forEach((r, i) => { L.push(`${i + 1}. ${r.text}`); if (r.detail && r.detail !== r.text) L.push(`   ↳ ${r.detail}`); });
+  }
+  if (m.note) L.push("", `**Nota del staff:** ${m.note}`);
+  return L.join("\n");
+}
+function shareFile(name, blob) {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function shareHtml(m) {
+  const rs = m.reasons.map((r) => `<li class="${r.level}"><b>${esc(r.text)}</b>${r.detail && r.detail !== r.text ? `<small>${esc(r.detail)}</small>` : ""}</li>`).join("");
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Resultado ${esc(m.code)}</title>
+<style>*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;background:#050408;color:#f3eefc;font:15px/1.5 system-ui,Segoe UI,Arial,sans-serif}
+.c{width:100%;max-width:640px;background:#0f0b18;border:1px solid #2a2040;border-radius:16px;padding:26px}
+.t{font-size:12px;letter-spacing:1.5px;color:#9b91b4;text-transform:uppercase;margin-bottom:14px}
+.v{font-size:26px;font-weight:800;padding:16px;border-radius:12px;text-align:center;background:${m.verdict[2]}22;color:${m.verdict[2]}}
+.i{display:flex;gap:18px;flex-wrap:wrap;margin:16px 0;color:#9b91b4;font-size:13px}.i b{color:#f3eefc;display:block;font-size:15px}
+h2{font-size:12px;letter-spacing:1px;color:#b085ff;text-transform:uppercase;margin:18px 0 8px}
+ol{margin:0;padding-left:22px}li{margin-bottom:10px}li.red::marker{color:#ff5c7a}li.yellow::marker{color:#ffc857}small{display:block;color:#9b91b4;margin-top:2px}
+.n{margin-top:16px;padding:12px;border-radius:10px;background:#171126;font-size:13px}
+
+</style></head><body><div class="c">
+<div class="t">Resultado de screenshare</div><div class="v">${m.verdict[1]} ${m.verdict[0]}</div>
+<div class="i"><div>Jugador<b>${esc(m.nick)}</b></div><div>Código<b>${esc(m.code)}</b></div><div>Fecha<b>${esc(m.date)}</b></div></div>
+${rs ? `<h2>Motivos</h2><ol>${rs}</ol>` : ""}${m.note ? `<div class="n"><b>Nota del staff:</b> ${esc(m.note)}</div>` : ""}</div></body></html>`;
+}
+function sharePng(m) {
+  const W = 1000, P = 48, cv = document.createElement("canvas"), g0 = cv.getContext("2d");
+  const FONT = "Sora, 'Segoe UI', system-ui, Arial, sans-serif";
+  const wrap = (ctx, text, maxW) => {
+    const out = []; let line = "";
+    for (const w of String(text).split(" ")) {
+      const t = line ? line + " " + w : w;
+      if (ctx.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t;
+    }
+    if (line) out.push(line); return out;
+  };
+  const layout = (ctx, paint) => {
+    let y = P;
+    const adv = (h) => { y += h; };
+    ctx.font = `600 15px ${FONT}`; if (paint) { ctx.fillStyle = "#9b91b4"; ctx.fillText("RESULTADO DE SCREENSHARE", P, y + 12); } adv(40);
+    if (paint) { ctx.fillStyle = m.verdict[2] + "26"; ctx.beginPath(); ctx.roundRect(P, y, W - 2 * P, 84, 16); ctx.fill();
+      ctx.fillStyle = m.verdict[2]; ctx.font = `800 40px ${FONT}`; ctx.textAlign = "center"; ctx.fillText(m.verdict[0], W / 2, y + 56); ctx.textAlign = "left"; }
+    adv(84 + 28);
+    const cols = [["JUGADOR", m.nick], ["CÓDIGO", m.code], ["FECHA", m.date]];
+    cols.forEach(([k, v], i) => { const x = P + i * ((W - 2 * P) / 3);
+      if (paint) { ctx.font = `600 12px ${FONT}`; ctx.fillStyle = "#9b91b4"; ctx.fillText(k, x, y + 10); ctx.font = `700 19px ${FONT}`; ctx.fillStyle = "#f3eefc"; ctx.fillText(v, x, y + 36); } });
+    adv(66);
+    if (m.reasons.length) {
+      if (paint) { ctx.font = `700 13px ${FONT}`; ctx.fillStyle = "#b085ff"; ctx.fillText("MOTIVOS", P, y + 10); }
+      adv(32);
+      m.reasons.forEach((r, i) => {
+        ctx.font = `700 19px ${FONT}`; const t = wrap(ctx, r.text, W - 2 * P - 40);
+        ctx.font = `400 16px ${FONT}`; const dt = r.detail && r.detail !== r.text ? wrap(ctx, r.detail, W - 2 * P - 40) : [];
+        const h = t.length * 26 + dt.length * 22 + 22;
+        if (paint) {
+          ctx.fillStyle = "#171126"; ctx.beginPath(); ctx.roundRect(P, y, W - 2 * P, h - 8, 12); ctx.fill();
+          ctx.fillStyle = r.level === "red" ? "#ff5c7a" : "#ffc857"; ctx.fillRect(P, y + 6, 4, h - 20);
+          ctx.fillStyle = "#f3eefc"; ctx.font = `700 19px ${FONT}`; t.forEach((l, k) => ctx.fillText((k === 0 ? (i + 1) + ".  " : "     ") + l, P + 20, y + 28 + k * 26));
+          ctx.fillStyle = "#9b91b4"; ctx.font = `400 16px ${FONT}`; dt.forEach((l, k) => ctx.fillText(l, P + 20 + 28, y + 28 + t.length * 26 + k * 22 - 2));
+        }
+        adv(h);
+      });
+    }
+    if (m.note) {
+      ctx.font = `400 16px ${FONT}`; const nl = wrap(ctx, "Nota del staff: " + m.note, W - 2 * P - 32);
+      if (paint) { ctx.fillStyle = "#171126"; ctx.beginPath(); ctx.roundRect(P, y + 4, W - 2 * P, nl.length * 22 + 24, 12); ctx.fill(); ctx.fillStyle = "#f3eefc"; nl.forEach((l, k) => ctx.fillText(l, P + 16, y + 32 + k * 22)); }
+      adv(nl.length * 22 + 40);
+    }
+    return y + P - 10;
+  };
+  g0.font = `400 16px ${FONT}`;
+  const H = layout(g0, false);
+  cv.width = W; cv.height = Math.max(H, 260);
+  const ctx = cv.getContext("2d");
+  const bg = ctx.createLinearGradient(0, 0, 0, cv.height); bg.addColorStop(0, "#120c20"); bg.addColorStop(1, "#050408");
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, cv.height);
+  ctx.strokeStyle = "#2a2040"; ctx.lineWidth = 2; ctx.strokeRect(1, 1, W - 2, cv.height - 2);
+  layout(ctx, true);
+  return new Promise((res) => cv.toBlob(res, "image/png"));
+}
+
+// ── EVENTOS ──────────────────────────────────────────────────────
+document.addEventListener("click", (ev) => {
+  const t = ev.target.closest("[data-act],[data-key],[data-f],[data-tab]");
+  if (!t) return;
+  if (t.dataset.key) { if (selectedKey !== t.dataset.key) activeTab = "0"; selectedKey = t.dataset.key; renderList(); renderDetail(); return; }
+  if (t.dataset.f) { filter = t.dataset.f; renderChips(); renderList(); return; }
+  if (t.dataset.tab !== undefined) {
+    document.querySelectorAll(".tab-content").forEach((x) => x.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach((x) => x.classList.remove("active"));
+    $("tab" + t.dataset.tab).classList.add("active"); t.classList.add("active");
+    activeTab = t.dataset.tab; if (activeTab === "7") loadShot(); return;
+  }
+  switch (t.dataset.act) {
+    case "chk": { try { const k = "ss.chk." + t.dataset.code; const a = new Set(JSON.parse(store.get(k) || "[]")); const i = +t.dataset.i; t.checked ? a.add(i) : a.delete(i); store.set(k, JSON.stringify([...a])); } catch (e) {} return; }
+    case "copy": copyText(t.dataset.text); break;
+    case "saveOfficialSha": { const i = $("officialSha"); if (i) { store.set("ss.officialSha", i.value.trim().toLowerCase()); toast("Hash oficial guardado ✓"); renderDetail(); } break; }
+    case "saveStaffIds": { const i = $("staffIds"); if (i) { store.set("ss.staffIds", i.value); toast("IDs guardados ✓"); renderDetail(); } break; }
+    case "closeModal": if (ev.target === t) closeModal(); break;   // clic en el fondo o en "Cancelar", no dentro del cuadro
+    case "retry": loadAll(); break;
+    case "relogin": logout(); break;
+    case "download": downloadCurrent(); break;
+    case "copySummary": { const e = current(); if (e && e.data) copyText(sanctionText(e.data)); break; }
+    case "copyFinding": copyText(t.dataset.text); break;
+    case "share": openShare(); break;
+    case "shCopy": if (_share) copyText(shareText(shareModel())); break;
+    case "shPng": if (_share) { const m = shareModel(); sharePng(m).then((b) => { shareFile(`resultado_${m.code}.png`, b); toast("Imagen descargada ✓"); }); } break;
+    case "shHtml": if (_share) { const m = shareModel(); shareFile(`resultado_${m.code}.html`, new Blob([shareHtml(m)], { type: "text/html" })); toast("Página descargada ✓"); } break;
+  }
+});
+$("btnGen").onclick = openGenerate;
+$("btnRefresh").onclick = () => loadAll();
+$("btnDelete").onclick = deleteSelected;
+$("btnLogout").onclick = logout;
+$("btnGuide").onclick = () => $("guidePanel").classList.toggle("hidden");
+$("btnImport").onclick = () => $("fileImport").click();
+$("fileImport").onchange = (ev) => { if (ev.target.files[0]) importFile(ev.target.files[0]); ev.target.value = ""; };
+$("searchBox").addEventListener("input", renderList);
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeModal(); });
+
+window.addEventListener("hashchange", () => {
+  _deepCode = decodeURIComponent(location.hash.replace(/^#/, "")).toUpperCase();
+  if (!cfg) return;
+  openDeepLink(); renderChips(); renderList(); renderDetail();
+});
+renderDetail();
+boot();
+</script>
+</body>
+</html>
