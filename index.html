@@ -6,7 +6,7 @@
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAACvUlEQVR42u3dsY3CQBRF0T+IwBUQE7oaClhteSsKoBqHxFTgDCpAWqGdp/X4nAZGeKSrIXpVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDfaamDTtP09Ll/77Guzb3s+24SDq4T9ksAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQC6a6lhiNt87n7G/P0V+WjLz7X7GZflXqPcy2gSd5MaH/ECAH8BAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAKCDY+qgxGpPYrEnxWIPXgCAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAIACAAgAIAAAAIACAAgAIAAAAIAbFtsGGSk0Q7wAgAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQAEABAAQAAAAQDeaqmDTtP07H3GbT670R27LPfIOY91baN8My8A8BcAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABADpoI/2YxPpQlQWiTyRWe0Za7PECAAQAEABAAAABAAQAEABAAAABAAQAEABAAAABAAQAEAAQAJ8ABAAQAEAAAAEABAAQAEAAAAEAts+QwgcSAySp8ZHEYEeV0Q4vAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAAAEABAAQAEAAQAAAAQAEANgRay3/VGJ9qMpijxcAIACAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAgAIACAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAW/AC9OY1s5Bifx0AAAAASUVORK5CYII=">
 <title>SS Menú</title>
 <meta name="theme-color" content="#050408">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -360,6 +360,18 @@ details.how > summary{padding:10px 14px;font-size:12.5px}
 @media(max-width:700px){.tabs{flex-wrap:nowrap;overflow-x:auto;gap:20px}.tg + .tg{padding-left:20px;border-left:1px solid var(--border)}}
 html,body{overflow-x:hidden;max-width:100vw}
 @media(max-width:700px){.wrap{padding:12px}.detail{padding:16px 12px 28px}.toolbar .search{min-width:0}.grid>.panel{min-width:0}}
+
+/* ===== MÓVIL: el detalle se abre a pantalla completa ===== */
+.mback{display:none}
+@media(max-width:900px){
+  .grid > .panel:nth-child(2){display:none}
+  body.md-open{overflow:hidden}
+  body.md-open .grid > .panel:nth-child(2){display:block;position:fixed;inset:0;z-index:600;border:none;border-radius:0;background:var(--bg);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .mback{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:rgba(6,7,11,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .mback button{background:var(--panel);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-weight:600;padding:10px 16px;cursor:pointer}
+  .mback span{color:var(--muted);font-size:12px;font-family:ui-monospace,Consolas,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .detail{min-height:0}
+}
 </style>
 </head>
 <body>
@@ -422,6 +434,7 @@ html,body{overflow-x:hidden;max-width:100vw}
       <div class="list" id="scanList"></div>
     </div>
     <div class="panel">
+      <div class="mback"><button data-act="mback">← Volver</button><span id="mbackCode"></span></div>
       <div class="detail" id="detail"></div>
     </div>
   </div>
@@ -559,7 +572,7 @@ function openDeepLink() {      // enlace desde Discord: https://…/#SS-XXXX-XXX
   const e = same.find((x) => x.kind !== "pending") || same[0];
   if (!e) return;                 // aún no está en el repo: se reintenta en la siguiente actualización
   selectedKey = e.key; activeTab = "0"; _deepCode = ""; filter = "all";
-  setTimeout(() => { const a = document.querySelector(".item.active"); if (a) a.scrollIntoView({ block: "center" }); }, 80);
+  setTimeout(() => { const mc = $("mbackCode"); if (mc) mc.textContent = e.data && e.data.code || ""; openMobileDetail(); const a = document.querySelector(".item.active"); if (a) a.scrollIntoView({ block: "center" }); }, 80);
 }
 const liveCache = new Map();
 function liveState(e) {
@@ -845,7 +858,7 @@ function renderDetail() {
   const box = $("detail");
   const e = current();
   _detailSig = e ? [e.key, e.sha || "", e.data && e.data.verdict, e.data && e.data.timestamp, e.live && e.live.status + e.live.step + (liveState(e) || {}).kind].join("|") : "";
-  if (!e) { box.innerHTML = `<div class="empty"><div class="empty-icon">👈</div><p>Selecciona un escaneo para ver detalles</p></div>`; return; }
+  if (!e) { closeMobileDetail(); box.innerHTML = `<div class="empty"><div class="empty-icon">👈</div><p>Selecciona un escaneo para ver detalles</p></div>`; return; }
   const d = e.data;
   const isBen = (f) => /lwjgl|natives|\.minecraft\\(versions|libraries|assets)/i.test(String(f || ""));
   if (e.kind === "pending") {
@@ -1873,11 +1886,27 @@ function sharePng(m) {
   return new Promise((res) => cv.toBlob(res, "image/png"));
 }
 
+// ── MÓVIL: detalle a pantalla completa ───────────────────────────
+const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
+function openMobileDetail() {
+  if (!isMobile() || document.body.classList.contains("md-open")) return;
+  document.body.classList.add("md-open");
+  try { history.pushState({ md: 1 }, ""); } catch (e) {}
+  const p = document.querySelector(".grid > .panel:nth-child(2)"); if (p) p.scrollTop = 0;
+}
+function closeMobileDetail(fromPop) {
+  if (!document.body.classList.contains("md-open")) return;
+  document.body.classList.remove("md-open");
+  if (!fromPop) { try { if (history.state && history.state.md) history.back(); } catch (e) {} }
+}
+window.addEventListener("popstate", () => closeMobileDetail(true));
+window.addEventListener("resize", () => { if (!isMobile()) document.body.classList.remove("md-open"); });
+
 // ── EVENTOS ──────────────────────────────────────────────────────
 document.addEventListener("click", (ev) => {
   const t = ev.target.closest("[data-act],[data-key],[data-f],[data-tab]");
   if (!t) return;
-  if (t.dataset.key) { if (selectedKey !== t.dataset.key) activeTab = "0"; selectedKey = t.dataset.key; renderList(); renderDetail(); return; }
+  if (t.dataset.key) { if (selectedKey !== t.dataset.key) activeTab = "0"; selectedKey = t.dataset.key; renderList(); renderDetail(); const mc = $("mbackCode"), cur = current(); if (mc) mc.textContent = cur && cur.data ? cur.data.code : ""; openMobileDetail(); return; }
   if (t.dataset.f) { filter = t.dataset.f; renderChips(); renderList(); return; }
   if (t.dataset.tab !== undefined) {
     document.querySelectorAll(".tab-content").forEach((x) => x.classList.remove("active"));
@@ -1891,6 +1920,7 @@ document.addEventListener("click", (ev) => {
     case "saveOfficialSha": { const i = $("officialSha"); if (i) { store.set("ss.officialSha", i.value.trim().toLowerCase()); toast("Hash oficial guardado ✓"); renderDetail(); } break; }
     case "saveStaffIds": { const i = $("staffIds"); if (i) { store.set("ss.staffIds", i.value); toast("IDs guardados ✓"); renderDetail(); } break; }
     case "closeModal": if (ev.target === t) closeModal(); break;   // clic en el fondo o en "Cancelar", no dentro del cuadro
+    case "mback": closeMobileDetail(); break;
     case "retry": loadAll(); break;
     case "relogin": logout(); break;
     case "download": downloadCurrent(); break;
