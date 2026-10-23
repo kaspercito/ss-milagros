@@ -372,22 +372,6 @@ html,body{overflow-x:hidden;max-width:100vw}
   .mback span{color:var(--muted);font-size:12px;font-family:ui-monospace,Consolas,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .detail{min-height:0}
 }
-
-/* v5.1 panel claro */
-.vbanner{border-radius:14px;padding:16px 18px;margin:4px 0 14px;border:1px solid var(--border);border-left:5px solid var(--green);background:rgba(53,212,140,.08)}
-.vbanner.red{border-left-color:var(--red);background:rgba(255,77,90,.10)}
-.vbanner.yellow{border-left-color:var(--yellow);background:rgba(255,190,56,.09)}
-.vb-t{font-size:20px;font-weight:800;letter-spacing:.3px}.vb-s{margin:6px 0 10px;font-size:13px;color:var(--muted);line-height:1.5}
-.vb-c{display:flex;gap:8px;flex-wrap:wrap}
-.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px}
-.catc{cursor:pointer;padding:12px 14px;border-radius:12px;border:1px solid var(--border);border-left:4px solid var(--green);background:rgba(23,17,38,.7);display:grid;gap:4px;transition:transform .12s}
-.catc:hover{transform:translateY(-2px)}.catc.red{border-left-color:var(--red)}.catc.yellow{border-left-color:var(--yellow)}
-.catc .kv{font-size:12px;line-height:1.4}.catc-t{font-weight:700;font-size:13px}.catc-m{font-size:12px;margin-top:2px}
-.t-red{color:var(--red)}.t-yellow{color:var(--yellow)}.t-green{color:var(--green)}
-details.sec{margin:16px 0;border:1px dashed var(--border);border-radius:12px;padding:4px 10px}
-details.sec>summary{cursor:pointer;padding:10px 4px;font-weight:600;color:var(--muted)}
-.ev-item.hide,details.sec.hide{display:none}
-.badge.fp{background:rgba(130,138,160,.2);color:var(--muted)}
 </style>
 </head>
 <body>
@@ -412,7 +396,7 @@ details.sec>summary{cursor:pointer;padding:10px 4px;font-weight:600;color:var(--
 <div class="wrap hidden" id="mainApp">
   <header>
     <div>
-      <h1><img class="logo-img" src="data:image/png;base64,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" alt="">SS Menú v5.4</h1>
+      <h1><img class="logo-img" src="data:image/png;base64,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" alt="">SS Menú v4.9</h1>
       <p class="sub">Gestor de escaneos Minecraft · <span id="repoLabel"></span></p>
     </div>
     <div class="controls">
@@ -469,6 +453,16 @@ const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sin 0/O/1/I
 // ── UTILIDADES ───────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Enlaces para averiguar qué mouse es a partir de su VID:PID (útil con mouses genéricos)
+const mouseLinks = (vp) => {
+  const m = /([0-9A-Fa-f]{4})\s*[:&_ -]\s*(?:PID_)?([0-9A-Fa-f]{4})/.exec(String(vp || ""));
+  if (!m) return "";
+  const v = m[1].toUpperCase(), pid = m[2].toUpperCase(), st = "color:#b085ff;text-decoration:underline;margin-right:8px;font-size:12px";
+  const a = (u, t) => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="${st}">${t}</a>`;
+  return `<span class="kv">🔎 ${a("https://www.google.com/search?q=" + encodeURIComponent(`"VID_${v}" "PID_${pid}" mouse`), "Buscar modelo")}`
+    + `${a("https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(`mouse USB ${v}:${pid}`), "Ver fotos")}`
+    + `${a(`https://devicehunt.com/view/type/usb/vendor/${v}/device/${pid}`, "DeviceHunt")}</span>`;
+};
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch {} },
@@ -869,36 +863,6 @@ function recCard(d, compact) {
             <li>Mira si en su pantalla hay un contador rojo (REC) o un borde de color que no debería estar.</li>
             <li>Abre su carpeta <b>Videos</b> (<code>%userprofile%\\Videos</code>) y ordena por fecha: un video que se está haciendo ahora aparece con la hora actual.</li></ol></div></details></div>`; }
 
-// ── v5.1: categorías claras para el panel de hallazgos (nada se descarta: lo que no encaja cae en "Otros") ──
-const CATS = [
-  { id: "clientes", ico: "🎯", t: "Clientes, mods y archivos", q: "¿Hay jars, DLL o ejecutables de cheat?", re: /^(Archivos|Disfraz\w*|Bedrock|Minecraft|Logs|Ocultos|Mods|Xray|Remanentes)$/i },
-  { id: "inyeccion", ico: "💉", t: "Inyección y memoria del juego", q: "¿Hay algo inyectado en Minecraft?", re: /^(Inyecci[oó]n|Memoria|DLLs?|Java|JVM|Procesos|Drivers|Ventanas|Captura|Escritorios|Seguridad del arranque)$/i },
-  { id: "macros", ico: "🖱️", t: "Macros, clics y dispositivos", q: "¿Autoclicker, macro o mouse raro?", re: /^(Macros|Clics|USB|Mouse|Inputs|Dispositivos|Hardware)$/i },
-  { id: "limpieza", ico: "🧹", t: "Borrado y ocultamiento de rastros", q: "¿Limpió o escondió algo antes del SS?", re: /^(Anti-limpieza|Copias de sombra|Recientes|Papelera|USN|Pendrive|Evasi[oó]n|Evasion|Eventos|Defender|Tareas|DNS|Historial|Persistencia|Anti-manipulaci[oó]n|Hora|Tamper)$/i },
-  { id: "ejecucion", ico: "⚙️", t: "Programas ejecutados", q: "¿Qué ejecutó y cuándo?", re: /^(Prefetch|Ejecutados|Amcache|ShimCache|Navegador|Herramientas|Actividad)$/i },
-  { id: "remoto", ico: "📡", t: "Acceso remoto y grabación", q: "¿Lo controla o lo graba alguien más?", re: /^(AnyDesk|Grabaci[oó]n)$/i },
-  { id: "entorno", ico: "🖥️", t: "Equipo y entorno", q: "¿VM, VPN, cuentas o Windows modificado?", re: /^(Sistema|M[aá]quina virtual|VPN|Usuarios|Integridad|Scanner|Ubicaci[oó]n)$/i },
-];
-const CAT_OTROS = { id: "otros", ico: "📦", t: "Otros", q: "Hallazgos sin categoría" };
-function catOf(x) { return CATS.find((c) => c.re.test(String(x.module || "").trim())) || CAT_OTROS; }
-const BLIND_RE = /(no se pudo|no se revis|sin acceso|fall[óo]|estaba cerrado|omit|no se tom|no pudo|sin datos|no disponible|bloquead)/i;
-function mergeAnyDesk(list) {
-  const idx = [], rest = [];
-  list.forEach((x) => (x.probable_fp && /anydesk/i.test(x.title || "") && /^(Archivos|Prefetch|Recientes|Ejecutados|ShimCache|Navegador)$/.test(x.module || "") ? idx : rest).push(x));
-  if (idx.length < 2) return list;
-  rest.push({ level: "yellow", probable_fp: true, module: "AnyDesk",
-    title: `AnyDesk: ${idx.length} rastros normales (descargas, ejecuciones, caché de Windows)`,
-    detail: idx.map((x) => `• [${x.module}] ${x.title}\n   ${String(x.detail || "").split("\n").slice(0, 2).join(" · ")}`).join("\n") + "\n\nNormal: el staff usa AnyDesk para hacer el SS. Importa solo si en el módulo AnyDesk hay entradas de OTRO ID." });
-  return rest;
-}
-function jumpCat(id) {
-  const el = document.querySelector(`#tab0 .ev-item[data-cat="${id}"]`) || document.getElementById("cat-y-" + id) || document.getElementById("cat-n-" + id);
-  if (!el) return;
-  let p = el; while ((p = p.parentElement)) if (p.tagName === "DETAILS") p.open = true;
-  if (el.tagName === "DETAILS") el.open = true;
-  el.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
 function renderDetail() {
   _fl = "all";
   const box = $("detail");
@@ -942,7 +906,7 @@ function renderDetail() {
   const evHtml = keyEvid.length
     ? `<div class="evidence"><div class="ev-head"><b>🚨 PRUEBAS CLAVE PARA SANCIONAR (${keyEvid.length})</b>
         <button class="btn" data-act="copySummary">📋 Copiar resumen para sanción</button></div>` +
-      keyEvid.map((x, i) => `<div class="ev-item" data-kind="red" data-cat="${catOf(x).id}" data-q="${esc((x.module + " " + x.title + " " + (x.detail || "")).toLowerCase())}"><span class="ev-n">${i + 1}</span><div><div class="finding-title">${esc(x.module)}: ${esc(x.title)}</div><div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div></div>`).join("") + `</div>`
+      keyEvid.map((x, i) => `<div class="ev-item"><span class="ev-n">${i + 1}</span><div><div class="finding-title">${esc(x.module)}: ${esc(x.title)}</div><div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div></div>`).join("") + `</div>`
     : (yellows
       ? `<div class="evidence yellow"><div class="ev-head"><b>🟡 Sin pruebas graves: ${yellows} alerta(s) para revisar tú en su PC por AnyDesk</b>
           <button class="btn" data-act="copySummary">📋 Copiar resumen</button></div></div>`
@@ -969,46 +933,6 @@ function renderDetail() {
       <button class="fchip" data-fl="yellow">Alertas (${yellows})</button>
       <button class="fchip" data-fl="info">Info (${infos})</button>
       <button class="fchip" data-fl="fp">Posibles FP (${fps})</button></div>`;
-
-
-  // ── v5.1: panel claro (semáforo por categoría → graves → puntos ciegos → para revisar → normales) ──
-  const _cats = [...CATS, CAT_OTROS];
-  const _fm = mergeAnyDesk(f);
-  const _rows = _fm.map((x) => ({ x, c: catOf(x).id }));
-  const _blind = _fm.filter((x) => x.level === "info" && !x.probable_fp && BLIND_RE.test(x.title || ""));
-  if (d.admin === false) _blind.unshift({ level: "info", module: "Scanner", title: "Se ejecutó SIN administrador", detail: "Sin permisos de administrador el escáner no puede leer la memoria de Minecraft ni parte de Prefetch/USN. Repite el escaneo como administrador." });
-  const _kind = (x) => (x.probable_fp ? "fp" : (["red", "yellow", "info"].includes(x.level) ? x.level : "info"));
-  const _find = (x) => { const k = _kind(x);
-    return `<div class="finding ${k}" data-kind="${k}" data-q="${esc((x.module + " " + x.title + " " + (x.detail || "")).toLowerCase())}">
-      <button class="copy1" data-act="copyFinding" data-text="${esc(`[${x.module}] ${x.title}\\n${x.detail || ""}`)}">copiar</button>
-      <div class="finding-title"><span class="badge ${k}">${kindLabel[k]}</span> <span class="kv">${esc(x.module)} ·</span> ${esc(x.title)}</div>
-      <div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div>`; };
-  const _grp = (c, arr, open, key) => arr.length
-    ? `<details class="mod" id="cat-${key}-${c.id}" ${open ? "open" : ""}><summary>${c.ico} ${esc(c.t)} <span class="badge ${key === "y" ? "yellow" : "info"}">${arr.length}</span></summary><div class="mod-body">${[...arr].sort((a, b) => (order[a.level] ?? 3) - (order[b.level] ?? 3)).map(_find).join("")}</div></details>` : "";
-  const _stat = _cats.map((c) => {
-    const mine = _rows.filter((r) => r.c === c.id).map((r) => r.x);
-    return { c, r: mine.filter((x) => !x.probable_fp && x.level === "red"), y: mine.filter((x) => !x.probable_fp && x.level === "yellow" && !_blind.includes(x)),
-             n: mine.filter((x) => (x.probable_fp || x.level === "info") && !_blind.includes(x)) };
-  });
-  const _tl = (st) => st.r.length ? "red" : (st.y.length ? "yellow" : "green");
-  const gridHtml = `<div class="catgrid">${_stat.filter((st) => st.c.id !== "otros" || st.r.length + st.y.length + st.n.length).map((st) => {
-    const t = _tl(st);
-    const msg = st.r.length || st.y.length || st.n.length
-      ? [st.r.length ? `<b class="t-red">${st.r.length} grave${st.r.length > 1 ? "s" : ""}</b>` : "", st.y.length ? `<b class="t-yellow">${st.y.length} a revisar</b>` : "", st.n.length ? `<span class="kv">${st.n.length} normal${st.n.length > 1 ? "es" : ""}</span>` : ""].filter(Boolean).join(" · ")
-      : `<span class="t-green">Revisado: sin hallazgos</span>`;
-    return `<div class="catc ${t}" onclick="jumpCat('${st.c.id}')"><div class="catc-t">${t === "red" ? "🔴" : t === "yellow" ? "🟡" : "🟢"} ${st.c.ico} ${esc(st.c.t)}</div><div class="kv">${esc(st.c.q)}</div><div class="catc-m">${msg}</div></div>`;
-  }).join("")}</div>`;
-  const _expl = (d.veredicto && d.veredicto.explicacion) || (lvl === "red" ? "Hay señales fuertes. Confírmalas tú en su PC por AnyDesk antes de sancionar." : lvl === "yellow" ? "No hay pruebas graves, pero hay cosas para revisar a mano." : "El escaneo no encontró nada. Aun así, un cheat por hardware no deja rastro en el PC: haz la prueba en vivo.");
-  const _mid = d.pc && d.pc.machine_id;
-  const _twins = _mid ? (typeof entries !== "undefined" ? entries : []).filter((x) => x !== e && x.kind !== "pending" && x.data && x.data.pc && x.data.pc.machine_id === _mid) : [];
-  const twinHtml = _twins.length ? `<div class="vb-s" style="color:var(--yellow)">🔁 <b>Este mismo PC ya fue escaneado ${_twins.length} vez/veces</b> con: ${_twins.slice(0, 6).map((x) => esc((x.data.minecraft && x.data.minecraft.nick) || "?") + " (" + ({ red: "🔴", yellow: "🟡", green: "🟢" }[x.data.verdict] || "?") + " " + esc(String(x.data.timestamp || "").slice(0, 10)) + ")").join(", ")}. Si el nick cambió o ya tuvo un 🔴, es una cuenta alterna.</div>` : "";
-  const bannerHtml = `<div class="vbanner ${lvl}"><div class="vb-t">${vt}</div><div class="vb-s">${esc(_expl)}</div>${twinHtml}
-    <div class="vb-c"><span class="badge red">${reds} grave(s)</span><span class="badge yellow">${yellows} a revisar</span><span class="badge fp">${fps} normales / FP</span><span class="badge info">${infos} info</span>${_blind.length ? `<span class="badge yellow">⚠ ${_blind.length} punto(s) ciego(s)</span>` : ""}</div></div>`;
-  const reviewHtml = _stat.map((st) => _grp(st.c, st.y, true, "y")).join("");
-  const blindHtml = _blind.length ? `<div class="section-title">⚠️ LO QUE NO SE PUDO REVISAR (${_blind.length})</div><div class="kv" style="margin:-4px 0 10px">Un 🟢 no vale si esto quedó sin revisar. Repite el escaneo o revísalo a mano.</div>${_blind.map(_find).join("")}` : "";
-  const normalN = _stat.reduce((a, st) => a + st.n.length, 0);
-  const normalHtml = normalN ? `<details class="sec" id="sec-normal"><summary>⚪ Normales, falsos positivos e info (${normalN}) — revisados, no sancionan por sí solos</summary>${_stat.map((st) => _grp(st.c, st.n, false, "n")).join("")}</details>` : "";
-  const reviewTitle = reviewHtml ? `<div class="section-title">🟡 PARA REVISAR TÚ (${yellows})</div>` : "";
 
   const recent = (d.system && d.system.recent_files) || [];
   const prio = ["Microcontrolador", "Mouse", "Mando", "Teclado", "Almacenamiento USB", "Teléfono / cámara", "Bluetooth", "Cámara", "RGB / iluminación"];
@@ -1040,7 +964,7 @@ function renderDetail() {
   const inHtml = inDev ? `<div class="section-title">🔌 CONECTADOS AHORA</div><div class="devgrid">
       <div class="devc ${ext.length > 1 ? "warn" : ""}"><b>🖱 ${ext.length}</b><span>mouse(s) externos${ext.length > 1 ? " · REVISAR" : ""}</span></div>
       <div class="devc"><b>⌨️ ${nKb}</b><span>teclado(s) externos</span></div></div>`
-    + inDev.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">${x.kind === "mouse" ? "🖱" : "⌨️"}</span>${(() => { const l = devLabel(x); return `<b>${esc(l.main)}</b>${l.probable ? `<span class="kv">(modelo probable por su ID)</span>` : ""}${l.generic ? `<span class="kv">(modelo no informado por Windows)</span>` : ""}${x.name && x.name !== l.main ? `<span class="kv">Windows lo llama: ${esc(x.name)}</span>` : ""}`; })()}<span class="badge info">${esc(x.bus)}</span>${x.interfaces > 1 ? `<span class="kv">${x.interfaces} interfaces${x.combo ? " (mouse + teclado de macros: normal)" : ""}</span>` : ""}${x.vp ? `<span class="kv">${esc(x.vp)}</span>` : ""}</div>`).join("")
+    + inDev.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">${x.kind === "mouse" ? "🖱" : "⌨️"}</span>${(() => { const l = devLabel(x); return `<b>${esc(l.main)}</b>${l.probable ? `<span class="kv">(modelo probable por su ID)</span>` : ""}${l.generic ? `<span class="kv">(modelo no informado por Windows)</span>` : ""}${x.name && x.name !== l.main ? `<span class="kv">Windows lo llama: ${esc(x.name)}</span>` : ""}`; })()}<span class="badge info">${esc(x.bus)}</span>${x.interfaces > 1 ? `<span class="kv">${x.interfaces} interfaces${x.combo ? " (mouse + teclado de macros: normal)" : ""}</span>` : ""}${x.vp ? `<span class="kv">${esc(x.vp)}</span>` : ""}${x.kind === "mouse" ? mouseLinks(x.vp) : ""}</div>`).join("")
     + ((d.macro_software || []).length ? `<div class="section-title" style="margin-top:18px">🎮 SOFTWARE DE PERIFÉRICOS / MACROS</div>` + d.macro_software.map((x) => `<div class="row usb">${x.running ? "🟡 En ejecución" : "⚪ Instalado"} · <b>${esc(x.name)}</b></div>`).join("") : "")
     + `<div class="section-title" style="margin-top:18px">🕰️ HISTORIAL DE CONEXIONES</div>`
     : `<div class="warnbox">Este escaneo no incluye los dispositivos conectados ahora (es de una versión anterior a la v3.7).</div>`;
@@ -1063,7 +987,7 @@ function renderDetail() {
       : `<div class="empty"><p>Sin indicios de macros borrados u ocultos. Un macro guardado solo en la memoria del mouse no deja rastro en el PC: usa la prueba de clics.</p></div>`)
     : `<div class="warnbox">Este escaneo no incluye el análisis de macros (versión anterior a la v3.8).</div>`;
   const gh = mf && mf.ghub ? `<div class="row usb">G HUB · base de perfiles modificada <b>${esc(mf.ghub.modified)}</b> · ${esc(mf.ghub.names_in_file != null ? mf.ghub.names_in_file : "?")} nombres en el archivo · ${esc(mf.ghub.names_active != null ? mf.ghub.names_active : "?")} activos · <b>${esc(mf.ghub.remnants != null ? mf.ghub.remnants : "?")}</b> que ya no existen</div>` : "";
-  const mh = mf && (mf.mouse_history || []).length ? mf.mouse_history.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">🖱</span><b>${esc(x.name)}</b><span class="kv">${esc(x.vp)}</span><span class="badge info">${esc(x.vendor)}</span><span class="kv">${x.present ? "conectado ahora" : "último uso " + esc(x.last)}</span></div>`).join("") : emptyBox("Sin historial de mouses (requiere administrador)");
+  const mh = mf && (mf.mouse_history || []).length ? mf.mouse_history.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">🖱</span><b>${esc(x.name)}</b><span class="kv">${esc(x.vp)}</span>${mouseLinks(x.vp)}<span class="badge info">${esc(x.vendor)}</span><span class="kv">${x.present ? "conectado ahora" : "último uso " + esc(x.last)}</span></div>`).join("") : emptyBox("Sin historial de mouses (requiere administrador)");
   const hmHtml = hm.length ? hm.map((r) => `<div class="row usb" style="${isBen(r.folder) ? 'opacity:.6' : ''}"><b>${esc(r.folder || "(sin carpeta)")}</b> ${isBen(r.folder) ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(53,212,140,.16);color:#3dd68c">🟢 probablemente normal (librería de Minecraft)</span>' : ""} ${r.red ? `<span class="badge b-red">${r.red} grave(s)</span>` : ""}${r.yellow ? `<span class="badge b-yellow">${r.yellow} alerta(s)</span>` : ""}${r.hidden ? `<span class="badge b-yellow">oculto</span>` : ""}${(r.reasons || []).map((x) => `<span class="badge info">${esc(x)}</span>`).join("")}<br><span class="kv">${esc((r.files || []).join(" · "))}</span></div>`).join("") : emptyBox("Sin carpetas con hallazgos");
   // ── VEREDICTO en lenguaje simple (lo calcula el scanner) ──
   const vd = d.veredicto || null;
@@ -1091,6 +1015,31 @@ function renderDetail() {
           <div class="devc"><b>${hk.side}</b><span>🔘 pulsaciones laterales</span></div>
           <div class="devc ${hkB.length >= 4 && Math.min(...hkB) >= 3 && Math.max(...hkB) - Math.min(...hkB) <= 1 ? "warn" : ""}"><b>${hkB.length ? esc(hkB.join(" · ")) : "—"}</b><span>clics izquierdos tras cada lateral</span></div>
         </div>
+        <div class="section-title" style="margin-top:14px">🔘 BOTONES QUE SE PULSARON</div>
+        <div class="devgrid">
+          ${[["Izquierdo", hk.left_phys], ["Derecho", hk.right], ["Central (rueda)", hk.middle], ["Atrás · X1", hk.x1], ["Adelante · X2", hk.x2], ["Rueda inclinada", hk.tilt]]
+            .map((b) => `<div class="devc"><b>${b[1] != null ? b[1] : "—"}</b><span>${b[0]}</span></div>`).join("")}
+        </div>
+        ${(hk.bursts_x1 || []).length || (hk.bursts_x2 || []).length ? `<div class="row usb"><span class="kv">Clics izquierdos tras cada pulsación · <b>Atrás (X1):</b> ${(hk.bursts_x1 || []).length ? esc(hk.bursts_x1.join(" · ")) : "no se pulsó"} · <b>Adelante (X2):</b> ${(hk.bursts_x2 || []).length ? esc(hk.bursts_x2.join(" · ")) : "no se pulsó"}</span></div>` : ""}
+        ${Array.isArray(ck.buttons_test) && ck.buttons_test.length ? `<div class="section-title" style="margin-top:14px">🧪 PRUEBA GUIADA (el jugador pulsó cada botón cuando se lo pidió)</div>`
+          + ck.buttons_test.map((b) => {
+              const n = Math.max(b.left_after || 0, b.left_burst || 0);
+              const bad = !b.skipped && n >= 3;
+              const names = { X1: "Atrás (X1)", X2: "Adelante (X2)", M: "Central", H: "Rueda inclinada" };
+              const got = b.skipped ? "Dijo que no tiene ese botón" : (b.seen || []).length ? "Windows registró: <b>" + b.seen.map((k) => names[k] || k).join(" + ") + "</b>" : "Windows <b>no registró ningún botón</b> (normal en DPI/perfil)";
+              return `<div class="row usb">${bad ? "🔴" : b.skipped ? "⚪" : "🟢"} <b>${esc(b.label)}</b> · ${got}${b.skipped ? "" : ` · clics izquierdos que salieron: <b>${n}</b>`}${b.note ? ` · según el jugador: <i>«${esc(b.note)}»</i>` : ""}${b.injected ? ` <span class="badge b-yellow">clics de programa</span>` : ""}</div>`;
+            }).join("")
+          + `<div class="row usb"><span class="kv">Lo normal: <b>0 o 1</b> clic izquierdo por pulsación. Si un solo botón saca 3 o más clics seguidos, ese botón tiene el macro. Si el jugador dice que no tiene un botón y Windows lo registró, o al revés, pregunta.</span></div>` : ""}
+        ${(hk.devices || []).length ? `<div class="row usb"><span class="kv">🖱 <b>Mouses según Windows:</b> ${hk.devices.map((x) => `${x.buttons} botones${x.hwheel ? " + rueda inclinable" : ""}${x.vp ? " (" + esc(x.vp) + ")" : ""}`).join(" · ")}. Si dice más de 5 botones, hay botones que Windows no reporta como Atrás/Adelante.</span></div>
+        ${hk.devices.filter((x) => x.vp).map((x) => `<div class="row usb"><span class="kv"><b>${esc(x.vp)}</b> · </span>${mouseLinks(x.vp)}</div>`).join("")}
+        <div class="row usb"><span class="kv">💡 <b>Mouse genérico:</b> si la búsqueda no da el modelo, pide que lo muestre por cámara y lea la etiqueta de abajo. Mira también arriba, junto al clic izquierdo: ahí suele estar el botón fire/turbo. Windows puede declarar 5 botones aunque el mouse no los tenga.</span></div>` : ""}
+        ${hk.swapped ? `<div class="warnbox">↔️ Windows tiene los botones <b>intercambiados</b> (modo zurdo): el "izquierdo" de arriba es el botón físico derecho y viceversa.</div>` : ""}
+        <div class="row usb"><span class="kv">
+          ℹ️ <b>Qué sabe y qué NO sabe Windows:</b><br>
+          • Solo distingue <b>Atrás (X1)</b> y <b>Adelante (X2)</b>. <b>No dice de qué lado del mouse</b> está el botón: en un mouse con laterales a ambos lados pueden salir iguales.<br>
+          • Los botones de <b>DPI, perfil o los de arriba</b> normalmente no se reportan: si uno tiene macro solo verás clics izquierdos "de la nada" en la fase 3, sin lateral.<br>
+          • Para saber <b>cuál es el botón</b>: mira el modelo en la pestaña 🔌 USB, y pide que pulse los botones <b>de a uno</b> mientras ves la prueba; el que dispare clics es el del macro.
+        </span></div>
         <div class="row usb"><span class="kv">
           📖 <b>Cómo leerlo:</b><br>
           🤖 <b>Clics de PROGRAMA</b> (rojo) = el clic no vino del mouse: macro, autoclicker o alguien controlando el PC.<br>
@@ -1349,14 +1298,7 @@ function renderDetail() {
       <div class="tg"><span class="tg-l">Programa</span><div class="tg-b"><button class="tab-btn" data-tab="11">🖥️ AnyDesk y programa</button><button class="tab-btn" data-tab="6">🧾 JSON</button></div></div>
     </div>
     <div class="tab-content active" id="tab0">
-      ${bannerHtml}
-      <div class="section-title">🧭 QUÉ SE REVISÓ (toca una tarjeta para ir directo)</div>
-      ${gridHtml}
-      ${evHtml}
-      ${blindHtml}
-      <div class="section-title">🔎 BUSCAR / FILTRAR</div>${filterBar}
-      ${reviewTitle}${reviewHtml}
-      ${normalHtml}
+      ${recCard(d, true)}
       ${(() => {
         const F = (d.findings || []).filter((f) => !f.probable_fp && f.level !== "info" && !(/anydesk/i.test(f.title || "") && /^(Archivos|Prefetch|Recientes|Ejecutados|ShimCache|Navegador)$/.test(f.module || "")));
         const top = F.sort((a, b) => (a.level === "red" ? 0 : 1) - (b.level === "red" ? 0 : 1)).slice(0, 4);
@@ -1395,11 +1337,13 @@ function renderDetail() {
                 "Pregunta: «¿Qué mouse usas?», «¿tiene software (G HUB, Razer…)?» y pídele que te lo muestre.",
                 "Decide con todo junto: un amarillo solo nunca sanciona. Sanciona solo si hay pruebas que se repiten y no tienen explicación."] }
         ];
-        return `<details class="warnbox plan"><summary class="how-title" style="cursor:pointer">🧭 Guía de revisión en vivo (5 pasos, ~10 min) — toca para abrir</summary>
+        return `<div class="warnbox plan">
+          <div class="how-title">🧭 Plan de revisión (5 pasos, ~10 min)</div>
+          ${top.length ? `<div style="margin:6px 0"><b>👉 Mira esto primero</b> <span class="kv">(toca «Cómo comprobarlo» en cada uno):</span>${top.map((f) => `<div style="margin:8px 0">${f.level === "red" ? "🔴" : "🟡"} <b>${esc(f.module)}:</b> ${esc(f.title)}${howHtml(f)}</div>`).join("")}</div>` : `<div style="margin:6px 0">🟢 El escaneo no marcó nada fuerte, pero igual haz los pasos 2 a 5: un cheat por hardware no deja rastro en el PC.</div>`}
           ${STEPS.map((x, i) => `<div style="margin:12px 0"><label style="display:block;cursor:pointer"><input type="checkbox" data-act="chk" data-code="${esc(d.code || "")}" data-i="${i}" ${saved.includes(i) ? "checked" : ""}> <b>${i + 1}. ${x.t}</b><br><span class="kv" style="margin-left:22px;display:block">${x.s}</span></label><details class="how" open style="margin-left:22px"><summary>📖 Cómo hacerlo paso a paso</summary><div class="how-body"><ol style="margin:6px 0 6px 18px;padding:0">${x.h.map((y) => `<li style="margin:5px 0">${y}</li>`).join("")}</ol></div></details></div>`).join("")}
           <div class="kv" style="margin-top:8px">🔴 = señal fuerte, confírmala · 🟡 = pregunta y revisa · gris = normalmente no importa. Un amarillo solo nunca sanciona.</div>
-        </details>`; })()}
-      
+        </div>`; })()}
+      ${evHtml}<div class="section-title">🚨 TODOS LOS HALLAZGOS POR MÓDULO</div>${filterBar}${findingsHtml}
     </div>
     <div class="tab-content" id="tab12">${actHtml}</div>
     <div class="tab-content" id="tab13"><div class="section-title">🎥 GRABACIÓN DE PANTALLA</div>${recCard(d)}</div>
@@ -1822,12 +1766,12 @@ function sanctionText(d) {
 }
 function applyFindingFilter() {
   const q = (($("fSearch") || {}).value || "").toLowerCase().trim();
-  document.querySelectorAll("#tab0 .finding, #tab0 .ev-item").forEach((el) => {
+  document.querySelectorAll("#tab0 .finding").forEach((el) => {
     const okKind = _fl === "all" || el.dataset.kind === _fl;
     const okQ = !q || el.dataset.q.includes(q);
     el.classList.toggle("hide", !(okKind && okQ));
   });
-  document.querySelectorAll("#tab0 details.mod, #tab0 details.sec").forEach((m) => {
+  document.querySelectorAll("#tab0 details.mod").forEach((m) => {
     const vis = m.querySelectorAll(".finding:not(.hide)").length;
     m.classList.toggle("hide", vis === 0);
     if ((q || _fl !== "all") && vis) m.open = true;
