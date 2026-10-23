@@ -453,16 +453,6 @@ const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sin 0/O/1/I
 // ── UTILIDADES ───────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-// Enlaces para averiguar qué mouse es a partir de su VID:PID (útil con mouses genéricos)
-const mouseLinks = (vp) => {
-  const m = /([0-9A-Fa-f]{4})\s*[:&_ -]\s*(?:PID_)?([0-9A-Fa-f]{4})/.exec(String(vp || ""));
-  if (!m) return "";
-  const v = m[1].toUpperCase(), pid = m[2].toUpperCase(), st = "color:#b085ff;text-decoration:underline;margin-right:8px;font-size:12px";
-  const a = (u, t) => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="${st}">${t}</a>`;
-  return `<span class="kv">🔎 ${a("https://www.google.com/search?q=" + encodeURIComponent(`"VID_${v}" "PID_${pid}" mouse`), "Buscar modelo")}`
-    + `${a("https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(`mouse USB ${v}:${pid}`), "Ver fotos")}`
-    + `${a(`https://devicehunt.com/view/type/usb/vendor/${v}/device/${pid}`, "DeviceHunt")}</span>`;
-};
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch {} },
@@ -863,8 +853,96 @@ function recCard(d, compact) {
             <li>Mira si en su pantalla hay un contador rojo (REC) o un borde de color que no debería estar.</li>
             <li>Abre su carpeta <b>Videos</b> (<code>%userprofile%\\Videos</code>) y ordena por fecha: un video que se está haciendo ahora aparece con la hora actual.</li></ol></div></details></div>`; }
 
+// ── v5.2: nombre del mouse, enlaces para identificarlo y RESUMEN CONCRETO (lo que importa, en 3 renglones) ──
+function mouseName(d, vp) {
+  const x = (d.input_devices || []).find((m) => m.vp === vp);
+  if (!x) return vp && /^[0-9A-F]{4}:[0-9A-F]{4}$/i.test(vp) ? `el mouse ${vp}` : "un mouse";
+  const brand = x.vendor || x.mfr || "", model = x.product || x.model || x.name || "mouse";
+  const nm = (brand && !model.toLowerCase().includes(brand.toLowerCase().split(" ")[0]) ? brand + " " : "") + model;
+  return `${nm} (${vp})`;
+}
+function mouseLinks(x) {
+  const m = /^([0-9A-F]{4}):([0-9A-F]{4})$/i.exec(x.vp || "");
+  if (!m) return "";
+  const vid = m[1].toUpperCase(), pid = m[2].toUpperCase(), hw = `VID_${vid}&PID_${pid}`;
+  const real = String(x.product || x.model || "").trim();
+  const generic = !real || /^(usb )?(optical |gaming |wired )?mouse$|^usb input|^hid/i.test(real);
+  const a = (h, t) => `<a class="btn" target="_blank" rel="noopener" href="${h}">${t}</a>`;
+  const L = [a(`https://devicehunt.com/view/type/usb/vendor/${vid}/device/${pid}`, `🔎 ID ${vid}:${pid} en DeviceHunt`),
+    a(`https://www.google.com/search?q=${encodeURIComponent('"' + hw + '" mouse')}`, `🌐 Buscar ${hw}`)];
+  if (!generic) L.push(a(`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(real + (x.vendor ? " " + x.vendor : ""))}`, `🖼 Fotos de «${esc(real)}»`));
+  return `<div style="width:100%;margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">${L.join("")}${generic
+    ? `<span class="kv">Mouse genérico: su ID no dice la marca real y buscar fotos por ID sale sin relación. Identifícalo por cámara (forma, botones, cable).</span>` : ""}</div>`;
+}
+function devClicks(d, x) {
+  const hk = d.click_test && d.click_test.hook ? d.click_test.hook : null;
+  if (!hk || !x.vp) return "";
+  const u = (hk.dev || []).find((y) => y.vp === x.vp);
+  const raw = (hk.devices || []).find((y) => y.vp === x.vp);
+  const parts = [];
+  if (hk.dev) parts.push(u ? `En la prueba hizo ${u.L} clics izq., ${u.R} der., ${u.X1 + u.X2} laterales${u.hw_clicks ? ` · <b>${u.hw_clicks} en ráfaga de máquina</b>` : ""}` : "En la prueba NO se usó");
+  if (raw && raw.buttons) parts.push(`Windows ve ${raw.buttons} botones${raw.buttons <= 5 ? " (izq, der, rueda, atrás, adelante): un botón «fire» u otro extra sale como clic izquierdo, por eso no aparece" : ""}`);
+  return parts.length ? `<div class="kv" style="width:100%;margin-top:4px">🖱️ ${parts.join(" · ")}</div>` : "";
+}
+function buildBrief(d) {
+  const vd = d.veredicto || null;
+  const lvl = vd ? vd.nivel : (d.verdict || "green");
+  const col = lvl === "red" ? "#ff5c7a" : lvl === "yellow" ? "#ffc857" : "#5be3a6";
+  const ck = d.click_test && !d.click_test.skipped ? d.click_test : null;
+  const hk = ck && ck.hook ? ck.hook : null;
+  const fnd = (d.findings || []).filter((f) => !f.probable_fp && (f.level === "red" || f.level === "yellow"));
+  const hw = hk && Array.isArray(hk.hw_bursts) ? hk.hw_bursts : [];
+  const hwN = hw.reduce((a, b) => a + (b[0] || 0), 0);
+  const devs = hk && Array.isArray(hk.dev) ? hk.dev.filter((x) => /^[0-9A-F]{4}:[0-9A-F]{4}$/.test(x.vp)) : [];
+  const burstDev = devs.filter((x) => x.hw_clicks > 0).sort((a, b) => b.hw_clicks - a.hw_clicks)[0];
+  const redClick = !!(ck && (ck.flags || []).some((f) => f.level === "red" && /ráfaga|Fase 3|fire|clics izquierdos seguidos|IDÉNTICAS|lateral/i.test(f.text || "")));
+  const bt = (ck && ck.buttons_test) || [];
+  const note = bt.filter((b) => !b.skipped && (b.left_burst >= 3 || b.left_after >= 3) && b.note)[0];
+  const items = [];
+  if (redClick || hwN >= 12) {
+    items.push({ lvl: redClick ? "red" : "yellow",
+      t: `${burstDev ? mouseName(d, burstDev.vp) : "Un botón del mouse"} dispara clics solo`,
+      w: `${hwN ? "Ráfaga de " + hw.slice().sort((a, b) => b[0] - a[0])[0][0] + " clics, uno cada ~" + hw.slice().sort((a, b) => b[0] - a[0])[0][1] + " ms (una persona no es tan pareja)" : "Salieron ráfagas de clics sin pulsar el izquierdo"}. Es un botón «fire» o un macro del propio mouse.${note ? " Él dijo que ese botón estaba en «" + note.note + "»." : ""}${devs.length > 1 && burstDev ? " El otro mouse conectado no las generó." : ""}`,
+      todo: "Por cámara, pídele que te enseñe y pulse ese botón. Si se permite o no un botón «fire» lo decide la regla de tu servidor." });
+  }
+  const skip = (id) => bt.some((b) => b.id === id && b.skipped);
+  const claim = [];
+  if (hk && skip("atras") && hk.x1 > 0) claim.push(`ATRÁS (${hk.x1} veces)`);
+  if (hk && skip("adelante") && hk.x2 > 0) claim.push(`ADELANTE (${hk.x2} veces)`);
+  if (claim.length) {
+    const sd = devs.filter((x) => x.X1 + x.X2 > 0).map((x) => mouseName(d, x.vp));
+    items.push({ lvl: "yellow", t: "Dijo que no tiene esos botones laterales, pero Windows los registró",
+      w: `Pulsaciones de ${claim.join(" y ")}${sd.length ? ", todas del " + sd.join(" / ") : ""}.`,
+      todo: "Pídele que te muestre todos los botones de ese mouse y qué hace cada uno." });
+  }
+  const big = devs.filter((x) => x.L >= 10);
+  if (big.length >= 2) items.push({ lvl: "yellow", t: "Usó DOS mouses distintos en la misma prueba",
+    w: big.map((x) => `${mouseName(d, x.vp)}: ${x.L} clics`).join(" · "), todo: "Pídele repetir la prueba con un solo mouse: el que usa para jugar." });
+  fnd.filter((f) => f.module === "Clics" && /NO se usó en la prueba/.test(f.title)).forEach((f) => items.push({ lvl: "yellow", t: f.title.replace(/^Mouse conectado que NO se usó en la prueba de clics:\s*/, "Tiene un mouse conectado que no probó: "),
+    w: "La prueba se hizo con el otro mouse; el macro puede estar en este.", todo: "Pídele clics rápidos por AnyDesk con ESE mouse." }));
+  fnd.filter((f) => f.module === "Clics" && /Raw Input|gancho/i.test(f.title + " " + (f.detail || ""))).forEach((f) => items.push({ lvl: "yellow", t: "El detector de clics pudo ser manipulado",
+    w: String(f.title).slice(0, 200), todo: "Repite la prueba en vivo y mira si los clics aparecen en pantalla." }));
+  const rest = fnd.filter((f) => f.module !== "Clics").sort((a, b) => (a.level === "red" ? 0 : 1) - (b.level === "red" ? 0 : 1));
+  rest.forEach((f) => items.push({ lvl: f.level, t: `${f.module}: ${f.title}`.slice(0, 160),
+    w: String(f.detail || "").split("\n")[0].slice(0, 190), todo: "Ábrelo en «Hallazgos» y toca «Cómo comprobarlo»." }));
+  items.sort((a, b) => (a.lvl === "red" ? 0 : 1) - (b.lvl === "red" ? 0 : 1));
+  const shown = items.slice(0, 3), more = items.length - shown.length;
+  const head = lvl === "red" ? "🔴 INDICIO FUERTE" : lvl === "yellow" ? "🟡 REVISAR" : "🟢 SIN INDICIOS";
+  const intro = lvl === "red" ? "Esto es lo que el uso normal no explica. Confírmalo tú en vivo antes de sancionar."
+    : lvl === "yellow" ? "Nada es concluyente. Revisa estos puntos y pregúntale." : "El escaneo no encontró señales. Un macro dentro del mouse puede no dejar rastro: haz tú la prueba de clics en vivo.";
+  return `<div class="panel" style="padding:16px 18px;margin:0 0 14px;border-left:5px solid ${col}">
+    <div style="font-size:17px;font-weight:800">${head}</div>
+    <div class="kv" style="font-size:13px;margin:2px 0 10px">${esc(intro)}</div>
+    ${shown.map((it, i) => `<div style="margin:10px 0;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04)">
+      <div style="font-weight:800;font-size:14px">${i + 1}. ${it.lvl === "red" ? "🔴" : "🟡"} ${esc(it.t)}</div>
+      <div class="kv" style="margin:4px 0;font-size:12.5px;line-height:1.55">${esc(it.w)}</div>
+      <div style="font-size:13px">👉 ${esc(it.todo)}</div></div>`).join("")}
+    ${more > 0 ? `<div class="kv" style="margin-top:6px">➕ ${more} aviso(s) menor(es) más: pestaña <b>Hallazgos</b> → «Lo importante».</div>` : ""}
+  </div>`;
+}
+
 function renderDetail() {
-  _fl = "all";
+  _fl = "main";
   const box = $("detail");
   const e = current();
   _detailSig = e ? [e.key, e.sha || "", e.data && e.data.verdict, e.data && e.data.timestamp, e.live && e.live.status + e.live.step + (liveState(e) || {}).kind].join("|") : "";
@@ -927,8 +1005,10 @@ function renderDetail() {
               <div class="finding-detail">${esc(x.detail || "-")}</div>${howHtml(x)}</div>`; }).join("") + `</div></details>`;
       }).join("")
     : `<div class="empty"><p>Sin hallazgos</p></div>`;
+  if (!(reds + yellows)) _fl = "all";
   const filterBar = `<div class="fbar"><input id="fSearch" placeholder="Buscar en hallazgos (ej: killaura, .jar, javaw)…">
-      <button class="fchip active" data-fl="all">Todos (${f.length})</button>
+      <button class="fchip ${_fl === "main" ? "active" : ""}" data-fl="main">Lo importante (${reds + yellows})</button>
+      <button class="fchip ${_fl === "all" ? "active" : ""}" data-fl="all">Todos (${f.length})</button>
       <button class="fchip" data-fl="red">Graves (${reds})</button>
       <button class="fchip" data-fl="yellow">Alertas (${yellows})</button>
       <button class="fchip" data-fl="info">Info (${infos})</button>
@@ -964,7 +1044,7 @@ function renderDetail() {
   const inHtml = inDev ? `<div class="section-title">🔌 CONECTADOS AHORA</div><div class="devgrid">
       <div class="devc ${ext.length > 1 ? "warn" : ""}"><b>🖱 ${ext.length}</b><span>mouse(s) externos${ext.length > 1 ? " · REVISAR" : ""}</span></div>
       <div class="devc"><b>⌨️ ${nKb}</b><span>teclado(s) externos</span></div></div>`
-    + inDev.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">${x.kind === "mouse" ? "🖱" : "⌨️"}</span>${(() => { const l = devLabel(x); return `<b>${esc(l.main)}</b>${l.probable ? `<span class="kv">(modelo probable por su ID)</span>` : ""}${l.generic ? `<span class="kv">(modelo no informado por Windows)</span>` : ""}${x.name && x.name !== l.main ? `<span class="kv">Windows lo llama: ${esc(x.name)}</span>` : ""}`; })()}<span class="badge info">${esc(x.bus)}</span>${x.interfaces > 1 ? `<span class="kv">${x.interfaces} interfaces${x.combo ? " (mouse + teclado de macros: normal)" : ""}</span>` : ""}${x.vp ? `<span class="kv">${esc(x.vp)}</span>` : ""}${x.kind === "mouse" ? mouseLinks(x.vp) : ""}</div>`).join("")
+    + inDev.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">${x.kind === "mouse" ? "🖱" : "⌨️"}</span>${(() => { const l = devLabel(x); return `<b>${esc(l.main)}</b>${l.probable ? `<span class="kv">(modelo probable por su ID)</span>` : ""}${l.generic ? `<span class="kv">(modelo no informado por Windows)</span>` : ""}${x.name && x.name !== l.main ? `<span class="kv">Windows lo llama: ${esc(x.name)}</span>` : ""}`; })()}<span class="badge info">${esc(x.bus)}</span>${x.interfaces > 1 ? `<span class="kv">${x.interfaces} interfaces${x.combo ? " (mouse + teclado de macros: normal)" : ""}</span>` : ""}${x.vp ? `<span class="kv">${esc(x.vp)}</span>` : ""}${x.kind === "mouse" ? mouseLinks(x) + devClicks(d, x) : ""}</div>`).join("")
     + ((d.macro_software || []).length ? `<div class="section-title" style="margin-top:18px">🎮 SOFTWARE DE PERIFÉRICOS / MACROS</div>` + d.macro_software.map((x) => `<div class="row usb">${x.running ? "🟡 En ejecución" : "⚪ Instalado"} · <b>${esc(x.name)}</b></div>`).join("") : "")
     + `<div class="section-title" style="margin-top:18px">🕰️ HISTORIAL DE CONEXIONES</div>`
     : `<div class="warnbox">Este escaneo no incluye los dispositivos conectados ahora (es de una versión anterior a la v3.7).</div>`;
@@ -977,7 +1057,7 @@ function renderDetail() {
         <div class="devc"><b>${ck.cps_avg != null ? ck.cps_avg : "—"}</b><span>CPS medios</span></div>
         <div class="devc ${ck.cps_max >= 22 ? "warn" : ""}"><b>${ck.cps_max != null ? ck.cps_max : "—"}</b><span>pico CPS</span></div>
         <div class="devc ${ck.cv != null && ck.cv < 0.06 ? "warn" : ""}"><b>${ck.cv != null ? (ck.cv * 100).toFixed(1) + "%" : "—"}</b><span>variación entre clics</span></div></div>`
-      + (ck.flags || []).map((f) => `<div class="row usb">${f.level === "red" ? "🔴" : "🟡"} ${esc(f.text)}</div>`).join("")
+      + (ck.flags || []).map((f) => `<div class="row usb">${f.level === "red" ? "🔴" : f.level === "yellow" ? "🟡" : "ℹ️"} ${esc(f.text)}</div>`).join("")
       + (ck.mean_ms != null ? `<div class="row usb"><span class="kv">${ck.mean_ms} ms ± ${ck.sd_ms} · saltos ≤3 ms: ${ck.flat_pct}% · intervalo repetido: ${ck.top_pct}% · múltiplos de 15,6 ms: ${ck.q_pct}%</span></div>` : "")
       + `<div class="row usb"><span class="kv">Una persona varía entre clics (≈15–35%). Macros y autoclickers (incluidos los guardados en la memoria del mouse) suelen ser muy regulares. Es un indicio, no una prueba: contrástalo en vivo.</span></div>`)
     : `<div class="warnbox">Este escaneo no incluye prueba de clics (es de una versión anterior a la v3.8 o se lanzó con --no-clicks).</div>`;
@@ -987,7 +1067,7 @@ function renderDetail() {
       : `<div class="empty"><p>Sin indicios de macros borrados u ocultos. Un macro guardado solo en la memoria del mouse no deja rastro en el PC: usa la prueba de clics.</p></div>`)
     : `<div class="warnbox">Este escaneo no incluye el análisis de macros (versión anterior a la v3.8).</div>`;
   const gh = mf && mf.ghub ? `<div class="row usb">G HUB · base de perfiles modificada <b>${esc(mf.ghub.modified)}</b> · ${esc(mf.ghub.names_in_file != null ? mf.ghub.names_in_file : "?")} nombres en el archivo · ${esc(mf.ghub.names_active != null ? mf.ghub.names_active : "?")} activos · <b>${esc(mf.ghub.remnants != null ? mf.ghub.remnants : "?")}</b> que ya no existen</div>` : "";
-  const mh = mf && (mf.mouse_history || []).length ? mf.mouse_history.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">🖱</span><b>${esc(x.name)}</b><span class="kv">${esc(x.vp)}</span>${mouseLinks(x.vp)}<span class="badge info">${esc(x.vendor)}</span><span class="kv">${x.present ? "conectado ahora" : "último uso " + esc(x.last)}</span></div>`).join("") : emptyBox("Sin historial de mouses (requiere administrador)");
+  const mh = mf && (mf.mouse_history || []).length ? mf.mouse_history.map((x) => `<div class="row usb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="font-size:16px">🖱</span><b>${esc(x.name)}</b><span class="kv">${esc(x.vp)}</span><span class="badge info">${esc(x.vendor)}</span><span class="kv">${x.present ? "conectado ahora" : "último uso " + esc(x.last)}</span></div>`).join("") : emptyBox("Sin historial de mouses (requiere administrador)");
   const hmHtml = hm.length ? hm.map((r) => `<div class="row usb" style="${isBen(r.folder) ? 'opacity:.6' : ''}"><b>${esc(r.folder || "(sin carpeta)")}</b> ${isBen(r.folder) ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(53,212,140,.16);color:#3dd68c">🟢 probablemente normal (librería de Minecraft)</span>' : ""} ${r.red ? `<span class="badge b-red">${r.red} grave(s)</span>` : ""}${r.yellow ? `<span class="badge b-yellow">${r.yellow} alerta(s)</span>` : ""}${r.hidden ? `<span class="badge b-yellow">oculto</span>` : ""}${(r.reasons || []).map((x) => `<span class="badge info">${esc(x)}</span>`).join("")}<br><span class="kv">${esc((r.files || []).join(" · "))}</span></div>`).join("") : emptyBox("Sin carpetas con hallazgos");
   // ── VEREDICTO en lenguaje simple (lo calcula el scanner) ──
   const vd = d.veredicto || null;
@@ -1015,31 +1095,8 @@ function renderDetail() {
           <div class="devc"><b>${hk.side}</b><span>🔘 pulsaciones laterales</span></div>
           <div class="devc ${hkB.length >= 4 && Math.min(...hkB) >= 3 && Math.max(...hkB) - Math.min(...hkB) <= 1 ? "warn" : ""}"><b>${hkB.length ? esc(hkB.join(" · ")) : "—"}</b><span>clics izquierdos tras cada lateral</span></div>
         </div>
-        <div class="section-title" style="margin-top:14px">🔘 BOTONES QUE SE PULSARON</div>
-        <div class="devgrid">
-          ${[["Izquierdo", hk.left_phys], ["Derecho", hk.right], ["Central (rueda)", hk.middle], ["Atrás · X1", hk.x1], ["Adelante · X2", hk.x2], ["Rueda inclinada", hk.tilt]]
-            .map((b) => `<div class="devc"><b>${b[1] != null ? b[1] : "—"}</b><span>${b[0]}</span></div>`).join("")}
-        </div>
-        ${(hk.bursts_x1 || []).length || (hk.bursts_x2 || []).length ? `<div class="row usb"><span class="kv">Clics izquierdos tras cada pulsación · <b>Atrás (X1):</b> ${(hk.bursts_x1 || []).length ? esc(hk.bursts_x1.join(" · ")) : "no se pulsó"} · <b>Adelante (X2):</b> ${(hk.bursts_x2 || []).length ? esc(hk.bursts_x2.join(" · ")) : "no se pulsó"}</span></div>` : ""}
-        ${Array.isArray(ck.buttons_test) && ck.buttons_test.length ? `<div class="section-title" style="margin-top:14px">🧪 PRUEBA GUIADA (el jugador pulsó cada botón cuando se lo pidió)</div>`
-          + ck.buttons_test.map((b) => {
-              const n = Math.max(b.left_after || 0, b.left_burst || 0);
-              const bad = !b.skipped && n >= 3;
-              const names = { X1: "Atrás (X1)", X2: "Adelante (X2)", M: "Central", H: "Rueda inclinada" };
-              const got = b.skipped ? "Dijo que no tiene ese botón" : (b.seen || []).length ? "Windows registró: <b>" + b.seen.map((k) => names[k] || k).join(" + ") + "</b>" : "Windows <b>no registró ningún botón</b> (normal en DPI/perfil)";
-              return `<div class="row usb">${bad ? "🔴" : b.skipped ? "⚪" : "🟢"} <b>${esc(b.label)}</b> · ${got}${b.skipped ? "" : ` · clics izquierdos que salieron: <b>${n}</b>`}${b.note ? ` · según el jugador: <i>«${esc(b.note)}»</i>` : ""}${b.injected ? ` <span class="badge b-yellow">clics de programa</span>` : ""}</div>`;
-            }).join("")
-          + `<div class="row usb"><span class="kv">Lo normal: <b>0 o 1</b> clic izquierdo por pulsación. Si un solo botón saca 3 o más clics seguidos, ese botón tiene el macro. Si el jugador dice que no tiene un botón y Windows lo registró, o al revés, pregunta.</span></div>` : ""}
-        ${(hk.devices || []).length ? `<div class="row usb"><span class="kv">🖱 <b>Mouses según Windows:</b> ${hk.devices.map((x) => `${x.buttons} botones${x.hwheel ? " + rueda inclinable" : ""}${x.vp ? " (" + esc(x.vp) + ")" : ""}`).join(" · ")}. Si dice más de 5 botones, hay botones que Windows no reporta como Atrás/Adelante.</span></div>
-        ${hk.devices.filter((x) => x.vp).map((x) => `<div class="row usb"><span class="kv"><b>${esc(x.vp)}</b> · </span>${mouseLinks(x.vp)}</div>`).join("")}
-        <div class="row usb"><span class="kv">💡 <b>Mouse genérico:</b> si la búsqueda no da el modelo, pide que lo muestre por cámara y lea la etiqueta de abajo. Mira también arriba, junto al clic izquierdo: ahí suele estar el botón fire/turbo. Windows puede declarar 5 botones aunque el mouse no los tenga.</span></div>` : ""}
-        ${hk.swapped ? `<div class="warnbox">↔️ Windows tiene los botones <b>intercambiados</b> (modo zurdo): el "izquierdo" de arriba es el botón físico derecho y viceversa.</div>` : ""}
-        <div class="row usb"><span class="kv">
-          ℹ️ <b>Qué sabe y qué NO sabe Windows:</b><br>
-          • Solo distingue <b>Atrás (X1)</b> y <b>Adelante (X2)</b>. <b>No dice de qué lado del mouse</b> está el botón: en un mouse con laterales a ambos lados pueden salir iguales.<br>
-          • Los botones de <b>DPI, perfil o los de arriba</b> normalmente no se reportan: si uno tiene macro solo verás clics izquierdos "de la nada" en la fase 3, sin lateral.<br>
-          • Para saber <b>cuál es el botón</b>: mira el modelo en la pestaña 🔌 USB, y pide que pulse los botones <b>de a uno</b> mientras ves la prueba; el que dispare clics es el del macro.
-        </span></div>
+        ${Array.isArray(hk.dev) && hk.dev.length ? `<div class="section-title" style="margin-top:14px">🖱️ QUÉ MOUSE HIZO CADA CLIC</div>` + hk.dev.map((u) => `<div class="row usb">${/^[0-9A-F]{4}:[0-9A-F]{4}$/.test(u.vp) ? "<b>" + esc(mouseName(d, u.vp)) + "</b>" : "<b>" + (u.vp === "sin-asociar" ? "Sin asociar a ningún mouse" : esc(u.vp)) + "</b>"} · izq <b>${u.L}</b> · der <b>${u.R}</b> · rueda <b>${u.M}</b> · atrás <b>${u.X1}</b> · adelante <b>${u.X2}</b>${u.hw_clicks ? ` · <span class="badge red">${u.hw_clicks} en ráfaga de máquina</span>` : ""}${u.buttons ? ` <span class="kv">Windows ve ${u.buttons} botones</span>` : ""}</div>`).join("") : (hk.raw_ok === false ? `<div class="warnbox">No se pudo saber de qué mouse sale cada clic${hk.raw_error ? " (" + esc(hk.raw_error) + ")" : ""}.</div>` : "")}
+        ${Array.isArray(ck.buttons_test) && ck.buttons_test.length ? `<div class="section-title" style="margin-top:14px">🔘 PRUEBA GUIADA DE BOTONES</div>` + ck.buttons_test.map((b) => `<div class="row usb">${b.skipped ? "⚪" : (Math.max(b.left_burst || 0, b.left_after || 0) >= 3 ? "🔴" : "🟢")} <b>${esc(b.label)}</b> · ${b.skipped ? "dijo que NO lo tiene" : `Windows vio: ${(b.seen || []).length ? esc(b.seen.join(", ")) : "ningún botón especial"} · clics izq. seguidos: ${b.left_burst || 0}${b.note ? " · dónde: «" + esc(b.note) + "»" : ""}${(b.dev || []).filter((z) => /^[0-9A-F]{4}:[0-9A-F]{4}$/.test(z.vp)).length ? " · mouse: " + esc((b.dev || []).filter((z) => /^[0-9A-F]{4}:[0-9A-F]{4}$/.test(z.vp)).map((z) => mouseName(d, z.vp)).join(", ")) : ""}`}</div>`).join("") : ""}
         <div class="row usb"><span class="kv">
           📖 <b>Cómo leerlo:</b><br>
           🤖 <b>Clics de PROGRAMA</b> (rojo) = el clic no vino del mouse: macro, autoclicker o alguien controlando el PC.<br>
@@ -1262,8 +1319,10 @@ function renderDetail() {
     <div class="profile">${headImg(mc.nick, true)}<div><div class="pname">${esc(mc.nick && mc.nick !== "?" ? mc.nick : (isMob ? "Sin nick (móvil)" : "?"))}</div>
       <div class="psub">${esc(d.code || "")} · ${esc(PLATFORMS[platOf(d)].icon + " " + PLATFORMS[platOf(d)].label)} · ${esc(d.timestamp || "")} (${agoStr(e.ts)}${e.approx && e.ts ? " aprox." : ""})</div></div></div>
     <div class="verdict ${lvl}">${vt}</div>
-    ${vdCompact}
+    ${buildBrief(d)}
+    <details class="how" style="margin:0 0 14px"><summary>🔍 Explicación completa del veredicto</summary><div class="how-body">${vdCompact}</div></details>
     <div class="actions" style="margin:-6px 0 16px"><button class="btn btn-gen" data-act="share">🎫 Compartir resultado (ticket)</button></div>
+    <details class="mod" style="margin-bottom:12px"><summary>👤 Datos del jugador y de su PC <span class="kv">(${esc(mc.nick && mc.nick !== "?" ? mc.nick : "sin nick")} · ${esc(pc.country || "?")} · ${esc(pc.os || "?")})</span></summary><div class="mod-body">
     <div class="ig-group"><div class="ig-title">👤 El jugador</div><div class="info-grid">
       ${item("Código", (d.code || "?") + codeNote)}
       ${item("Plataforma", PLATFORMS[platOf(d)].icon + " " + PLATFORMS[platOf(d)].label)}
@@ -1291,6 +1350,7 @@ function renderDetail() {
       ${item("Versión de Minecraft", d.mc_version && d.mc_version.game ? d.mc_version.game + (d.mc_version.tipo ? " · TIPO: " + d.mc_version.tipo : (d.mc_version.loader ? " · " + d.mc_version.loader : "")) + (d.mc_version.raw && d.mc_version.raw !== d.mc_version.game ? "  [nombre interno: " + d.mc_version.raw + "]" : "") + (d.mc_version.source ? "  (fuente: " + d.mc_version.source + ")" : "") : (d.mc_version && d.mc_version.bedrock ? "Bedrock " + d.mc_version.bedrock + (d.mc_version.tipo ? " · TIPO: " + d.mc_version.tipo : "") : "No detectada"), true)}
       ${item("Duración / archivos", `${d.duration ?? "?"}s · ${(d.stats && d.stats.files_scanned) ?? "?"} archivos · v${d.version || "?"}`, true)}
     </div></div>
+    </div></details>
     <div class="tabs">
       <div class="tg"><span class="tg-l">Lo importante</span><div class="tg-b"><button class="tab-btn active" data-tab="0">🚨 Hallazgos</button><button class="tab-btn" data-tab="12">⏱️ Actividad</button><button class="tab-btn" data-tab="7">📸 Captura</button><button class="tab-btn" data-tab="13">🎥 Grabación</button></div></div>
       <div class="tg"><span class="tg-l">Evidencia</span><div class="tg-b"><button class="tab-btn" data-tab="1">🕒 Línea de tiempo</button><button class="tab-btn" data-tab="3">⚙️ Ejecutados</button><button class="tab-btn" data-tab="4">📂 Recientes</button><button class="tab-btn" data-tab="9">📄 Logs</button></div></div>
@@ -1337,12 +1397,12 @@ function renderDetail() {
                 "Pregunta: «¿Qué mouse usas?», «¿tiene software (G HUB, Razer…)?» y pídele que te lo muestre.",
                 "Decide con todo junto: un amarillo solo nunca sanciona. Sanciona solo si hay pruebas que se repiten y no tienen explicación."] }
         ];
-        return `<div class="warnbox plan">
-          <div class="how-title">🧭 Plan de revisión (5 pasos, ~10 min)</div>
+        return `<details class="warnbox plan">
+          <summary class="how-title" style="cursor:pointer">🧭 Plan de revisión paso a paso (5 pasos, ~10 min) · toca para abrir</summary>
           ${top.length ? `<div style="margin:6px 0"><b>👉 Mira esto primero</b> <span class="kv">(toca «Cómo comprobarlo» en cada uno):</span>${top.map((f) => `<div style="margin:8px 0">${f.level === "red" ? "🔴" : "🟡"} <b>${esc(f.module)}:</b> ${esc(f.title)}${howHtml(f)}</div>`).join("")}</div>` : `<div style="margin:6px 0">🟢 El escaneo no marcó nada fuerte, pero igual haz los pasos 2 a 5: un cheat por hardware no deja rastro en el PC.</div>`}
-          ${STEPS.map((x, i) => `<div style="margin:12px 0"><label style="display:block;cursor:pointer"><input type="checkbox" data-act="chk" data-code="${esc(d.code || "")}" data-i="${i}" ${saved.includes(i) ? "checked" : ""}> <b>${i + 1}. ${x.t}</b><br><span class="kv" style="margin-left:22px;display:block">${x.s}</span></label><details class="how" open style="margin-left:22px"><summary>📖 Cómo hacerlo paso a paso</summary><div class="how-body"><ol style="margin:6px 0 6px 18px;padding:0">${x.h.map((y) => `<li style="margin:5px 0">${y}</li>`).join("")}</ol></div></details></div>`).join("")}
+          ${STEPS.map((x, i) => `<div style="margin:12px 0"><label style="display:block;cursor:pointer"><input type="checkbox" data-act="chk" data-code="${esc(d.code || "")}" data-i="${i}" ${saved.includes(i) ? "checked" : ""}> <b>${i + 1}. ${x.t}</b><br><span class="kv" style="margin-left:22px;display:block">${x.s}</span></label><details class="how" style="margin-left:22px"><summary>📖 Cómo hacerlo paso a paso</summary><div class="how-body"><ol style="margin:6px 0 6px 18px;padding:0">${x.h.map((y) => `<li style="margin:5px 0">${y}</li>`).join("")}</ol></div></details></div>`).join("")}
           <div class="kv" style="margin-top:8px">🔴 = señal fuerte, confírmala · 🟡 = pregunta y revisa · gris = normalmente no importa. Un amarillo solo nunca sanciona.</div>
-        </div>`; })()}
+        </details>`; })()}
       ${evHtml}<div class="section-title">🚨 TODOS LOS HALLAZGOS POR MÓDULO</div>${filterBar}${findingsHtml}
     </div>
     <div class="tab-content" id="tab12">${actHtml}</div>
@@ -1365,6 +1425,7 @@ function renderDetail() {
     <div class="tab-content" id="tab6"><div class="section-title">🧾 REPORTE COMPLETO</div>
       <div class="actions" style="margin:0 0 12px"><button class="btn" data-act="download">⬇ Descargar JSON</button></div>
       <pre class="raw">${esc(JSON.stringify(d, null, 2))}</pre></div>`;
+  applyFindingFilter();
   if (activeTab !== "0" && $("tab" + activeTab)) {
     document.querySelectorAll(".tab-content").forEach((x) => x.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach((x) => x.classList.toggle("active", x.dataset.tab === activeTab));
@@ -1741,7 +1802,7 @@ function howHtml(x) {
 }
 
 // ── RESUMEN PARA SANCIÓN + FILTROS ───────────────────────────────
-let _fl = "all";
+let _fl = "main";
 let activeTab = "0", _detailSig = "";
 function sanctionText(d) {
   const f = Array.isArray(d.findings) ? d.findings : [];
@@ -1767,14 +1828,14 @@ function sanctionText(d) {
 function applyFindingFilter() {
   const q = (($("fSearch") || {}).value || "").toLowerCase().trim();
   document.querySelectorAll("#tab0 .finding").forEach((el) => {
-    const okKind = _fl === "all" || el.dataset.kind === _fl;
+    const okKind = _fl === "all" || (_fl === "main" ? (el.dataset.kind === "red" || el.dataset.kind === "yellow") : el.dataset.kind === _fl);
     const okQ = !q || el.dataset.q.includes(q);
     el.classList.toggle("hide", !(okKind && okQ));
   });
   document.querySelectorAll("#tab0 details.mod").forEach((m) => {
     const vis = m.querySelectorAll(".finding:not(.hide)").length;
     m.classList.toggle("hide", vis === 0);
-    if ((q || _fl !== "all") && vis) m.open = true;
+    if ((q || (_fl !== "all" && _fl !== "main")) && vis) m.open = true;
   });
 }
 document.addEventListener("input", (ev) => { if (ev.target.id === "fSearch") applyFindingFilter(); });
